@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>3月短视频满意度调研报告</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#f0f2f5;color:#1a1d2e;min-height:100vh;padding:24px;font-size:14px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:20px 28px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.page-header h1{font-size:22px;font-weight:700;color:#0f172a}
+.page-header p{font-size:13px;color:#94a3b8;margin-top:4px}
+.badges{display:flex;gap:10px}
+.badge{background:#f8faff;border:1px solid #dbe4ff;border-radius:8px;padding:7px 16px;font-size:13px;color:#64748b}
+.badge strong{color:#3b5bdb;font-weight:700}
+.content{max-width:1280px;margin:0 auto}
+.tab-bar{display:flex;gap:4px;margin-bottom:20px;background:#fff;padding:6px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);width:fit-content;flex-wrap:wrap}
+.tab{padding:9px 22px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#64748b;border:none;background:transparent;transition:all .2s}
+.tab:hover:not(.active){background:#f1f5f9;color:#334155}
+.tab.active{background:#3b5bdb;color:#fff;box-shadow:0 2px 8px rgba(59,91,219,.3)}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:14px}
+.card-title{font-size:14px;font-weight:700;color:#374151;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dot{width:4px;height:16px;border-radius:2px;background:#3b5bdb;display:inline-block;flex-shrink:0}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.kpi-card{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-top:3px solid transparent}
+.kpi-card.c1{border-top-color:#3b5bdb}.kpi-card.c2{border-top-color:#f97316}.kpi-card.c3{border-top-color:#0ea5e9}.kpi-card.c4{border-top-color:#8b5cf6}
+.kpi-label{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;font-weight:500}
+.kpi-value{font-size:34px;font-weight:800;color:#0f172a;line-height:1}
+.kpi-value span,.kpi-unit{font-size:16px;font-weight:500;color:#94a3b8}
+.kpi-sub{font-size:12px;color:#94a3b8;margin-top:6px}
+.kpi-tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;margin-top:7px}
+.tag-good{background:#dcfce7;color:#16a34a}.tag-warn{background:#fef3c7;color:#d97706}.tag-bad{background:#fee2e2;color:#dc2626}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.brand-row{margin-bottom:12px}.brand-row:last-child{margin-bottom:0}
+.brand-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.brand-name{font-size:13px;font-weight:600;color:#374151}.brand-val{font-size:14px;font-weight:700}
+.bar-bg{background:#f1f5f9;border-radius:4px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.c-sema{color:#3b5bdb}.c-bala{color:#f97316}.c-mini{color:#0ea5e9}
+.fill-sema{background:linear-gradient(90deg,#4f6ef7,#3b5bdb)}.fill-bala{background:linear-gradient(90deg,#fb8c3d,#f97316)}.fill-mini{background:linear-gradient(90deg,#38bdf8,#0ea5e9)}
+.data-table{width:100%;border-collapse:collapse}.data-table th{font-size:12px;color:#94a3b8;font-weight:600;padding:0 10px 10px;text-align:left;border-bottom:1px solid #f1f5f9;text-transform:uppercase;letter-spacing:.5px}.data-table td{font-size:13px;padding:10px 10px;border-bottom:1px solid #f8fafc;vertical-align:middle;color:#374151}.data-table tr:last-child td{border-bottom:none}
+.pill{display:inline-block;min-width:46px;text-align:center;padding:3px 10px;border-radius:20px;font-size:13px;font-weight:700}.pill-hi{background:#dcfce7;color:#15803d}.pill-mid{background:#fef3c7;color:#b45309}.pill-low{background:#fee2e2;color:#b91c1c}.pill-blue{background:#dbeafe;color:#1d4ed8}
+.insight-box{background:#f8faff;border:1px solid #dbe4ff;border-radius:10px;padding:14px 16px;height:100%}
+.insight-box p{font-size:13px;color:#475569;line-height:1.9}.insight-box strong{color:#1e3a8a}
+.pain-list{list-style:none}.pain-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f8fafc}.pain-item:last-child{border-bottom:none}.pain-tag{flex-shrink:0;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;margin-top:2px}.t-red{background:#fee2e2;color:#dc2626}.t-yellow{background:#fef3c7;color:#d97706}.t-blue{background:#dbeafe;color:#1d4ed8}.pain-text{font-size:13px;color:#374151;line-height:1.6;flex:1}.pain-pct{flex-shrink:0;font-size:12px;font-weight:700;color:#dc2626}
+.priority-row{margin-bottom:12px}.priority-row:last-child{margin-bottom:0}.priority-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.priority-label{font-size:13px;color:#374151}.priority-pct{font-size:13px;font-weight:700}.priority-bar{background:#f1f5f9;border-radius:4px;height:6px;overflow:hidden}.priority-fill{height:100%;border-radius:4px}
+.dst{font-size:12px;font-weight:700;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+@media (max-width: 900px){.kpi-row,.two-col,.three-col{grid-template-columns:1fr}.page-header{flex-direction:column;align-items:flex-start;gap:12px}.badges{flex-wrap:wrap}}
+
+/* ===== 稳定版布局修复 ===== */
+html, body { overflow-x: hidden; }
+.card, .kpi-card, .badge, .tab, .tab-bar, .page-header, .header, .header-left, .header-right, .brand-header, .brand-header-info { min-width: 0; }
+.card, .kpi-card { overflow: hidden; }
+.tab-bar {
+  position: sticky;
+  top: 12px;
+  z-index: 120;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.tab-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,.92);
+  z-index: -1;
+}
+.kpi-row > *, .two-col > *, .three-col > *, .col-6040 > * { min-width: 0; }
+p, span, div, td, th { word-break: break-word; }
+.data-table { table-layout: fixed; width: 100%; }
+.data-table td, .data-table th { vertical-align: top; }
+.badge, .pill, .kpi-tag { max-width: 100%; }
+.brand-row-header, .priority-header, .dim-header, .sat-row, .pain-item { min-width: 0; }
+.brand-row-header span:first-child, .priority-label, .dim-name, .pain-text { min-width: 0; }
+.kpi-value { overflow-wrap: anywhere; }
+
+/* ===== 本地短视频弹窗播放 ===== */
+.video-helper {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #eef2f7;
+}
+.video-helper-note {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.video-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  background: #f8fafc;
+  min-width: 0;
+}
+.video-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.video-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.video-btn {
+  appearance: none;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.video-btn.select { background: #e0e7ff; color: #3730a3; }
+.video-btn.play { background: #3b5bdb; color: #fff; }
+.video-btn.play.disabled { background: #cbd5e1; color: #fff; cursor: not-allowed; }
+.inline-video-row { margin-bottom: 18px; }
+.inline-video-row:last-child { margin-bottom: 0; }
+.inline-video-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:6px; }
+.inline-video-label { font-size:13px; color:#374151; font-weight:600; line-height:1.6; }
+.inline-video-pct { font-size:13px; font-weight:800; white-space:nowrap; }
+.inline-video-track { height:8px; background:#f1f5f9; border-radius:999px; overflow:hidden; margin-bottom:10px; }
+.inline-video-fill { height:100%; border-radius:999px; }
+.inline-video-action-wrap { display:flex; justify-content:flex-end; }
+.inline-video-btn { border:2px solid #fdba74; color:#ea580c; background:#fff; border-radius:16px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s ease; box-shadow:0 1px 2px rgba(15,23,42,.04); }
+.inline-video-btn:hover { background:#fff7ed; transform:translateY(-1px); }
+.inline-video-btn.has-video { border-color:#fb923c; background:#fff7ed; }
+.video-status {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.video-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .72);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+}
+.video-modal.open { display: flex; }
+.video-modal-panel {
+  width: min(960px, 100%);
+  background: #0f172a;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+}
+.video-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  color: #fff;
+  background: rgba(255,255,255,.06);
+}
+.video-modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  min-width: 0;
+}
+.video-close {
+  appearance: none;
+  border: none;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.video-player-wrap {
+  padding: 16px;
+  background: #020617;
+}
+#videoPlayer {
+  width: 100%;
+  max-height: 76vh;
+  background: #000;
+  border-radius: 12px;
+}
+@media (max-width: 900px) {
+  .video-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+<div class="page-header">
+<div>
+<h1>🎬 3月短视频满意度调研报告</h1>
+<p>数据来源：三品牌抖音短视频体验问卷调研  |  统计周期：2025年3月  |  三品牌总样本 880 份</p>
+</div>
+<div class="badges">
+<span class="badge">森马 <strong>326份</strong></span>
+<span class="badge">巴拉巴拉 <strong>477份</strong></span>
+<span class="badge">迷你巴拉 <strong>77份</strong></span>
+</div>
+</div>
+<div class="content">
+<div class="tab-bar">
+<button class="tab active" onclick="switchTab('overview',this)">📊 总览对比</button>
+<button class="tab" onclick="switchTab('semir',this)">👔 森马</button>
+<button class="tab" onclick="switchTab('balabala',this)">🎵 巴拉巴拉</button>
+<button class="tab" onclick="switchTab('mini',this)">🎽 迷你巴拉</button>
+<button class="tab" onclick="switchTab('summary',this)">📋 总结与建议</button>
+</div>
+<div class="panel active" id="panel-overview">
+<div class="kpi-row">
+<div class="kpi-card c1"><div class="kpi-label">品牌 NPS 均值</div><div class="kpi-value">67.0<span>%</span></div><div class="kpi-sub">三品牌算术均值</div><div class="kpi-tag tag-good">巴拉巴拉最高 73.93%</div></div>
+<div class="kpi-card c2"><div class="kpi-label">品牌满意度 均值</div><div class="kpi-value">91.3<span>/100</span></div><div class="kpi-sub">5分制换算</div><div class="kpi-tag tag-good">巴拉巴拉最高 93.0</div></div>
+<div class="kpi-card c3"><div class="kpi-label">短视频 NPS 均值</div><div class="kpi-value">41.9<span>%</span></div><div class="kpi-sub">三品牌算术均值</div><div class="kpi-tag tag-warn">森马最低 23.72%</div></div>
+<div class="kpi-card c4"><div class="kpi-label">短视频满意度 均值</div><div class="kpi-value">86.8<span>/100</span></div><div class="kpi-sub">5分制换算</div><div class="kpi-tag tag-warn">开头3秒是共同短板</div></div>
+</div>
+<div class="two-col">
+<div class="card">
+<div class="card-title"><span class="dot"></span>NPS 对比（品牌 vs 短视频）</div>
+<div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">品牌 NPS</div>
+<div class="brand-row"><div class="brand-row-header"><span class="brand-name c-sema">👔 森马</span><span class="brand-val c-sema">55.76%</span></div><div class="bar-bg"><div class="bar-fill fill-sema" style="width:55.76%"></div></div></div>
+<div class="brand-row"><div class="brand-row-header"><span class="brand-name c-bala">🎵 巴拉巴拉</span><span class="brand-val c-bala">73.93%</span></div><div class="bar-bg"><div class="bar-fill fill-bala" style="width:73.93%"></div></div></div>
+<div class="brand-row"><div class="brand-row-header"><span class="brand-name c-mini">🎽 迷你巴拉</span><span class="brand-val c-mini">71.43%</span></div><div class="bar-bg"><div class="bar-fill fill-mini" style="width:71.43%"></div></div></div>
+<div style="font-size:11px;color:#94a3b8;margin:18px 0 8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">短视频 NPS</div>
+<div class="brand-row"><div class="brand-row-header"><span class="brand-name c-sema">👔 森马</span><span class="brand-val c-sema">23.72%</span></div><div class="bar-bg"><div class="bar-fill fill-sema" style="width:23.72%"></div></div></div>
+<div class="brand-row"><div class="brand-row-header"><span class="brand-name c-bala">🎵 巴拉巴拉</span><span class="brand-val c-bala">56.71%</span></div><div class="bar-bg"><div class="bar-fill fill-bala" style="width:56.71%"></div></div></div>
+<div class="brand-row"><div class="brand-row-header"><span class="brand-name c-mini">🎽 迷你巴拉</span><span class="brand-val c-mini">45.17%</span></div><div class="bar-bg"><div class="bar-fill fill-mini" style="width:45.17%"></div></div></div>
+</div>
+<div class="card">
+<div class="card-title"><span class="dot"></span>满意度总表（/100分）</div>
+<table class="data-table">
+<thead>
+<tr><th>品牌</th><th>品牌满意度</th><th>短视频满意度</th><th>NPS落差</th></tr>
+</thead>
+<tbody>
+<tr><td>👔 森马</td><td><span class="pill pill-mid">89.8</span></td><td><span class="pill pill-mid">85.8</span></td><td style="color:#dc2626;font-weight:700">▼ 32.0pt</td></tr>
+<tr><td>🎵 巴拉巴拉</td><td><span class="pill pill-hi">93.0</span></td><td><span class="pill pill-hi">89.2</span></td><td style="color:#d97706;font-weight:700">▼ 17.2pt</td></tr>
+<tr><td>🎽 迷你巴拉</td><td><span class="pill pill-mid">91.0</span></td><td><span class="pill pill-mid">85.4</span></td><td style="color:#dc2626;font-weight:700">▼ 26.3pt</td></tr>
+</tbody>
+</table>
+<div class="insight-box" style="margin-top:14px">
+<p><strong>核心观察：</strong>三品牌均出现“品牌认可高于短视频体验”的结构性落差，其中巴拉巴拉承接最好，森马短视频内容侧断层最明显，迷你巴拉则兼具内容与触达两类问题。</p>
+</div>
+</div>
+</div>
+<div class="three-col">
+<div class="card">
+<div class="card-title"><span class="dot"></span>核心结论</div>
+<div class="insight-box">
+<p><strong>共同最大问题：</strong>三品牌划走首因均集中在“开头3秒没抓住”。短视频前3帧必须更快给出衣服卖点、穿搭效果或价格利益点，否则难以承接品牌好感。</p>
+</div>
+</div>
+<div class="card">
+<div class="card-title"><span class="dot"></span>三品牌共同痛点</div>
+<ul class="pain-list">
+<li class="pain-item"><span class="pain-tag t-red">TOP1</span><span class="pain-text">黄金3秒吸引力不足，用户划走主要发生在开头阶段</span></li>
+<li class="pain-item"><span class="pain-tag t-yellow">TOP2</span><span class="pain-text">短视频内容未充分承接品牌心智，品牌NPS普遍高于短视频NPS</span></li>
+<li class="pain-item"><span class="pain-tag t-blue">TOP3</span><span class="pain-text">内容策略需要分品牌拆开：成人偏干货测评，儿童偏高性价比方案</span></li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title"><span class="dot"></span>用户首要优化诉求</div>
+<div class="priority-row"><div class="priority-header"><span class="priority-label">👔 森马：多元模特 + 干货测评</span><span class="priority-pct c-sema">23.72% NPS</span></div><div class="priority-bar"><div class="priority-fill fill-sema" style="width:42%"></div></div></div>
+<div class="priority-row"><div class="priority-header"><span class="priority-label">🎵 巴拉巴拉：真实场景 + 性价比表达</span><span class="priority-pct c-bala">56.71% NPS</span></div><div class="priority-bar"><div class="priority-fill fill-bala" style="width:72%"></div></div></div>
+<div class="priority-row"><div class="priority-header"><span class="priority-label">🎽 迷你巴拉：先提升触达，再优化内容</span><span class="priority-pct c-mini">45.17% NPS</span></div><div class="priority-bar"><div class="priority-fill fill-mini" style="width:58%"></div></div></div>
+</div>
+</div>
+</div>
+<div class="panel" id="panel-semir">
+<div style="background:#fff;border-radius:14px;padding:18px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+<div>
+<div style="font-size:20px;font-weight:800;color:#3b5bdb">👔 森马短视频满意度报告</div>
+<div style="font-size:13px;color:#94a3b8;margin-top:4px">有效样本：326 份</div>
+</div>
+<div style="display:flex;gap:8px">
+<span style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#f1f5f9;color:#475569">品牌NPS 55.76%</span>
+<span style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#f1f5f9;color:#475569">短视频NPS 23.72%</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px">
+<div class="kpi-card" style="border-top-color:#3b5bdb"><div class="kpi-label">品牌 NPS</div><div class="kpi-value">55.76<span class="kpi-unit">%</span></div></div>
+<div class="kpi-card" style="border-top-color:#6366f1"><div class="kpi-label">品牌满意度</div><div class="kpi-value">89.8<span class="kpi-unit">/100</span></div></div>
+<div class="kpi-card" style="border-top-color:#f43f5e"><div class="kpi-label">短视频 NPS</div><div class="kpi-value">23.72<span class="kpi-unit">%</span></div><div style="font-size:12px;font-weight:700;color:#ef4444;margin-top:4px">落差 -32.0pt</div></div>
+<div class="kpi-card" style="border-top-color:#8b5cf6"><div class="kpi-label">短视频满意度</div><div class="kpi-value">85.8<span class="kpi-unit">/100</span></div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#64748b"></span>用户画像</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+<div><div class="dst">年龄分布</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">18岁以下</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:4.6%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">4.6%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">19-25岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:41.1%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">41.1%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">26-30岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:27.6%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">27.6%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">31-35岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:13.5%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">13.5%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">36-40岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:8.9%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">8.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">40岁以上</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:4.3%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">4.3%</span></div></div>
+<div><div class="dst">性别/身份</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">女</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:83.4%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">83.4%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">男</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:16.3%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">16.3%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">其他</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:0.3%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">0.3%</span></div></div>
+<div><div class="dst">职业分布</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">学生</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:23.6%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">23.6%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">其他</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:20.9%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">20.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">职场新人/白领</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:19.3%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">19.3%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">自由职业者</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:17.2%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">17.2%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">老师</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:8.6%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">8.6%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">服务行业</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:7.1%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">7.1%</span></div></div>
+<div><div class="dst">看播行为</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">经常看到（忠实观众）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:64.4%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">64.4%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">偶尔看到（路人粉）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:31.3%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">31.3%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">没印象/没看过</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:4.3%;background:#3b5bdb;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">4.3%</span></div></div>
+</div>
+</div>
+<div class="card"><div class="card-title"><span class="dot" style="background:#3b5bdb"></span>短视频满意点</div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 所见即所得（无滤镜，真实细节）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">73.4%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:73.4%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 选码参考（模特身材数据详细）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">45.8%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:45.8%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 搭配教科书（省心照着买）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">44.3%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:44.3%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">4️⃣ 审美在线（视频本身拍得好看）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">33.6%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:33.6%;background:#3b5bdb;border-radius:4px"></div></div></div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#3b5bdb"></span>📌 容易种草下单的内容形式（多选）</div>
+<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 干货测评类（面料/版型/拉伸测试）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">73.7%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:73.7%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 痛点解决类（梨形/小个子/微胖试穿）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">48.1%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:48.1%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 穿搭挑战/变装（一衣多搭）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">47.4%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:47.4%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">4️⃣ 沉浸式OOTD（咖啡店/校园实拍）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">43.6%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:43.6%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">5️⃣ 直播切片（主播高光快速过款）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">23.4%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:23.4%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">6️⃣ 剧情/情感类品牌大片</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">8.7%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:8.7%;background:#3b5bdb;border-radius:4px"></div></div></div>
+</div>
+<div class="card"><div class="card-title"><span class="dot" style="background:#f59e0b"></span>🎬 最想关注+下单的视频类型（单选）</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥇 模特展示类</span>
+<span class="inline-video-pct" style="color:#3b5bdb">58.0%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:58%;background:#3b5bdb"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'semir\', 1, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥈 对镜自拍类</span>
+<span class="inline-video-pct" style="color:#3b5bdb">25.0%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:25%;background:#3b5bdb"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'semir\', 2, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥉 卖点口播类</span>
+<span class="inline-video-pct" style="color:#3b5bdb">15.4%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:15.4%;background:#3b5bdb"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'semir\', 3, event)">▶ 查看短视频</button>
+
+</div>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#ef4444"></span>😤 划走短视频的原因（多选）</div>
+<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥇</span><span style="flex:1;font-size:13px;color:#374151">黄金3秒没抓住（开头废话多，没立刻看到衣服）</span><span style="font-size:13px;font-weight:700;color:#ef4444">51.2%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥈</span><span style="flex:1;font-size:13px;color:#374151">模特不具参考性（身材太完美，普通人穿不好看）</span><span style="font-size:13px;font-weight:700;color:#ef4444">46.3%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥉</span><span style="flex:1;font-size:13px;color:#374151">信息不匹配（找不到同款/链接）</span><span style="font-size:13px;font-weight:700;color:#ef4444">26.8%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">4️⃣</span><span style="flex:1;font-size:13px;color:#374151">过度营销感（叫卖声太吵/一直推销价格）</span><span style="font-size:13px;font-weight:700;color:#ef4444">26.8%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">5️⃣</span><span style="flex:1;font-size:13px;color:#374151">视觉质感差（灯光昏暗/背景杂乱）</span><span style="font-size:13px;font-weight:700;color:#ef4444">9.8%</span></div>
+</div>
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#3b5bdb"></span>🗳️ 优化优先级投票（单选）</div>
+<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 模特真实化（增加微胖/小个子模特）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">53.7%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:53.7%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 解说专业化（多讲面料/少喊口号）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">17.1%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:17.1%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 搭配实用化（一衣多穿教学）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">17.1%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:17.1%;background:#3b5bdb;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151"> 场景生活化（室外/真实场景）</span><span style="font-size:13px;font-weight:700;color:#3b5bdb;white-space:nowrap;margin-left:8px">12.2%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:12.2%;background:#3b5bdb;border-radius:4px"></div></div></div>
+</div>
+</div>
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:24px 28px;margin-bottom:16px">
+<div style="font-size:16px;font-weight:800;color:#1e3a8a;margin-bottom:18px">📝 森马短视频结论 &amp; 优化建议</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div>
+<div class="dst" style="margin-bottom:10px">核心结论</div>
+<div style="background:#f0f9ff;border-left:4px solid #3b5bdb;border-radius:0 10px 10px 0;padding:14px 18px;font-size:13px;color:#0c4a6e;line-height:1.9">森马短视频品牌口碑扎实（品牌NPS 55.76%），但短视频NPS（23.72%）与品牌NPS落差达32pt，说明内容未能有效承接品牌好感。用户以19-30岁年轻女性为主（68.7%），对真实感内容需求极高：73.7%用户最愿因"干货测评类"种草下单，但51.2%划走原因是"开头3秒没抓住"，46.3%因模特身材太完美缺乏参考价值。内容策略需向真实体型、强信息密度转型。</div>
+</div>
+<div>
+<div class="dst" style="margin-bottom:10px">下一步行动计划</div>
+<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fee2e2;color:#dc2626">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">开头3秒改版：前3帧直接上衣服全貌或模特入镜，砍掉所有品牌logo开场白和空镜头</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fee2e2;color:#dc2626">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">增加多元体型模特（微胖/小个子/梨形）试穿系列，一周至少2条，对应53.7%用户首优化诉求</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#dcfce7;color:#16a34a">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">干货测评内容比例提升至50%以上：面料拉伸/洗后对比/版型说明必须覆盖</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#dcfce7;color:#16a34a">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">视频挂链对齐：所有视频上线同步确认橱窗同款可购，消除26.8%"找不到同款"流失</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fef3c7;color:#d97706">P2 下月</span><span style="font-size:13px;color:#374151;line-height:1.8">场景拍摄：安排至少20%内容在室外/真实生活场景，减少摄影棚比例</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel" id="panel-balabala">
+<div style="background:#fff;border-radius:14px;padding:18px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+<div>
+<div style="font-size:20px;font-weight:800;color:#f97316">🎵 巴拉巴拉短视频满意度报告</div>
+<div style="font-size:13px;color:#94a3b8;margin-top:4px">有效样本：477 份</div>
+</div>
+<div style="display:flex;gap:8px">
+<span style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#f1f5f9;color:#475569">品牌NPS 73.93%</span>
+<span style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#f1f5f9;color:#475569">短视频NPS 56.71%</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px">
+<div class="kpi-card" style="border-top-color:#f97316"><div class="kpi-label">品牌 NPS</div><div class="kpi-value">73.93<span class="kpi-unit">%</span></div></div>
+<div class="kpi-card" style="border-top-color:#6366f1"><div class="kpi-label">品牌满意度</div><div class="kpi-value">93.0<span class="kpi-unit">/100</span></div></div>
+<div class="kpi-card" style="border-top-color:#f43f5e"><div class="kpi-label">短视频 NPS</div><div class="kpi-value">56.71<span class="kpi-unit">%</span></div><div style="font-size:12px;font-weight:700;color:#ef4444;margin-top:4px">落差 -17.2pt</div></div>
+<div class="kpi-card" style="border-top-color:#8b5cf6"><div class="kpi-label">短视频满意度</div><div class="kpi-value">89.2<span class="kpi-unit">/100</span></div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#64748b"></span>用户画像</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+<div><div class="dst">年龄分布</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">31-35岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:36.1%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">36.1%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">36-40岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:26%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">26.0%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">26-30岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:21.8%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">21.8%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">40-50岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:6.7%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">6.7%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">18-25岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:5%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">5.0%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">50岁以上</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:4.4%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">4.4%</span></div></div>
+<div><div class="dst">性别/身份</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">宝妈（主购人）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:NaN%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">~94%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">宝爸</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:NaN%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">~6%</span></div></div>
+<div><div class="dst">职业/背景</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">为自己孩子购买</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:89%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">89-94%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">为亲友孩子购买</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:3%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">3-4%</span></div></div>
+<div><div class="dst">看播行为</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">经常看到（忠实观众）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:76.5%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">76.5%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">偶尔看到（路人粉）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:20.3%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">20.3%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">没印象/没看过</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:3.1%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">3.1%</span></div></div>
+</div>
+</div>
+<div>
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#f97316"></span>宝宝画像</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px">
+<div><div class="dst">宝宝性别</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">男宝</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:42.8%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">42.8%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">女宝</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:40.3%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">40.3%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">均有</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:15.5%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">15.5%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">其他</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:1.5%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">1.5%</span></div></div>
+<div><div class="dst">宝宝年龄</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">学龄前（0-3岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:36.9%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">36.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">幼儿园（4-6岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:28.5%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">28.5%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">小学（7-12岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:28.9%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">28.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">初中（13-15岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:2.3%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">2.3%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">15岁以上</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:0.8%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">0.8%</span></div></div>
+<div><div class="dst">购买渠道</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">抖音</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:84.4%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">84.4%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">线下门店</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:41%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">41.0%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">淘宝/天猫</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:38%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">38.0%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">京东</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:12.4%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">12.4%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">唯品会</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:9.4%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">9.4%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">小程序</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:7.1%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">7.1%</span></div></div>
+</div>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#f97316"></span>📌 容易种草下单的内容形式（多选）</div>
+<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 高性价比方案（质量好+价格合适）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">74.9%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:74.9%;background:#f97316;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 高级感配色/风格搭配（莫兰迪/复古/森系）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">42.0%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:42%;background:#f97316;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 亲子装搭配方案（满足温馨亲子向往）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">34.0%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:34%;background:#f97316;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">4️⃣ 同年龄段专属搭配（有参考价值）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">28.4%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:28.4%;background:#f97316;border-radius:4px"></div></div></div>
+</div>
+<div class="card"><div class="card-title"><span class="dot" style="background:#f59e0b"></span>🎬 最想关注+下单的视频类型（单选）</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥇 优惠活动预告</span>
+<span class="inline-video-pct" style="color:#f97316">43.3%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:43.3%;background:#f97316"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'balabala\', 1, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥈 孩子穿搭展示</span>
+<span class="inline-video-pct" style="color:#f97316">35.5%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:35.5%;background:#f97316"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'balabala\', 2, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥉 亲子款穿搭讲解</span>
+<span class="inline-video-pct" style="color:#f97316">14.8%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:14.8%;background:#f97316"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'balabala\', 3, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">4️⃣ 静物展示</span>
+<span class="inline-video-pct" style="color:#f97316">6.4%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:6.4%;background:#f97316"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'balabala\', 4, event)">▶ 查看短视频</button>
+
+</div>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#ef4444"></span>😤 划走短视频的原因（多选）</div>
+<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥇</span><span style="flex:1;font-size:13px;color:#374151">黄金3秒没抓住（开头废话多，没立刻看到衣服）</span><span style="font-size:13px;font-weight:700;color:#ef4444">59.3%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥈</span><span style="flex:1;font-size:13px;color:#374151">信息不匹配（找不到同款/直播间在推其他款）</span><span style="font-size:13px;font-weight:700;color:#ef4444">29.6%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥉</span><span style="flex:1;font-size:13px;color:#374151">过度营销感（一直推销产品，缺乏价值）</span><span style="font-size:13px;font-weight:700;color:#ef4444">25.9%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">4️⃣</span><span style="flex:1;font-size:13px;color:#374151">买点不匹配（不是关心的孩子购买痛点）</span><span style="font-size:13px;font-weight:700;color:#ef4444">22.2%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">5️⃣</span><span style="flex:1;font-size:13px;color:#374151">模特不具参考性（和孩子差距大）</span><span style="font-size:13px;font-weight:700;color:#ef4444">11.1%</span></div>
+</div>
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#f97316"></span>🗳️ 优化优先级投票（单选）</div>
+<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 场景生活化（室外/真实场景上身效果）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">37.0%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:37%;background:#f97316;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 模特真实化（不同尺码/体型上身效果）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">22.2%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:22.2%;background:#f97316;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 解说专业化（面料舒适度/洗护建议）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">22.2%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:22.2%;background:#f97316;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151"> 搭配实用化（基础款如何多搭）</span><span style="font-size:13px;font-weight:700;color:#f97316;white-space:nowrap;margin-left:8px">18.5%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:18.5%;background:#f97316;border-radius:4px"></div></div></div>
+</div>
+</div>
+<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:20px 22px;margin-bottom:14px">
+<div class="card-title" style="margin-bottom:14px"><span class="dot" style="background:#f97316"></span><span style="color:#9a3412">🛍️ 产品满意度专项分析</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div>
+<div class="dst">产品整体满意度分布</div>
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">非常满意</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:69%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">69.0%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">比较满意</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:28.6%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">28.6%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">一般</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:1.5%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">1.5%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">不满意</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:0.9%;background:#f97316;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">0.9%</span></div>
+<div style="margin-top:12px;padding:12px;background:#fffbeb;border-radius:8px;font-size:13px;color:#78350f"><strong>产品满意度：93.0/100</strong>（原始均值 4.65/5）<br/>三品牌产品满意度最高，品质竞争力突出。</div>
+</div>
+<div>
+<div class="dst">不满意因素（多选）</div>
+<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥇</span><span style="flex:1;font-size:13px;color:#374151">价格不满意（性价比低/折扣小/价格波动大）</span><span style="font-size:13px;font-weight:700;color:#ef4444">44.7%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥈</span><span style="flex:1;font-size:13px;color:#374151">外观设计不满意（图案/颜色/风格）</span><span style="font-size:13px;font-weight:700;color:#ef4444">13.0%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥉</span><span style="flex:1;font-size:13px;color:#374151">尺码/版型不合身</span><span style="font-size:13px;font-weight:700;color:#ef4444">6.4%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">4️⃣</span><span style="flex:1;font-size:13px;color:#374151">面料/材质不满意（舒适/透气/耐穿）</span><span style="font-size:13px;font-weight:700;color:#ef4444">6.2%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">5️⃣</span><span style="flex:1;font-size:13px;color:#374151">质量/做工不够好</span><span style="font-size:13px;font-weight:700;color:#ef4444">5.1%</span></div>
+<div style="margin-top:12px;padding:12px;background:#fff7ed;border-radius:8px;font-size:13px;color:#9a3412">⚠️ <strong>价格敏感是核心痛点（44.7%）</strong>，建议短视频内容强化性价比表达，用面料/品质细节对抗价格异议。</div>
+</div>
+</div>
+</div>
+<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:24px 28px;margin-bottom:16px">
+<div style="font-size:16px;font-weight:800;color:#9a3412;margin-bottom:18px">📝 巴拉巴拉短视频结论 &amp; 优化建议</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div>
+<div class="dst" style="margin-bottom:10px">核心结论</div>
+<div style="background:#f0f9ff;border-left:4px solid #f97316;border-radius:0 10px 10px 0;padding:14px 18px;font-size:13px;color:#0c4a6e;line-height:1.9">巴拉巴拉在三品牌中短视频NPS（56.71%）最高，与品牌NPS（73.93%）落差仅约17pt，说明短视频内容与品牌形象最为协调。忠实观众占比高达76.5%，内容粘性极强。用户以31-35岁宝妈为核心，抖音是压倒性购买渠道（84.4%）。产品满意度达93.0/100，但44.7%用户对价格不满意。短视频最大痛点是59.3%用户因"前3秒没抓住"划走，优惠内容驱动力强（43.3%视频类型首选）。</div>
+</div>
+<div>
+<div class="dst" style="margin-bottom:10px">下一步行动计划</div>
+<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fee2e2;color:#dc2626">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">开头3秒重构：直接上孩子穿着全貌或优惠信息，前3帧禁止出现空镜/logo</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fee2e2;color:#dc2626">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">短视频强化性价比表达：用面料成本/品质细节视觉呈现缓解44.7%价格敏感</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#dcfce7;color:#16a34a">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">增加室外/生活场景比例（37%用户首诉求），阳光下真实上身感更有说服力</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#dcfce7;color:#16a34a">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">年龄段专属系列：针对0-3岁/4-6岁/7-12岁分别产出专属穿搭内容</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fef3c7;color:#d97706">P2 下月</span><span style="font-size:13px;color:#374151;line-height:1.8">亲子装内容扩充：每周固定1条亲子穿搭，34%种草因素但内容比例偏低</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel" id="panel-mini">
+<div style="background:#fff;border-radius:14px;padding:18px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+<div>
+<div style="font-size:20px;font-weight:800;color:#0ea5e9">🎽 迷你巴拉短视频满意度报告</div>
+<div style="font-size:13px;color:#94a3b8;margin-top:4px">有效样本：77 份</div>
+</div>
+<div style="display:flex;gap:8px">
+<span style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#f1f5f9;color:#475569">品牌NPS 71.43%</span>
+<span style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#f1f5f9;color:#475569">短视频NPS 45.17%</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px">
+<div class="kpi-card" style="border-top-color:#0ea5e9"><div class="kpi-label">品牌 NPS</div><div class="kpi-value">71.43<span class="kpi-unit">%</span></div></div>
+<div class="kpi-card" style="border-top-color:#6366f1"><div class="kpi-label">品牌满意度</div><div class="kpi-value">91.0<span class="kpi-unit">/100</span></div></div>
+<div class="kpi-card" style="border-top-color:#f43f5e"><div class="kpi-label">短视频 NPS</div><div class="kpi-value">45.17<span class="kpi-unit">%</span></div><div style="font-size:12px;font-weight:700;color:#ef4444;margin-top:4px">落差 -26.3pt</div></div>
+<div class="kpi-card" style="border-top-color:#8b5cf6"><div class="kpi-label">短视频满意度</div><div class="kpi-value">85.4<span class="kpi-unit">/100</span></div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#64748b"></span>用户画像</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+<div><div class="dst">年龄分布</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">31-35岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:48.1%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">48.1%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">36-40岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:28.6%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">28.6%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">26-30岁</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:23.4%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">23.4%</span></div></div>
+<div><div class="dst">性别/身份</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">宝妈（主购人）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:NaN%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">~94%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">宝爸</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:NaN%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">~6%</span></div></div>
+<div><div class="dst">职业/背景</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">为自己孩子购买</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:89%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">89-94%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">为亲友孩子购买</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:3%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">3-4%</span></div></div>
+<div><div class="dst">看播行为</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">偶尔看到（路人粉）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:42.9%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">42.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">经常看到（忠实观众）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:37.7%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">37.7%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">没印象/没看过</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:19.5%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">19.5%</span></div></div>
+</div>
+</div>
+<div>
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#0ea5e9"></span>宝宝画像</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px">
+<div><div class="dst">宝宝性别</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">女宝</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:44.2%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">44.2%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">男宝</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:33.8%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">33.8%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">均有</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:22.1%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">22.1%</span></div></div>
+<div><div class="dst">宝宝年龄</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">学龄前（2-3岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:37.7%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">37.7%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">幼儿园（4-6岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:29.9%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">29.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">小学（7-12岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:19.5%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">19.5%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">新生儿（0-1岁）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:13%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">13.0%</span></div></div>
+<div><div class="dst">购买渠道</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">偶尔看到（路人粉）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:42.9%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">42.9%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">经常看到（忠实观众）</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:37.7%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">37.7%</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:12px;color:#374151;width:120px;flex-shrink:0">没印象/没看过</span><div style="flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden"><div style="height:100%;width:19.5%;background:#0ea5e9;border-radius:3px"></div></div><span style="font-size:12px;color:#64748b;width:40px;text-align:right">19.5%</span></div></div>
+</div>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#0ea5e9"></span>📌 容易种草下单的内容形式（多选）</div>
+<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 高性价比方案（质量好+价格合适）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">83.9%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:83.9%;background:#0ea5e9;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 高级感配色/风格搭配（莫兰迪/复古）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">61.3%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:61.3%;background:#0ea5e9;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 同年龄段专属搭配（有参考价值）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">41.9%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:41.9%;background:#0ea5e9;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">4️⃣ 亲子装搭配方案</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">38.7%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:38.7%;background:#0ea5e9;border-radius:4px"></div></div></div>
+</div>
+<div class="card"><div class="card-title"><span class="dot" style="background:#f59e0b"></span>🎬 最想关注+下单的视频类型（单选）</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥇 优惠直给</span>
+<span class="inline-video-pct" style="color:#0ea5e9">38.7%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:38.7%;background:#0ea5e9"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'mini\', 1, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥈 童模穿搭展示</span>
+<span class="inline-video-pct" style="color:#0ea5e9">30.6%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:30.6%;background:#0ea5e9"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'mini\', 2, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">🥉 上身细节展示</span>
+<span class="inline-video-pct" style="color:#0ea5e9">22.6%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:22.6%;background:#0ea5e9"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'mini\', 3, event)">▶ 查看短视频</button>
+
+</div>
+</div><div class="inline-video-row">
+<div class="inline-video-top">
+<span class="inline-video-label">4️⃣ 静物展示</span>
+<span class="inline-video-pct" style="color:#0ea5e9">6.5%</span>
+</div>
+<div class="inline-video-track"><div class="inline-video-fill" style="width:6.5%;background:#0ea5e9"></div></div>
+<div class="inline-video-action-wrap">
+<button class="inline-video-btn" onclick="playInlineVideo(\'mini\', 4, event)">▶ 查看短视频</button>
+
+</div>
+</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#ef4444"></span>😤 划走短视频的原因（多选）</div>
+<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥇</span><span style="flex:1;font-size:13px;color:#374151">黄金3秒没抓住（开头废话多）</span><span style="font-size:13px;font-weight:700;color:#ef4444">37.5%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥈</span><span style="flex:1;font-size:13px;color:#374151">信息不匹配（找不到同款）</span><span style="font-size:13px;font-weight:700;color:#ef4444">25.0%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">🥉</span><span style="flex:1;font-size:13px;color:#374151">过度营销感（一直推销产品）</span><span style="font-size:13px;font-weight:700;color:#ef4444">25.0%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">4️⃣</span><span style="flex:1;font-size:13px;color:#374151">视觉质感差（灯光/背景）</span><span style="font-size:13px;font-weight:700;color:#ef4444">12.5%</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f8faff"><span style="font-size:16px;width:24px">5️⃣</span><span style="flex:1;font-size:13px;color:#374151">模特不具参考性</span><span style="font-size:13px;font-weight:700;color:#ef4444">12.5%</span></div>
+</div>
+<div class="card">
+<div class="card-title"><span class="dot" style="background:#0ea5e9"></span>🗳️ 优化优先级投票（单选）</div>
+<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥇 搭配实用化（基础款多风格搭配教学）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">37.5%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:37.5%;background:#0ea5e9;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥈 模特真实化（不同尺码/体型上身效果）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">25.0%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:25%;background:#0ea5e9;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151">🥉 解说专业化（面料舒适度/洗护建议）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">25.0%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:25%;background:#0ea5e9;border-radius:4px"></div></div></div><div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><span style="font-size:13px;color:#374151"> 场景生活化（室外/真实场景）</span><span style="font-size:13px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:8px">12.5%</span></div><div style="height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:12.5%;background:#0ea5e9;border-radius:4px"></div></div></div>
+</div>
+</div>
+<div style="background:#ecfeff;border:1px solid #a5f3fc;border-radius:16px;padding:24px 28px;margin-bottom:16px">
+<div style="font-size:16px;font-weight:800;color:#0c4a6e;margin-bottom:18px">📝 迷你巴拉短视频结论 &amp; 优化建议</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div>
+<div class="dst" style="margin-bottom:10px">核心结论</div>
+<div style="background:#f0f9ff;border-left:4px solid #0ea5e9;border-radius:0 10px 10px 0;padding:14px 18px;font-size:13px;color:#0c4a6e;line-height:1.9">迷你巴拉品牌NPS（71.43%）与巴拉巴拉相近，但短视频NPS（45.17%）落差达26pt，三品牌中最大。最关键问题：19.5%用户从未看过短视频，账号触达率严重不足。用户高度集中在31-35岁宝妈（48.1%），宝宝以学龄前为主（37.7%）。83.9%用户因"高性价比方案"种草，优惠直给视频类型首选（38.7%），价格敏感度极高。搭配实用化是首位优化诉求（37.5%）。</div>
+</div>
+<div>
+<div class="dst" style="margin-bottom:10px">下一步行动计划</div>
+<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fee2e2;color:#dc2626">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">提升账号曝光：19.5%用户完全没看过，投流+联动是当前最紧迫的增长瓶颈</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fee2e2;color:#dc2626">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">开头直给优惠：前3秒直接呈现价格/折扣信息，38.7%用户明确需要"优惠直给"类内容</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#dcfce7;color:#16a34a">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">一衣多搭系列：每周1条"这件怎么搭"教学视频，对应37.5%首位优化诉求</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#dcfce7;color:#16a34a">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">标注年龄段精准信息（"适合X-X岁宝宝"），让宝妈快速判断相关性减少滑走</span></div><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="flex-shrink:0;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-top:2px;background:#fef3c7;color:#d97706">P2 下月</span><span style="font-size:13px;color:#374151;line-height:1.8">高配色风格内容提升（61.3%种草因素），可与宝妈KOL合拍提升账号权重</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel" id="panel-summary">
+<div style="background:linear-gradient(135deg,#1e3a8a,#1e40af);border-radius:16px;padding:28px;margin-bottom:16px;color:#fff">
+<div style="font-size:18px;font-weight:800;margin-bottom:6px">📋 3月短视频满意度总结报告</div>
+<div style="font-size:13px;opacity:.75;margin-bottom:24px">三品牌综合评估 · 总样本 880 份（森马326 / 巴拉巴拉477 / 迷你巴拉77）</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+<div style="background:rgba(255,255,255,.13);border-radius:12px;padding:16px 18px"><div style="font-size:11px;opacity:.7;margin-bottom:6px">👔 森马 短视频NPS</div><div style="font-size:28px;font-weight:800">23.72%</div><div style="font-size:11px;opacity:.65;margin-top:4px">落差 -32pt | 满意度 85.8/100</div></div>
+<div style="background:rgba(255,255,255,.13);border-radius:12px;padding:16px 18px"><div style="font-size:11px;opacity:.7;margin-bottom:6px">🎵 巴拉巴拉 短视频NPS</div><div style="font-size:28px;font-weight:800">56.71%</div><div style="font-size:11px;opacity:.65;margin-top:4px">落差 -17pt | 满意度 89.2/100</div></div>
+<div style="background:rgba(255,255,255,.13);border-radius:12px;padding:16px 18px"><div style="font-size:11px;opacity:.7;margin-bottom:6px">🎽 迷你巴拉 短视频NPS</div><div style="font-size:28px;font-weight:800">45.17%</div><div style="font-size:11px;opacity:.65;margin-top:4px">落差 -26pt | 满意度 85.4/100</div></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px">
+<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid #dc2626"><div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:10px">🔴 共同最大问题：开头3秒</div><div style="font-size:13px;color:#374151;line-height:1.9">三品牌划走首因均为"黄金3秒没抓住"（森马51%/巴拉59%/迷你38%）。这是跨品牌优先级最高的改版点，前3帧必须直接呈现衣服或核心信息。</div></div>
+<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid #d97706"><div style="font-size:13px;font-weight:700;color:#d97706;margin-bottom:10px">🟡 种草逻辑分化：成人vs儿童</div><div style="font-size:13px;color:#374151;line-height:1.9">森马用户最爱"干货测评类"（73.7%），儿童品牌用户最爱"高性价比方案"（巴拉75%/迷你84%）。内容生产策略需完全差异化，不能共用同一套逻辑。</div></div>
+<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid #16a34a"><div style="font-size:13px;font-weight:700;color:#16a34a;margin-bottom:10px">🟢 巴拉巴拉是内容运营标杆</div><div style="font-size:13px;color:#374151;line-height:1.9">巴拉巴拉短视频NPS（56.71%）最高，忠实观众占比76.5%，是三品牌中内容粘性最强的。"真实场景+优惠驱动"内容组合可供其他品牌参考。</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:20px">👔</span><strong style="color:#3b5bdb;font-size:14px">森马</strong><span style="margin-left:auto;background:#fee2e2;color:#dc2626;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px">待突破型</span></div><div style="font-size:13px;color:#374151;line-height:1.9"><strong>优势：</strong>用户粘性强，64.4%经常看<br/><strong>短板：</strong>短视频NPS仅23.72%，落差32pt<br/><strong>关键：</strong>多元模特+干货测评是最快提升路径</div></div>
+<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:20px">🎵</span><strong style="color:#f97316;font-size:14px">巴拉巴拉</strong><span style="margin-left:auto;background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px">标杆型</span></div><div style="font-size:13px;color:#374151;line-height:1.9"><strong>优势：</strong>NPS最高、忠实观众76.5%<br/><strong>短板：</strong>产品价格敏感（44.7%不满意）<br/><strong>关键：</strong>巩固优势，强化性价比表达</div></div>
+<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07)"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:20px">🎽</span><strong style="color:#0ea5e9;font-size:14px">迷你巴拉</strong><span style="margin-left:auto;background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px">提升型</span></div><div style="font-size:13px;color:#374151;line-height:1.9"><strong>优势：</strong>品牌NPS强（71.43%）<br/><strong>短板：</strong>触达率不足（19.5%未看过），落差26pt<br/><strong>关键：</strong>先解决曝光，再优化内容</div></div>
+</div>
+</div>
+</div>
+<div class="video-modal" id="videoModal" onclick="handleVideoModalBackdrop(event)">
+<div class="video-modal-panel">
+<div class="video-modal-header">
+<div class="video-modal-title" id="videoModalTitle">短视频播放</div>
+<button class="video-close" onclick="closeVideoModal()">×</button>
+</div>
+<div class="video-player-wrap">
+<video controls="" id="videoPlayer" playsinline=""></video>
+</div>
+</div>
+</div>
+
+<script>
+const inlineVideoPaths = {
+  semir: {
+    1: 'videos/semir/type1.mp4',
+    2: 'videos/semir/type2.mp4',
+    3: 'videos/semir/type3.mp4'
+  },
+  balabala: {
+    1: 'videos/balabala/type1.mp4',
+    2: 'videos/balabala/type2.mp4',
+    3: 'videos/balabala/type3.mp4',
+    4: 'videos/balabala/type4.mp4'
+  },
+  mini: {
+    1: 'videos/mini/type1.mp4',
+    2: 'videos/mini/type2.mp4',
+    3: 'videos/mini/type3.mp4',
+    4: 'videos/mini/type4.mp4'
+  }
+};
+
+function switchTab(tabName, el) {
+  document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+  const target = document.getElementById('panel-' + tabName);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function playInlineVideo(brand, index, event) {
+  if (event) event.preventDefault();
+  const src = inlineVideoPaths?.[brand]?.[index];
+  const row = event?.target?.closest('.inline-video-row');
+  const title = row?.querySelector('.inline-video-label')?.textContent?.trim() || '短视频播放';
+  if (!src) {
+    alert('未配置视频路径，请检查 HTML 中的 inlineVideoPaths 配置。');
+    return;
+  }
+  openVideoModal(src, title);
+}
+
+function openVideoModal(src, title) {
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('videoPlayer');
+  const titleNode = document.getElementById('videoModalTitle');
+  if (!modal || !player) return;
+  player.src = src;
+  player.load();
+  titleNode.textContent = title || '短视频播放';
+  modal.classList.add('open');
+  setTimeout(() => { player.play().catch(() => {}); }, 50);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('videoPlayer');
+  if (!modal || !player) return;
+  player.pause();
+  player.removeAttribute('src');
+  player.load();
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleVideoModalBackdrop(event) {
+  if (event.target && event.target.id === 'videoModal') closeVideoModal();
+}
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') closeVideoModal();
+});
+</script>
+
+</body>
+</html>

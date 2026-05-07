@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>4月直播间满意度调研报告</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,'PingFang SC','Helvetica Neue',Arial,sans-serif; background:#f0f2f5; color:#1a1d2e; min-height:100vh; padding:24px; }
+.header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding:20px 28px; background:#fff; border-radius:16px; box-shadow:0 1px 4px rgba(0,0,0,.07); }
+.header-left h1 { font-size:22px; font-weight:700; color:#0f172a; }
+.header-left p { font-size:13px; color:#94a3b8; margin-top:4px; }
+.header-right { display:flex; gap:10px; }
+.badge { background:#f8faff; border:1px solid #dbe4ff; border-radius:8px; padding:7px 16px; font-size:13px; color:#64748b; }
+.badge span { color:#3b5bdb; font-weight:700; }
+.tab-bar { display:flex; gap:4px; margin-bottom:20px; background:#fff; padding:6px; border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.07); width:fit-content; }
+.tab { padding:9px 22px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:500; color:#64748b; transition:all .2s; border:none; background:transparent; }
+.tab.active { background:#3b5bdb; color:#fff; box-shadow:0 2px 8px rgba(59,91,219,.3); }
+.tab:hover:not(.active) { background:#f1f5f9; color:#334155; }
+.panel { display:none; }
+.panel.active { display:block; }
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }
+.kpi-card { background:#fff; border-radius:14px; padding:20px 22px; box-shadow:0 1px 4px rgba(0,0,0,.07); border-top:3px solid transparent; }
+.kpi-card.c1{border-top-color:#3b5bdb;} .kpi-card.c2{border-top-color:#f97316;} .kpi-card.c3{border-top-color:#0ea5e9;} .kpi-card.c4{border-top-color:#8b5cf6;}
+.kpi-label { font-size:12px; color:#94a3b8; text-transform:uppercase; letter-spacing:.7px; margin-bottom:8px; font-weight:500; }
+.kpi-value { font-size:34px; font-weight:800; color:#0f172a; line-height:1; }
+.kpi-value span { font-size:16px; font-weight:500; color:#94a3b8; }
+.kpi-sub { font-size:12px; color:#94a3b8; margin-top:6px; }
+.kpi-tag { display:inline-block; font-size:12px; font-weight:600; padding:3px 10px; border-radius:20px; margin-top:7px; }
+.tag-good{background:#dcfce7;color:#16a34a;} .tag-warn{background:#fef3c7;color:#d97706;} .tag-bad{background:#fee2e2;color:#dc2626;}
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:16px; }
+.col-6040 { display:grid; grid-template-columns:3fr 2fr; gap:14px; margin-bottom:16px; }
+.card { background:#fff; border-radius:14px; padding:20px 22px; box-shadow:0 1px 4px rgba(0,0,0,.07); }
+.card-title { font-size:14px; font-weight:700; color:#374151; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.card-title .dot { width:4px; height:16px; border-radius:2px; background:#3b5bdb; flex-shrink:0; }
+.brand-row { margin-bottom:12px; }
+.brand-row:last-child { margin-bottom:0; }
+.brand-row-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.brand-name { font-size:13px; font-weight:600; color:#374151; }
+.brand-val { font-size:14px; font-weight:700; }
+.bar-bg { background:#f1f5f9; border-radius:4px; height:8px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; transition:width .5s ease; }
+.data-table { width:100%; border-collapse:collapse; }
+.data-table th { font-size:12px; color:#94a3b8; font-weight:600; padding:0 10px 10px; text-align:left; border-bottom:1px solid #f1f5f9; text-transform:uppercase; letter-spacing:.5px; }
+.data-table td { font-size:13px; padding:10px 10px; border-bottom:1px solid #f8fafc; vertical-align:middle; color:#374151; }
+.data-table tr:last-child td { border-bottom:none; }
+.pill { display:inline-block; min-width:46px; text-align:center; padding:3px 10px; border-radius:20px; font-size:13px; font-weight:700; }
+.pill-hi{background:#dcfce7;color:#15803d;} .pill-mid{background:#fef3c7;color:#b45309;} .pill-low{background:#fee2e2;color:#b91c1c;}
+.pain-list { list-style:none; }
+.pain-item { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid #f8fafc; }
+.pain-item:last-child { border-bottom:none; }
+.pain-tag { flex-shrink:0; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; margin-top:2px; }
+.t-red{background:#fee2e2;color:#dc2626;} .t-yellow{background:#fef3c7;color:#d97706;} .t-blue{background:#dbeafe;color:#1d4ed8;} .t-green{background:#dcfce7;color:#16a34a;}
+.pain-text { font-size:13px; color:#374151; line-height:1.6; flex:1; }
+.pain-pct { flex-shrink:0; font-size:12px; font-weight:700; color:#dc2626; }
+.priority-row { margin-bottom:12px; }
+.priority-row:last-child { margin-bottom:0; }
+.priority-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.priority-label { font-size:13px; color:#374151; }
+.priority-pct { font-size:13px; font-weight:700; }
+.priority-bar { background:#f1f5f9; border-radius:4px; height:6px; overflow:hidden; }
+.priority-fill { height:100%; border-radius:4px; }
+.insight-box { background:#f8faff; border:1px solid #dbe4ff; border-radius:10px; padding:14px 16px; margin-top:10px; }
+.insight-box p { font-size:13px; color:#475569; line-height:1.9; }
+.insight-box strong { color:#1e3a8a; }
+.brand-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; padding:16px 22px; background:#fff; border-radius:14px; box-shadow:0 1px 4px rgba(0,0,0,.07); }
+.brand-emoji { font-size:30px; }
+.brand-header-info h2 { font-size:20px; font-weight:800; color:#0f172a; }
+.brand-header-info p { font-size:13px; color:#94a3b8; margin-top:2px; }
+.profile-block-title { font-size:12px; color:#94a3b8; font-weight:600; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; }
+.profile-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.profile-bar-label { font-size:12px; color:#374151; width:88px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.profile-bar-bg { flex:1; background:#f1f5f9; border-radius:3px; height:6px; }
+.profile-bar-fill { height:100%; border-radius:3px; }
+.fill-b1{background:#3b5bdb;} .fill-b2{background:#60a5fa;} .fill-b3{background:#93c5fd;} .fill-b4{background:#bfdbfe;} .fill-b5{background:#dbeafe;}
+.fill-o1{background:#f97316;} .fill-o2{background:#fb923c;} .fill-o3{background:#fbbf24;} .fill-o4{background:#fde68a;}
+.fill-c1{background:#0ea5e9;} .fill-c2{background:#38bdf8;} .fill-c3{background:#7dd3fc;} .fill-c4{background:#bae6fd;}
+.profile-bar-pct { font-size:12px; color:#64748b; width:36px; text-align:right; flex-shrink:0; }
+.divider { height:1px; background:#f1f5f9; margin:14px 0; }
+.reason-list { display:flex; flex-wrap:wrap; gap:6px; }
+.reason-tag { font-size:12px; padding:5px 12px; border-radius:20px; background:#f1f5f9; color:#374151; font-weight:500; }
+.reason-tag.hi{background:#dbeafe;color:#1d4ed8;font-weight:700;} .reason-tag.md{background:#ede9fe;color:#7c3aed;}
+.dim-row { padding:12px 0; border-bottom:1px solid #f8fafc; }
+.dim-row:last-child { border-bottom:none; }
+.dim-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.dim-name { font-size:13px; font-weight:700; color:#374151; }
+.dim-score-bar { height:6px; background:#f1f5f9; border-radius:3px; overflow:hidden; margin-bottom:5px; }
+.dim-score-fill { height:100%; border-radius:3px; }
+.dim-opt { font-size:12px; color:#f97316; margin-top:3px; }
+.dim-opt::before { content:'▲ 可优化：'; font-weight:600; }
+.sat-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.sat-label { font-size:13px; color:#374151; width:66px; flex-shrink:0; }
+.sat-bar-bg { flex:1; background:#f1f5f9; border-radius:4px; height:10px; overflow:hidden; }
+.sat-pct { font-size:13px; font-weight:700; width:44px; text-align:right; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>📊 4月直播间满意度调研报告</h1>
+    <p>数据来源：品牌直播间体验问卷调研 &nbsp;|&nbsp; 统计周期：2026年4月 &nbsp;|&nbsp; 三品牌总样本 1456 份</p>
+  </div>
+  <div class="header-right">
+    <div class="badge">森马 <span>845份</span></div>
+    <div class="badge">巴拉巴拉 <span>604份</span></div>
+    <div class="badge">迷你巴拉 <span>7份</span></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab active" onclick="switchTab('overview',this)">📊 总览对比</button>
+  <button class="tab" onclick="switchTab('sema',this)">👕 森马</button>
+  <button class="tab" onclick="switchTab('bala',this)">🧸 巴拉巴拉</button>
+  <button class="tab" onclick="switchTab('mini',this)">🚗 迷你巴拉</button>
+  <button class="tab" onclick="switchTab('summary',this)">📋 总结与建议</button>
+</div>
+
+<div id="panel-overview" class="panel active">
+    <div class="kpi-row">
+      <div class="kpi-card c1"><div class="kpi-label">品牌 NPS 均值</div><div class="kpi-value">70.5<span>%</span></div><div class="kpi-sub">三品牌算术均值</div><div class="kpi-tag tag-good">巴拉巴拉最高 65.11%</div></div>
+      <div class="kpi-card c2"><div class="kpi-label">品牌满意度 均值</div><div class="kpi-value">94.7<span>/100</span></div><div class="kpi-sub">5分制换算</div><div class="kpi-tag tag-good">巴拉巴拉最高 93.0</div></div>
+      <div class="kpi-card c3"><div class="kpi-label">直播间 NPS 均值</div><div class="kpi-value">65.9<span>%</span></div><div class="kpi-sub">三品牌算术均值</div><div class="kpi-tag tag-warn">森马 32.45%（环比+3.1pt 改善中）</div></div>
+      <div class="kpi-card c4"><div class="kpi-label">直播间满意度 均值</div><div class="kpi-value">92.0<span>/100</span></div><div class="kpi-sub">5分制换算</div><div class="kpi-tag tag-warn">福利机制是共同短板</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;background:#f8faff;border:1px solid #dbe4ff">
+      <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:8px;display:flex;align-items:center;gap:6px">📐 指标说明：NPS（净推荐值）</div>
+      <div style="font-size:12px;color:#475569;line-height:1.8">NPS（Net Promoter Score）是衡量用户忠诚度的核心指标，计算方式：<strong>NPS = 推荐者占比（9-10分） - 贬损者占比（1-6分）</strong>。推荐者为打9-10分的用户（愿意主动推荐），贬损者为打1-6分的用户（可能传播负面评价）。NPS范围-100%至+100%，通常>0为正面，>50%为优秀，>70%为卓越。</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>NPS 对比（品牌 vs 直播间）</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">品牌 NPS</div>
+        <div class="brand-row"><div class="brand-row-header"><span class="brand-name" style="color:#3b5bdb">👕 森马</span><span class="brand-val" style="color:#3b5bdb">60.78%</span></div><div class="bar-bg"><div class="bar-fill" style="width:60.78%;background:#3b5bdb"></div></div></div><div class="brand-row"><div class="brand-row-header"><span class="brand-name" style="color:#f97316">🧸 巴拉巴拉</span><span class="brand-val" style="color:#f97316">65.11%</span></div><div class="bar-bg"><div class="bar-fill" style="width:65.11%;background:#f97316"></div></div></div><div class="brand-row"><div class="brand-row-header"><span class="brand-name" style="color:#0ea5e9">🚗 迷你巴拉</span><span class="brand-val" style="color:#0ea5e9">85.71%</span></div><div class="bar-bg"><div class="bar-fill" style="width:85.71%;background:#0ea5e9"></div></div></div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">直播间 NPS</div>
+        <div class="brand-row"><div class="brand-row-header"><span class="brand-name" style="color:#3b5bdb">👕 森马</span><span class="brand-val" style="color:#3b5bdb">32.5%</span></div><div class="bar-bg"><div class="bar-fill" style="width:32.45%;background:#3b5bdb"></div></div></div><div class="brand-row"><div class="brand-row-header"><span class="brand-name" style="color:#f97316">🧸 巴拉巴拉</span><span class="brand-val" style="color:#f97316">65.1%</span></div><div class="bar-bg"><div class="bar-fill" style="width:65.11%;background:#f97316"></div></div></div><div class="brand-row"><div class="brand-row-header"><span class="brand-name" style="color:#0ea5e9">🚗 迷你巴拉</span><span class="brand-val" style="color:#0ea5e9">100.0%</span></div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#0ea5e9"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>满意度总表（/100分）</div>
+        <table class="data-table">
+          <thead><tr><th>品牌</th><th>品牌满意度</th><th>直播间满意度</th><th>差距</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:700;color:#3b5bdb">👕 森马</td><td><span class="pill pill-mid">91.2</span></td><td><span class="pill pill-mid">89.0</span></td><td style="color:#dc2626;font-weight:700">▼ 2.2</td></tr><tr><td style="font-weight:700;color:#f97316">🧸 巴拉巴拉</td><td><span class="pill pill-mid">93.0</span></td><td><span class="pill pill-hi">91.0</span></td><td style="color:#dc2626;font-weight:700">▼ 2.0</td></tr><tr><td style="font-weight:700;color:#0ea5e9">🚗 迷你巴拉</td><td><span class="pill pill-hi">100.0</span></td><td><span class="pill pill-hi">96.0</span></td><td style="color:#dc2626;font-weight:700">▼ 4.0</td></tr>
+          </tbody>
+        </table>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">直播间分维度满意度（/100）</div>
+        <table class="data-table">
+          <thead><tr><th>维度</th><th style="color:#3b5bdb">森马</th><th style="color:#f97316">巴拉巴拉</th><th style="color:#0ea5e9">迷你巴拉</th></tr></thead>
+          <tbody>
+            <tr><td>主播表现</td><td>88.4</td><td>89.8</td><td>100.0</td></tr>
+            <tr><td>画面及声音体验</td><td>87.8</td><td>91.0</td><td>100.0</td></tr>
+            <tr><td>产品讲解</td><td>89.8</td><td>91.8</td><td>100.0</td></tr>
+            <tr><td style="color:#dc2626;font-weight:700">⚠ 福利机制</td><td style="color:#dc2626;font-weight:700">85.6</td><td style="color:#d97706;font-weight:700">87.6</td><td>96.0</td></tr>
+            <tr><td>互动/购物体验</td><td>87.2</td><td>89.0</td><td>100.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 总览环比对比 -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title"><span class="dot"></span>📈 三品牌环比变化总览（2月 → 4月）</div>
+      <table class="data-table">
+        <thead><tr><th>指标</th><th style="color:#3b5bdb">👕 森马</th><th style="color:#f97316">🧸 巴拉巴拉</th><th style="color:#0ea5e9">🚗 迷你巴拉</th></tr></thead>
+        <tbody>
+          <tr><td>品牌 NPS</td><td>59.74% → 60.78%<br><span class="pill tag-good">↑ +1.04pt</span></td><td>83.02% → 65.11%<br><span class="pill tag-bad">↓ -17.91pt</span></td><td>68.24% → 85.71%<br><span class="pill tag-good">↑ +17.47pt</span></td></tr>
+          <tr><td>品牌满意度</td><td>90.6 → 91.2<br><span class="pill tag-good">↑ +0.6</span></td><td>94 → 93.0<br><span class="pill tag-warn">↓ -1.0</span></td><td>91.2 → 100.0<br><span class="pill tag-good">↑ +8.8</span></td></tr>
+          <tr><td>直播间 NPS</td><td>29.33% → 32.45%<br><span class="pill tag-good">↑ +3.12pt</span></td><td>73.01% → 65.11%<br><span class="pill tag-bad">↓ -7.90pt</span></td><td>37.35% → 100.00%<br><span class="pill tag-good">↑ +62.65pt</span></td></tr>
+          <tr><td>直播间满意度</td><td>88.2 → 89.0<br><span class="pill tag-good">↑ +0.8</span></td><td>91.2 → 91.0<br><span class="pill tag-warn">↓ -0.2</span></td><td>88.6 → 96.0<br><span class="pill tag-good">↑ +7.4</span></td></tr>
+          <tr><td>NPS 落差</td><td>-30.4pt → -28.3pt<br><span class="pill tag-good">↑ 收窄2.1pt</span></td><td>-10.0pt → 0.0pt<br><span class="pill tag-good">✅ 落差归零</span></td><td>-30.9pt → +14.3pt<br><span class="pill tag-good">↑ 正向</span></td></tr>
+          <tr><td>样本量</td><td>644 → 845<br><span class="pill tag-good">↑ +201份</span></td><td>164 → 604<br><span class="pill tag-good">↑ +440份</span></td><td>94 → 7<br><span class="pill tag-bad">↓ -87份 ⚠️</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px;padding:14px 18px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:13px;color:#78350f;line-height:1.8">
+        <strong>⚡ 环比关键发现：</strong><br>
+        ① <strong>森马</strong>品牌口碑持续向好——品牌NPS环比+1.0pt，直播间NPS+3.1pt，连续两月改善趋势。样本量增加201份（+31.2%），数据代表性显著提升。<br>
+        ② <strong>巴拉巴拉</strong>是主要关注点——品牌NPS下降17.9pt，样本量大幅增加440份，说明下滑趋势需引起重视。福利诚意不足投票占比93.8%，是NPS下滑的核心诱因。<br>
+        ③ <strong>迷你巴拉</strong>数据失真——样本从94份骤降至7份，所有指标仅作参考，下月必须恢复有效样本量。
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>核心结论</div>
+        <ul class="pain-list">
+          <li class="pain-item"><span class="pain-tag t-red">关键</span><span class="pain-text">福利机制是三品牌共同需优化维度（85.6–87.6分），用户期待更简单直接的福利体验</span></li>
+          <li class="pain-item"><span class="pain-tag t-red">风险</span><span class="pain-text">巴拉巴拉品牌NPS下降17.9pt，需重点关注品牌口碑变化</span></li>
+          <li class="pain-item"><span class="pain-tag t-blue">亮点</span><span class="pain-text">森马品牌NPS环比+1.0pt，直播间NPS环比+3.1pt，持续改善</span></li>
+          <li class="pain-item"><span class="pain-tag t-yellow">注意</span><span class="pain-text">迷你巴拉样本量仅7份，数据代表性有限</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>三品牌共同痛点</div>
+        <ul class="pain-list">
+          <li class="pain-item"><span class="pain-tag t-red">TOP1</span><span class="pain-text">福利诚意不足：价格优势弱，福袋/赠品套路多</span></li>
+          <li class="pain-item"><span class="pain-tag t-red">TOP2</span><span class="pain-text">互动响应慢：评论区尺码/库存咨询被忽视</span></li>
+          <li class="pain-item"><span class="pain-tag t-yellow">TOP3</span><span class="pain-text">价格混乱：不同直播间价格不一致，比价疲惫</span></li>
+          <li class="pain-item"><span class="pain-tag t-yellow">TOP4</span><span class="pain-text">画面体验：画质偏低/滤镜失真导致色差</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>用户首要优化诉求</div>
+        <div class="priority-row"><div class="priority-header"><span class="priority-label">👕 森马 · 体验真实化（多元模特）</span><span class="priority-pct" style="color:#3b5bdb">49.57%</span></div><div class="priority-bar"><div class="priority-fill" style="width:49.57%;background:#3b5bdb"></div></div></div>
+        <div class="priority-row"><div class="priority-header"><span class="priority-label">🧸 巴拉巴拉 · 流程透明化（福利规则）</span><span class="priority-pct" style="color:#f97316">40.40%</span></div><div class="priority-bar"><div class="priority-fill" style="width:40.40%;background:#f97316"></div></div></div>
+        <div class="priority-row"><div class="priority-header"><span class="priority-label">🚗 迷你巴拉 · 主播专业化（面料讲解）</span><span class="priority-pct" style="color:#0ea5e9">40.0%</span></div><div class="priority-bar"><div class="priority-fill" style="width:40.0%;background:#0ea5e9"></div></div></div>
+        <div class="insight-box"><p>巴拉巴拉和迷你巴拉用户均将<strong>「流程透明化」</strong>列为第一优先，儿童品牌用户对福利清晰度需求突出；森马用户最关注<strong>「真实试穿体验」</strong>，是成人品牌差异化切入点。</p></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title"><span class="dot"></span>直播间优化优先级投票 — 三品牌对比</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#3b5bdb;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #3b5bdb">👕 森马（823人）</div>
+          <div class="priority-row"><div class="priority-header"><span class="priority-label">🥇 体验真实化（多元模特试穿）</span><span class="priority-pct" style="color:#3b5bdb">49.57%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:49.57%;background:#3b5bdb;opacity:1"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥈 主播专业化（多讲搭配/面料）</span><span class="priority-pct" style="color:#3b5bdb">21.99%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:21.99%;background:#3b5bdb;opacity:0.8"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥉 机制透明化（福利简单明了）</span><span class="priority-pct" style="color:#3b5bdb">19.44%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:19.44%;background:#3b5bdb;opacity:0.6"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label"> 互动人性化（及时响应评论）</span><span class="priority-pct" style="color:#94a3b8">8.26%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:8.26%;background:#3b5bdb;opacity:0.3999999999999999"></div></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#f97316;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f97316">🧸 巴拉巴拉（599人）</div>
+          <div class="priority-row"><div class="priority-header"><span class="priority-label">🥇 流程透明化（福利规则简单明了）</span><span class="priority-pct" style="color:#f97316">40.40%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:40.4%;background:#f97316;opacity:1"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥈 主播专业化（面料安全/功能卖点）</span><span class="priority-pct" style="color:#f97316">30.88%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:30.88%;background:#f97316;opacity:0.8"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥉 体验精准化（真实试穿数据图）</span><span class="priority-pct" style="color:#f97316">19.03%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:19.03%;background:#f97316;opacity:0.6"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label"> 互动人性化（精准响应尺码）</span><span class="priority-pct" style="color:#94a3b8">8.18%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:8.18%;background:#f97316;opacity:0.3999999999999999"></div></div></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#0ea5e9;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #0ea5e9">🚗 迷你巴拉（5人）</div>
+          <div class="priority-row"><div class="priority-header"><span class="priority-label">🥇 主播专业化（面料安全/功能卖点）</span><span class="priority-pct" style="color:#0ea5e9">40.0%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:40%;background:#0ea5e9;opacity:1"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥈 流程透明化（福利规则简单明了）</span><span class="priority-pct" style="color:#0ea5e9">40.0%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:40%;background:#0ea5e9;opacity:0.8"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥉 互动人性化（精准响应尺码）</span><span class="priority-pct" style="color:#0ea5e9">20.0%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:20%;background:#0ea5e9;opacity:0.6"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label"> 体验精准化（真实试穿数据图）</span><span class="priority-pct" style="color:#94a3b8">0%</span></div><div class="priority-bar" style="height:8px"><div class="priority-fill" style="width:0%;background:#0ea5e9;opacity:0.3999999999999999"></div></div></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px 18px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:13px;color:#78350f;line-height:1.8">
+        <strong>⚡ 跨品牌共识：</strong>「流程透明化（福利规则）」和「主播专业化」是三品牌用户共同高票诉求。森马例外——用户最优先希望看到<strong>多元身材模特试穿</strong>。
+      </div>
+    </div>
+  </div>
+<div id="panel-sema" class="panel">
+    <div class="brand-header">
+      <div class="brand-emoji">👕</div>
+      <div class="brand-header-info"><h2 style="color:#3b5bdb">森马直播间满意度报告</h2><p>有效样本：总计 845 份 ｜ 直播间题目 823 份</p></div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <div class="badge">品牌NPS <span>60.78%</span></div>
+        <div class="badge">直播间NPS <span>32.45%</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card c1"><div class="kpi-label">品牌 NPS</div><div class="kpi-value">60.78<span>%</span></div><div class="kpi-sub">推荐均分 11.1/10</div></div>
+      <div class="kpi-card c2"><div class="kpi-label">品牌满意度</div><div class="kpi-value">91.2<span>/100</span></div><div class="kpi-sub">原始均分 4.56/5</div></div>
+      <div class="kpi-card c3"><div class="kpi-label">直播间 NPS</div><div class="kpi-value">32.45<span>%</span></div><div class="kpi-sub">推荐均分 8.2/10</div><div class="kpi-tag tag-bad">↓ 落差 28.3pt</div></div>
+      <div class="kpi-card c4"><div class="kpi-label">直播间满意度</div><div class="kpi-value">89.0<span>/100</span></div><div class="kpi-sub">原始均分 4.45/5</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;background:#f8faff;border:1px solid #dbe4ff">
+      <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:8px;display:flex;align-items:center;gap:6px">📐 指标说明：NPS（净推荐值）</div>
+      <div style="font-size:12px;color:#475569;line-height:1.8">NPS（Net Promoter Score）是衡量用户忠诚度的核心指标，计算方式：<strong>NPS = 推荐者占比（9-10分） - 贬损者占比（1-6分）</strong>。推荐者为打9-10分的用户（愿意主动推荐），贬损者为打1-6分的用户（可能传播负面评价）。NPS范围-100%至+100%，通常>0为正面，>50%为优秀，>70%为卓越。</div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:#3b5bdb"></span>📈 环比变化（2月 → 4月）</div>
+    <table class="data-table">
+      <thead><tr><th>指标</th><th>2月</th><th>4月</th><th>环比变化</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">品牌 NPS</td><td>59.74%</td><td>60.78%</td><td><span class="pill tag-good">↑ +1.04pt</span></td></tr>
+        <tr><td style="font-weight:700">品牌满意度</td><td>90.6</td><td>91.2</td><td><span class="pill tag-good">↑ +0.6</span></td></tr>
+        <tr><td style="font-weight:700">直播间 NPS</td><td>29.33%</td><td>32.45%</td><td><span class="pill tag-good">↑ +3.12pt</span></td></tr>
+        <tr><td style="font-weight:700">直播间满意度</td><td>88.2</td><td>89.0</td><td><span class="pill tag-good">↑ +0.8</span></td></tr>
+        <tr><td style="font-weight:700">NPS 落差</td><td>-30.4pt</td><td>-28.3pt</td><td><span class="pill tag-good">↑ +2.1pt</span></td></tr>
+        <tr><td style="font-weight:700">样本量</td><td>644份</td><td>845份</td><td><span class="pill pill-hi">+201份</span></td></tr>
+      </tbody>
+    </table>
+    <div class="divider"></div>
+    <ul class="pain-list" style="margin-top:12px">
+      <li class="pain-item"><span class="pain-tag t-green">环比</span><span class="pain-text">品牌NPS环比+1.0pt，品牌满意度提升至91.2分，品牌口碑持续向好</span></li><li class="pain-item"><span class="pain-tag t-green">环比</span><span class="pain-text">直播间NPS提升3.1pt（29.33→32.45%），连续两月改善趋势</span></li><li class="pain-item"><span class="pain-tag t-blue">环比</span><span class="pain-text"> 样本量增加201份（+31.2%），结论可信度显著提升</span></li><li class="pain-item"><span class="pain-tag t-blue">环比</span><span class="pain-text"> 产品讲解维度达89.8分，主播内容专业度基础良好，是直播间体验的核心优势</span></li>
+    </ul>
+  </div>
+
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot"></span>用户画像</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <div><div class="profile-block-title">年龄分布</div><div class="profile-bar-row"><span class="profile-bar-label">18岁以下</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:1.4%"></div></div><span class="profile-bar-pct">1.4%</span></div><div class="profile-bar-row"><span class="profile-bar-label">19-25岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b1" style="width:37.3%"></div></div><span class="profile-bar-pct">37.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">26-30岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b2" style="width:28.5%"></div></div><span class="profile-bar-pct">28.5%</span></div><div class="profile-bar-row"><span class="profile-bar-label">31-35岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b3" style="width:19.1%"></div></div><span class="profile-bar-pct">19.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">36-40岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b4" style="width:10.4%"></div></div><span class="profile-bar-pct">10.4%</span></div><div class="profile-bar-row"><span class="profile-bar-label">40岁以上</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:3.3%"></div></div><span class="profile-bar-pct">3.3%</span></div></div>
+      <div><div class="profile-block-title">性别分布</div><div class="profile-bar-row"><span class="profile-bar-label">女</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b1" style="width:84.1%"></div></div><span class="profile-bar-pct">84.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">男</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b3" style="width:15.5%"></div></div><span class="profile-bar-pct">15.5%</span></div><div class="profile-bar-row"><span class="profile-bar-label">其他</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:0.4%"></div></div><span class="profile-bar-pct">0.4%</span></div></div>
+      <div><div class="profile-block-title">职业分布</div><div class="profile-bar-row"><span class="profile-bar-label">学生</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b1" style="width:21.9%"></div></div><span class="profile-bar-pct">21.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">职场新人/白领</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b2" style="width:21.1%"></div></div><span class="profile-bar-pct">21.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">自由职业者</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b3" style="width:14.4%"></div></div><span class="profile-bar-pct">14.4%</span></div><div class="profile-bar-row"><span class="profile-bar-label">精致妈妈</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b4" style="width:7.9%"></div></div><span class="profile-bar-pct">7.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">服务行业</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:7.7%"></div></div><span class="profile-bar-pct">7.7%</span></div><div class="profile-bar-row"><span class="profile-bar-label">老师</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:5.8%"></div></div><span class="profile-bar-pct">5.8%</span></div><div class="profile-bar-row"><span class="profile-bar-label">公务员</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:3.4%"></div></div><span class="profile-bar-pct">3.4%</span></div><div class="profile-bar-row"><span class="profile-bar-label">其他</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b5" style="width:17.8%"></div></div><span class="profile-bar-pct">17.8%</span></div></div>
+      <div>
+        <div class="profile-block-title">观看行为</div><div class="profile-bar-row"><span class="profile-bar-label">经常看</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b1" style="width:51.5%"></div></div><span class="profile-bar-pct">51.5%</span></div><div class="profile-bar-row"><span class="profile-bar-label">偶尔看</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b2" style="width:45.9%"></div></div><span class="profile-bar-pct">45.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">没看过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b4" style="width:2.6%"></div></div><span class="profile-bar-pct">2.6%</span></div>
+        <div style="margin-top:10px"><div class="profile-block-title">近3月购买率</div><div class="profile-bar-row"><span class="profile-bar-label">买过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b1" style="width:88.4%"></div></div><span class="profile-bar-pct">88.4%</span></div><div class="profile-bar-row"><span class="profile-bar-label">没买过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-b4" style="width:11.6%"></div></div><span class="profile-bar-pct">11.6%</span></div></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="profile-block-title" style="margin-bottom:8px">进入直播间的主要原因（多选）</div>
+    <div class="reason-list"><span class="reason-tag hi">有购买需求找特定款式 81.0%</span><span class="reason-tag hi">学主播穿搭技巧 56.3%</span><span class="reason-tag md">蹲守福利/秒杀 38.3%</span><span class="reason-tag md">看新品/联名款 27.7%</span><span class="reason-tag md">主播亲和力强 13.4%</span></div>
+  </div>
+    
+
+    <div class="col-6040">
+      <div class="card">
+    <div class="card-title"><span class="dot" style="background:#3b5bdb"></span>直播间分维度满意度 + 可优化方向</div>
+    <div class="dim-row"><div class="dim-header"><span class="dim-name">主播表现</span><span class="pill pill-mid">88.4</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:88.4%;background:#3b5bdb"></div></div><div class="dim-opt">话术重复感强（66.7%）、讲解拖沓（33.3%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">画面及声音体验</span><span class="pill pill-mid">87.8</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:87.8%;background:#3b5bdb"></div></div><div class="dim-opt">视觉失真/色差（63.6%）、画质偏低（27.3%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">产品讲解</span><span class="pill pill-mid">89.8</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:89.8%;background:#3b5bdb"></div></div><div class="dim-opt">上新速度慢/旧款重复（36.4%）、穿搭平庸（27.3%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name" style="color:#d97706">⚠ 福利机制</span><span class="pill pill-mid">85.6</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:85.6%;background:#fbbf24"></div></div><div class="dim-opt">诚意不足（81.8%）、价格混乱（45.5%）、机制烧脑（33.3%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">互动/购物体验</span><span class="pill pill-mid">87.2</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:87.2%;background:#3b5bdb"></div></div><div class="dim-opt">尺码建议不准（44.4%）、评论被忽视（38.9%）</div></div>
+  </div>
+      <div class="card">
+    <div class="card-title"><span class="dot" style="background:#3b5bdb"></span>用户优化优先级投票</div>
+    <div class="priority-row"><div class="priority-header"><span class="priority-label">🥇 体验真实化（多元模特试穿）</span><span class="priority-pct" style="color:#3b5bdb">49.57%</span></div><div class="priority-bar"><div class="priority-fill" style="width:49.57%;background:#3b5bdb;opacity:1"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥈 主播专业化（多讲搭配/面料）</span><span class="priority-pct" style="color:#3b5bdb">21.99%</span></div><div class="priority-bar"><div class="priority-fill" style="width:21.99%;background:#3b5bdb;opacity:0.8"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥉 机制透明化（福利简单明了）</span><span class="priority-pct" style="color:#3b5bdb">19.44%</span></div><div class="priority-bar"><div class="priority-fill" style="width:19.44%;background:#3b5bdb;opacity:0.6"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label"> 互动人性化（及时响应评论）</span><span class="priority-pct" style="color:#94a3b8">8.26%</span></div><div class="priority-bar"><div class="priority-fill" style="width:8.26%;background:#cbd5e1"></div></div></div>
+  </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#3b5bdb15,#3b5bdb05);border:1px solid #3b5bdb30;border-radius:16px;padding:24px 28px;margin-bottom:16px">
+    <div style="font-size:16px;font-weight:800;color:#3b5bdb;margin-bottom:18px;display:flex;align-items:center;gap:8px">
+      📝 森马直播间满意度报告结论 &amp; 下一步优化建议
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #3b5bdb30">📊 核心结论</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;line-height:2">
+          <li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #3b5bdb30">品牌口碑持续稳健，品牌NPS达60.78%（环比+1.0pt），品牌满意度91.2分，体现了良好的用户基础与品牌信任度。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #3b5bdb30">4月样本量增至845份（较2月+31%），88.4%用户近3月购买过森马产品，用户复购率扎实。核心用户为19-30岁年轻女性（65.8%），与品牌定位高度一致。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #3b5bdb30">直播间NPS达32.45%（环比+3.1pt），呈现稳步改善趋势。产品讲解维度达89.8分，说明主播内容专业度基础良好。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #3b5bdb30">49.6%用户首优诉求为"体验真实化（多元模特）"，方向明确——增加多元身材模特试穿是短期内性价比最高的优化点，建议优先推进。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #3b5bdb30">直播间福利机制（85.6分）仍有优化空间，81.8%受访者认为"诚意不足"，优化福利体验将进一步提升用户满意度。</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #3b5bdb30">🚀 下一步优化建议（优先级排序）</div>
+        <div style="margin-bottom:8px"><span class="pill tag-red" style="margin-right:8px">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">简化福袋/秒杀规则，减少焦虑式营销话术；统一多平台定价，减少比价焦虑</span></div><div style="margin-bottom:8px"><span class="pill tag-red" style="margin-right:8px">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">增加多元身材模特试穿（微胖/小个子/高挑等），直播间专设"适合我"穿搭环节</span></div><div style="margin-bottom:8px"><span class="pill tag-green" style="margin-right:8px">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">优化主播话术：减少重复性口播（话术重复感投票66.7%），增加穿搭搭配建议和面料讲解比重</span></div><div style="margin-bottom:8px"><span class="pill tag-green" style="margin-right:8px">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">加强评论区场控：配专人盯尺码/库存问题，目标回复率≥80%</span></div><div style="margin-bottom:8px"><span class="pill tag-yellow" style="margin-right:8px">P2 下月</span><span style="font-size:13px;color:#374151;line-height:1.8">画质升级：检查直播间灯光/滤镜（视觉失真投票63.6%），减少色差，优化背景布景整洁度</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+<div id="panel-bala" class="panel">
+    <div class="brand-header">
+      <div class="brand-emoji">🧸</div>
+      <div class="brand-header-info"><h2 style="color:#f97316">巴拉巴拉直播间满意度报告</h2><p>有效样本：总计 604 份 ｜ 直播间题目 599 份</p></div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <div class="badge">品牌NPS <span>65.11%</span></div>
+        <div class="badge">直播间NPS <span>65.11%</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card c1"><div class="kpi-label">品牌 NPS</div><div class="kpi-value">65.11<span>%</span></div><div class="kpi-sub">推荐均分 11.5/10</div></div>
+      <div class="kpi-card c2"><div class="kpi-label">品牌满意度</div><div class="kpi-value">93.0<span>/100</span></div><div class="kpi-sub">原始均分 4.65/5</div></div>
+      <div class="kpi-card c3"><div class="kpi-label">直播间 NPS</div><div class="kpi-value">65.11<span>%</span></div><div class="kpi-sub">推荐均分 11.5/10</div><div class="kpi-tag tag-warn">↓ 落差 0.0pt</div></div>
+      <div class="kpi-card c4"><div class="kpi-label">直播间满意度</div><div class="kpi-value">91.0<span>/100</span></div><div class="kpi-sub">原始均分 4.55/5</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;background:#f8faff;border:1px solid #dbe4ff">
+      <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:8px;display:flex;align-items:center;gap:6px">📐 指标说明：NPS（净推荐值）</div>
+      <div style="font-size:12px;color:#475569;line-height:1.8">NPS（Net Promoter Score）是衡量用户忠诚度的核心指标，计算方式：<strong>NPS = 推荐者占比（9-10分） - 贬损者占比（1-6分）</strong>。推荐者为打9-10分的用户（愿意主动推荐），贬损者为打1-6分的用户（可能传播负面评价）。NPS范围-100%至+100%，通常>0为正面，>50%为优秀，>70%为卓越。</div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:#f97316"></span>📈 环比变化（2月 → 4月）</div>
+    <table class="data-table">
+      <thead><tr><th>指标</th><th>2月</th><th>4月</th><th>环比变化</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">品牌 NPS</td><td>83.02%</td><td>65.11%</td><td><span class="pill tag-bad">↓ -17.91pt</span></td></tr>
+        <tr><td style="font-weight:700">品牌满意度</td><td>94</td><td>93.0</td><td><span class="pill tag-warn">↓ -1.0</span></td></tr>
+        <tr><td style="font-weight:700">直播间 NPS</td><td>73.01%</td><td>65.11%</td><td><span class="pill tag-bad">↓ -7.90pt</span></td></tr>
+        <tr><td style="font-weight:700">直播间满意度</td><td>91.2</td><td>91.0</td><td><span class="pill tag-warn">↓ -0.2</span></td></tr>
+        <tr><td style="font-weight:700">NPS 落差</td><td>-10.0pt</td><td>0.0pt</td><td><span class="pill tag-good">↑ +10.0pt</span></td></tr>
+        <tr><td style="font-weight:700">样本量</td><td>164份</td><td>604份</td><td><span class="pill pill-hi">+440份</span></td></tr>
+      </tbody>
+    </table>
+    <div class="divider"></div>
+    <ul class="pain-list" style="margin-top:12px">
+      <li class="pain-item"><span class="pain-tag t-red">环比</span><span class="pain-text"> 品牌NPS大幅下降17.9pt（83.02→65.11%），需重点关注品牌口碑流失原因</span></li><li class="pain-item"><span class="pain-tag t-red">环比</span><span class="pain-text"> 直播间NPS下降7.9pt（73.01→65.11%），但NPS落差从-10pt收窄至0pt，直播间体验与品牌趋同</span></li><li class="pain-item"><span class="pain-tag t-blue">环比</span><span class="pain-text"> 样本量增加440份（+268%），数据代表性显著提升，下降趋势更可信</span></li><li class="pain-item"><span class="pain-tag t-blue">环比</span><span class="pain-text"> 福利诚意不足投票高达93.8%，远超2月水平，是NPS下滑的核心诱因</span></li>
+    </ul>
+  </div>
+
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:#f97316"></span>用户画像</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <div><div class="profile-block-title">购买者年龄</div><div class="profile-bar-row"><span class="profile-bar-label">18–25岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:5.1%"></div></div><span class="profile-bar-pct">5.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">26–30岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:25.7%"></div></div><span class="profile-bar-pct">25.7%</span></div><div class="profile-bar-row"><span class="profile-bar-label">31–35岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:37.3%"></div></div><span class="profile-bar-pct">37.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">36–40岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:22.4%"></div></div><span class="profile-bar-pct">22.4%</span></div><div class="profile-bar-row"><span class="profile-bar-label">40-50岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:7.6%"></div></div><span class="profile-bar-pct">7.6%</span></div><div class="profile-bar-row"><span class="profile-bar-label">50岁以上</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:2%"></div></div><span class="profile-bar-pct">2.0%</span></div></div>
+      <div><div class="profile-block-title">宝贝年龄段</div><div class="profile-bar-row"><span class="profile-bar-label">学龄前(0-3岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:50.7%"></div></div><span class="profile-bar-pct">50.7%</span></div><div class="profile-bar-row"><span class="profile-bar-label">幼儿园(4-6岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:25.2%"></div></div><span class="profile-bar-pct">25.2%</span></div><div class="profile-bar-row"><span class="profile-bar-label">小学(7-12岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:20.5%"></div></div><span class="profile-bar-pct">20.5%</span></div><div class="profile-bar-row"><span class="profile-bar-label">初中(13-15岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:2.3%"></div></div><span class="profile-bar-pct">2.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">15岁以上</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0.5%"></div></div><span class="profile-bar-pct">0.5%</span></div></div>
+      <div><div class="profile-block-title">购买渠道（多选）</div><div class="profile-bar-row"><span class="profile-bar-label">抖音</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:87.3%"></div></div><span class="profile-bar-pct">87.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">线下门店</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:36.3%"></div></div><span class="profile-bar-pct">36.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">淘宝/天猫</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:35.6%"></div></div><span class="profile-bar-pct">35.6%</span></div><div class="profile-bar-row"><span class="profile-bar-label">京东</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:8.8%"></div></div><span class="profile-bar-pct">8.8%</span></div></div>
+      <div>
+        <div class="profile-block-title">观看行为</div><div class="profile-bar-row"><span class="profile-bar-label">经常看</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:65.1%"></div></div><span class="profile-bar-pct">65.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">偶尔看</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:34.1%"></div></div><span class="profile-bar-pct">34.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">没看过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0.8%"></div></div><span class="profile-bar-pct">0.8%</span></div>
+        <div style="margin-top:10px"><div class="profile-block-title">近3月购买情况</div><div class="profile-bar-row"><span class="profile-bar-label">给自己孩子买</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:92.9%"></div></div><span class="profile-bar-pct">92.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">给亲友孩子买</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:3.3%"></div></div><span class="profile-bar-pct">3.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">没买过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:3.8%"></div></div><span class="profile-bar-pct">3.8%</span></div></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="profile-block-title" style="margin-bottom:8px">进入直播间的主要原因（多选）</div>
+    <div class="reason-list"><span class="reason-tag hi">换季/开学有置衣需求 61.4%</span><span class="reason-tag hi">蹲守秒杀/福袋/会员日 44.1%</span><span class="reason-tag md">信任品牌随便看 39.7%</span><span class="reason-tag md">短视频穿搭好看点进来 32.7%</span><span class="reason-tag md">搭配灵感/宝贝穿搭学习 22.7%</span><span class="reason-tag md">联名款/IP款/新品 7.5%</span></div>
+  </div>
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:#f97316"></span>产品满意度分析（巴拉巴拉专项）</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+      <div>
+        <div class="profile-block-title" style="margin-bottom:10px">产品整体满意度（581人）</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="font-size:36px;font-weight:800;color:#f97316">94</div>
+          <div style="font-size:13px;color:#94a3b8">/ 100<br><span style="font-size:18px;color:#f97316">4.70/5</span></div>
+        </div>
+        <div class="sat-row"><span class="sat-label">非常满意</span><div class="sat-bar-bg"><div style="width:71.1%;height:100%;border-radius:4px;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div><span class="sat-pct" style="color:#16a34a">71.1%</span></div>
+        <div class="sat-row"><span class="sat-label">比较满意</span><div class="sat-bar-bg"><div style="width:28.2%;height:100%;border-radius:4px;background:linear-gradient(90deg,#60a5fa,#3b82f6)"></div></div><span class="sat-pct" style="color:#2563eb">28.2%</span></div>
+        <div class="sat-row"><span class="sat-label">一般</span><div class="sat-bar-bg"><div style="width:0.5%;height:100%;border-radius:4px;background:#cbd5e1"></div></div><span class="sat-pct" style="color:#94a3b8">0.5%</span></div>
+        <div class="sat-row"><span class="sat-label">不满意</span><div class="sat-bar-bg"><div style="width:0.2%;height:100%;border-radius:4px;background:#f87171"></div></div><span class="sat-pct" style="color:#94a3b8">0.2%</span></div>
+      </div>
+      <div>
+        <div class="profile-block-title" style="margin-bottom:10px">主购品类（近3月）</div>
+        <div class="profile-bar-row"><span class="profile-bar-label">T恤</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:29.1%"></div></div><span class="profile-bar-pct">29.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">外套</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:18.2%"></div></div><span class="profile-bar-pct">18.2%</span></div><div class="profile-bar-row"><span class="profile-bar-label">裤子</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:10.5%"></div></div><span class="profile-bar-pct">10.5%</span></div><div class="profile-bar-row"><span class="profile-bar-label">羽绒服</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:9.8%"></div></div><span class="profile-bar-pct">9.8%</span></div><div class="profile-bar-row"><span class="profile-bar-label">裙子</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:6.5%"></div></div><span class="profile-bar-pct">6.5%</span></div><div class="profile-bar-row"><span class="profile-bar-label">鞋子</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:6.5%"></div></div><span class="profile-bar-pct">6.5%</span></div>
+        <div class="insight-box" style="margin-top:10px"><p>T恤占比最高（29.1%），外套次之（18.2%）。春季品类驱动显著。产品满意度达94.0分，主力品类质感扎实，是品牌口碑的核心支撑。</p></div>
+      </div>
+      <div>
+        <div class="profile-block-title" style="margin-bottom:10px">不满意原因（仅4人不满意）</div>
+        <ul class="pain-list"><li class="pain-item"><span class="pain-tag t-red">痛点</span><span class="pain-text">价格不满意（折扣力度小）</span><span class="pain-pct">100%</span></li><li class="pain-item"><span class="pain-tag t-red">痛点</span><span class="pain-text">尺码/版型不合身</span><span class="pain-pct">25%</span></li><li class="pain-item"><span class="pain-tag t-red">痛点</span><span class="pain-text">外观设计不满意</span><span class="pain-pct">25%</span></li></ul>
+        <div class="insight-box" style="margin-top:8px"><p>不满意样本极少（仅4人，占比0.7%），但<strong>价格折扣力度</strong>是集中槽点（100%提及），价格策略仍有优化空间。</p></div>
+      </div>
+    </div>
+  </div>
+
+    <div class="col-6040">
+      <div class="card">
+    <div class="card-title"><span class="dot" style="background:#f97316"></span>直播间分维度满意度 + 可优化方向</div>
+    <div class="dim-row"><div class="dim-header"><span class="dim-name">主播表现</span><span class="pill pill-mid">89.8</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:89.8%;background:#f97316"></div></div><div class="dim-opt">讲解拖沓（75%）、话术浮夸制造焦虑（50%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">画面及声音体验</span><span class="pill pill-hi">91.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:91%;background:#f97316"></div></div><div class="dim-opt">画质模糊（50%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">产品讲解</span><span class="pill pill-hi">91.8</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:91.8%;background:#f97316"></div></div><div class="dim-opt">款式陈旧/细节展示不足/关键信息模糊（各50%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name" style="color:#d97706">⚠ 福利机制</span><span class="pill pill-mid">87.6</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:87.6%;background:#fbbf24"></div></div><div class="dim-opt">诚意不足（93.8%）、机制烧脑/价格混乱（各25%）</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">互动/购物体验</span><span class="pill pill-mid">89.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:89%;background:#f97316"></div></div><div class="dim-opt">尺码建议不准（75%）、评论被忽视/弹窗慢（各50%）</div></div>
+  </div>
+      <div class="card">
+    <div class="card-title"><span class="dot" style="background:#f97316"></span>用户优化优先级投票</div>
+    <div class="priority-row"><div class="priority-header"><span class="priority-label">🥇 流程透明化（福利规则简单明了）</span><span class="priority-pct" style="color:#f97316">40.40%</span></div><div class="priority-bar"><div class="priority-fill" style="width:40.4%;background:#f97316;opacity:1"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥈 主播专业化（面料安全/功能卖点）</span><span class="priority-pct" style="color:#f97316">30.88%</span></div><div class="priority-bar"><div class="priority-fill" style="width:30.88%;background:#f97316;opacity:0.8"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥉 体验精准化（真实试穿数据图）</span><span class="priority-pct" style="color:#f97316">19.03%</span></div><div class="priority-bar"><div class="priority-fill" style="width:19.03%;background:#f97316;opacity:0.6"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label"> 互动人性化（精准响应尺码）</span><span class="priority-pct" style="color:#94a3b8">8.18%</span></div><div class="priority-bar"><div class="priority-fill" style="width:8.18%;background:#cbd5e1"></div></div></div>
+  </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#f9731615,#f9731605);border:1px solid #f9731630;border-radius:16px;padding:24px 28px;margin-bottom:16px">
+    <div style="font-size:16px;font-weight:800;color:#f97316;margin-bottom:18px;display:flex;align-items:center;gap:8px">
+      📝 巴拉巴拉直播间满意度报告结论 &amp; 下一步优化建议
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f9731630">📊 核心结论</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;line-height:2">
+          <li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #f9731630">⚠️ 品牌NPS从83.02%骤降至65.11%（-17.9pt），直播间NPS同步下降7.9pt。但NPS落差从-10pt收窄至0pt，说明品牌与直播间的体验一致性有所改善——问题不在直播间本身，而是品牌端出现口碑流失。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #f9731630">4月样本量增至604份（较2月+268%），数据代表性显著提升。92.9%为自己孩子购买，忠实观众占比65.1%（较2月提升7.2pt），核心用户粘性增强。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #f9731630">福利诚意不足投票占比93.8%（远超2月），价格折扣力度是用户最大痛点。40.4%用户首优诉求为"流程透明化"。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #f9731630">产品满意度达94.0分（n=581），说明产品本身质量过硬，问题集中在运营层面（价格策略、福利机制）。</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f9731630">🚀 下一步优化建议（优先级排序）</div>
+        <div style="margin-bottom:8px"><span class="pill tag-red" style="margin-right:8px">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">重新审视价格策略：价格满意度出现负向评价，需关注折扣力度和定价结构</span></div><div style="margin-bottom:8px"><span class="pill tag-red" style="margin-right:8px">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">福利规则透明化：简化福袋/秒杀规则，减少焦虑式营销话术（投票50%）</span></div><div style="margin-bottom:8px"><span class="pill tag-green" style="margin-right:8px">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">主播专业化：增加面料安全性、功能性卖点及洗护建议讲解（30.9%用户首优诉求）</span></div><div style="margin-bottom:8px"><span class="pill tag-green" style="margin-right:8px">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">真实体型试穿数据图：提供针对不同身高体重宝贝的选码建议</span></div><div style="margin-bottom:8px"><span class="pill tag-yellow" style="margin-right:8px">P2 下月</span><span style="font-size:13px;color:#374151;line-height:1.8">品牌口碑诊断：开展专项调研，查明品牌NPS下滑17.9pt的具体原因</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+<div id="panel-mini" class="panel">
+    <div class="brand-header">
+      <div class="brand-emoji">🚗</div>
+      <div class="brand-header-info"><h2 style="color:#0ea5e9">迷你巴拉直播间满意度报告</h2><p>有效样本：总计 7 份 ｜ 直播间题目 5 份</p></div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <div class="badge">品牌NPS <span>85.71%</span></div>
+        <div class="badge">直播间NPS <span>100%</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card c1"><div class="kpi-label">品牌 NPS</div><div class="kpi-value">85.71<span>%</span></div><div class="kpi-sub">推荐均分 13.6/10</div></div>
+      <div class="kpi-card c2"><div class="kpi-label">品牌满意度</div><div class="kpi-value">100.0<span>/100</span></div><div class="kpi-sub">原始均分 5.00/5</div></div>
+      <div class="kpi-card c3"><div class="kpi-label">直播间 NPS</div><div class="kpi-value">100.00<span>%</span></div><div class="kpi-sub">推荐均分 15.0/10</div><div class="kpi-tag tag-good">↑ 高于品牌NPS</div></div>
+      <div class="kpi-card c4"><div class="kpi-label">直播间满意度</div><div class="kpi-value">96.0<span>/100</span></div><div class="kpi-sub">原始均分 4.80/5</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;background:#f8faff;border:1px solid #dbe4ff">
+      <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:8px;display:flex;align-items:center;gap:6px">📐 指标说明：NPS（净推荐值）</div>
+      <div style="font-size:12px;color:#475569;line-height:1.8">NPS（Net Promoter Score）是衡量用户忠诚度的核心指标，计算方式：<strong>NPS = 推荐者占比（9-10分） - 贬损者占比（1-6分）</strong>。推荐者为打9-10分的用户（愿意主动推荐），贬损者为打1-6分的用户（可能传播负面评价）。NPS范围-100%至+100%，通常>0为正面，>50%为优秀，>70%为卓越。</div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:#0ea5e9"></span>📈 环比变化（2月 → 4月）</div>
+    <table class="data-table">
+      <thead><tr><th>指标</th><th>2月</th><th>4月</th><th>环比变化</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">品牌 NPS</td><td>68.24%</td><td>85.71%</td><td><span class="pill tag-good">↑ +17.47pt</span></td></tr>
+        <tr><td style="font-weight:700">品牌满意度</td><td>91.2</td><td>100.0</td><td><span class="pill tag-good">↑ +8.8</span></td></tr>
+        <tr><td style="font-weight:700">直播间 NPS</td><td>37.35%</td><td>100.00%</td><td><span class="pill tag-good">↑ +62.65pt</span></td></tr>
+        <tr><td style="font-weight:700">直播间满意度</td><td>88.6</td><td>96.0</td><td><span class="pill tag-good">↑ +7.4</span></td></tr>
+        <tr><td style="font-weight:700">NPS 落差</td><td>-30.9pt</td><td>14.3pt</td><td><span class="pill tag-good">↑ +45.2pt</span></td></tr>
+        <tr><td style="font-weight:700">样本量</td><td>94份</td><td>7份</td><td><span class="pill pill-low">-87份</span></td></tr>
+      </tbody>
+    </table>
+    <div class="divider"></div>
+    <ul class="pain-list" style="margin-top:12px">
+      <li class="pain-item"><span class="pain-tag t-red">环比</span><span class="pain-text"> 样本量从94份骤降至7份，环比变化缺乏统计学意义，所有指标仅作参考</span></li><li class="pain-item"><span class="pain-tag t-yellow">环比</span><span class="pain-text"> 28.6%用户"没看过"直播间，曝光严重不足</span></li><li class="pain-item"><span class="pain-tag t-blue">环比</span><span class="pain-text"> 需优先解决问卷投放渠道和直播间触达率，否则数据无法指导决策</span></li>
+    </ul>
+  </div>
+
+    <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:#0ea5e9"></span>用户画像</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <div><div class="profile-block-title">购买者年龄</div><div class="profile-bar-row"><span class="profile-bar-label">18–25岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:14.3%"></div></div><span class="profile-bar-pct">14.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">26–30岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:14.3%"></div></div><span class="profile-bar-pct">14.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">31–35岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:42.9%"></div></div><span class="profile-bar-pct">42.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">36–40岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:28.6%"></div></div><span class="profile-bar-pct">28.6%</span></div><div class="profile-bar-row"><span class="profile-bar-label">40-50岁</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div><div class="profile-bar-row"><span class="profile-bar-label">50岁以上</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div></div>
+      <div><div class="profile-block-title">宝贝年龄段</div><div class="profile-bar-row"><span class="profile-bar-label">学龄前(2-3岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:57.1%"></div></div><span class="profile-bar-pct">57.1%</span></div><div class="profile-bar-row"><span class="profile-bar-label">幼儿园(4-6岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:42.9%"></div></div><span class="profile-bar-pct">42.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">小学(7-12岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div><div class="profile-bar-row"><span class="profile-bar-label">新生儿(0-1岁)</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div><div class="profile-bar-row"><span class="profile-bar-label">12岁以上</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div></div>
+      <div><div class="profile-block-title">购买渠道（多选）</div><div class="profile-bar-row"><span class="profile-bar-label">抖音</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:80%"></div></div><span class="profile-bar-pct">80.0%</span></div><div class="profile-bar-row"><span class="profile-bar-label">线下门店</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:20%"></div></div><span class="profile-bar-pct">20.0%</span></div><div class="profile-bar-row"><span class="profile-bar-label">淘宝/天猫</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:20%"></div></div><span class="profile-bar-pct">20.0%</span></div><div class="profile-bar-row"><span class="profile-bar-label">京东</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div></div>
+      <div>
+        <div class="profile-block-title">观看行为</div><div class="profile-bar-row"><span class="profile-bar-label">经常看</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:42.9%"></div></div><span class="profile-bar-pct">42.9%</span></div><div class="profile-bar-row"><span class="profile-bar-label">偶尔看</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o2" style="width:28.6%"></div></div><span class="profile-bar-pct">28.6%</span></div><div class="profile-bar-row"><span class="profile-bar-label">没看过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o4" style="width:28.6%"></div></div><span class="profile-bar-pct">28.6%</span></div>
+        <div style="margin-top:10px"><div class="profile-block-title">近3月购买情况</div><div class="profile-bar-row"><span class="profile-bar-label">给自己孩子买</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o1" style="width:85.7%"></div></div><span class="profile-bar-pct">85.7%</span></div><div class="profile-bar-row"><span class="profile-bar-label">给亲友孩子买</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:14.3%"></div></div><span class="profile-bar-pct">14.3%</span></div><div class="profile-bar-row"><span class="profile-bar-label">没买过</span><div class="profile-bar-bg"><div class="profile-bar-fill fill-o3" style="width:0%"></div></div><span class="profile-bar-pct">0.0%</span></div></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="profile-block-title" style="margin-bottom:8px">进入直播间的主要原因（多选）</div>
+    <div class="reason-list"><span class="reason-tag hi">换季/开学有置衣需求 80.0%</span><span class="reason-tag hi">寻找搭配灵感 60.0%</span><span class="reason-tag md">信任品牌随便看 60.0%</span><span class="reason-tag md">蹲守秒杀/福袋 40.0%</span><span class="reason-tag md">短视频穿搭好看 40.0%</span></div>
+  </div>
+    
+
+    <div class="col-6040">
+      <div class="card">
+    <div class="card-title"><span class="dot" style="background:#0ea5e9"></span>直播间分维度满意度 + 可优化方向</div>
+    <div class="dim-row"><div class="dim-header"><span class="dim-name">主播表现</span><span class="pill pill-hi">100.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:100%;background:#0ea5e9"></div></div><div class="dim-opt">样本量小，暂无明显问题</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">画面及声音体验</span><span class="pill pill-hi">100.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:100%;background:#0ea5e9"></div></div><div class="dim-opt">样本量小，暂无明显问题</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">产品讲解</span><span class="pill pill-hi">100.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:100%;background:#0ea5e9"></div></div><div class="dim-opt">样本量小，暂无明显问题</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name" style="color:#d97706">⚠ 福利机制</span><span class="pill pill-hi">96.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:96%;background:#fbbf24"></div></div><div class="dim-opt">样本量小，暂无明显问题</div></div><div class="dim-row"><div class="dim-header"><span class="dim-name">互动/购物体验</span><span class="pill pill-hi">100.0</span></div><div class="dim-score-bar"><div class="dim-score-fill" style="width:100%;background:#0ea5e9"></div></div><div class="dim-opt">样本量小，暂无明显问题</div></div>
+  </div>
+      <div class="card">
+    <div class="card-title"><span class="dot" style="background:#0ea5e9"></span>用户优化优先级投票</div>
+    <div class="priority-row"><div class="priority-header"><span class="priority-label">🥇 主播专业化（面料安全/功能卖点）</span><span class="priority-pct" style="color:#0ea5e9">40.0%</span></div><div class="priority-bar"><div class="priority-fill" style="width:40%;background:#0ea5e9;opacity:1"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥈 流程透明化（福利规则简单明了）</span><span class="priority-pct" style="color:#0ea5e9">40.0%</span></div><div class="priority-bar"><div class="priority-fill" style="width:40%;background:#0ea5e9;opacity:0.8"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label">🥉 互动人性化（精准响应尺码）</span><span class="priority-pct" style="color:#0ea5e9">20.0%</span></div><div class="priority-bar"><div class="priority-fill" style="width:20%;background:#0ea5e9;opacity:0.6"></div></div></div><div class="priority-row"><div class="priority-header"><span class="priority-label"> 体验精准化（真实试穿数据图）</span><span class="priority-pct" style="color:#94a3b8">0%</span></div><div class="priority-bar"><div class="priority-fill" style="width:0%;background:#cbd5e1"></div></div></div>
+  </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#0ea5e915,#0ea5e905);border:1px solid #0ea5e930;border-radius:16px;padding:24px 28px;margin-bottom:16px">
+    <div style="font-size:16px;font-weight:800;color:#0ea5e9;margin-bottom:18px;display:flex;align-items:center;gap:8px">
+      📝 迷你巴拉直播间满意度报告结论 &amp; 下一步优化建议
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #0ea5e930">📊 核心结论</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;line-height:2">
+          <li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #0ea5e930">⚠️ 样本量从94份骤降至7份，所有环比数据缺乏统计学意义，结论仅作参考，不可用于决策。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #0ea5e930">品牌NPS达85.71%，直播间NPS 100%，但28.6%用户"没看过"直播间。品牌认知度与实际直播触达之间存在巨大落差。</li><li style="margin-bottom:10px;padding-left:14px;border-left:3px solid #0ea5e930">4月首要任务不是优化直播间内容，而是扩大问卷投放和直播间曝光。</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #0ea5e930">🚀 下一步优化建议（优先级排序）</div>
+        <div style="margin-bottom:8px"><span class="pill tag-red" style="margin-right:8px">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">扩大样本量：增加问卷投放渠道和激励措施，确保下月至少100份有效样本</span></div><div style="margin-bottom:8px"><span class="pill tag-red" style="margin-right:8px">P0 立即</span><span style="font-size:13px;color:#374151;line-height:1.8">提升直播间曝光：通过投流、达人联动、会员触达等方式提升直播间触达率</span></div><div style="margin-bottom:8px"><span class="pill tag-green" style="margin-right:8px">P1 本月</span><span style="font-size:13px;color:#374151;line-height:1.8">开展用户触达调研：了解28.6%用户"没看过"直播间的根本原因</span></div><div style="margin-bottom:8px"><span class="pill tag-yellow" style="margin-right:8px">P2 下月</span><span style="font-size:13px;color:#374151;line-height:1.8">建立常态化调研机制：确保每月稳定回收有效问卷</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+<div id="panel-summary" class="panel">
+    <div style="background:linear-gradient(135deg,#1e3a8a,#1e40af);border-radius:16px;padding:28px;margin-bottom:16px;color:#fff">
+      <div style="font-size:18px;font-weight:800;margin-bottom:6px">📋 4月直播间满意度总结报告</div>
+      <div style="font-size:13px;opacity:.75;margin-bottom:24px">三品牌综合评估 · 2026年4月 · 总样本 1456 份</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:16px 18px">
+          <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">品牌NPS均值</div>
+          <div style="font-size:30px;font-weight:800">70.5<span style="font-size:15px;font-weight:400">%</span></div>
+          <div style="font-size:11px;opacity:.65;margin-top:4px">巴拉65.11% / 迷你85.71% / 森马60.78%</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:16px 18px">
+          <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">品牌满意度均值</div>
+          <div style="font-size:30px;font-weight:800">94.7<span style="font-size:15px;font-weight:400">/100</span></div>
+          <div style="font-size:11px;opacity:.65;margin-top:4px">巴拉93.0 / 迷你100.0 / 森马91.2</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:16px 18px">
+          <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">直播间NPS均值</div>
+          <div style="font-size:30px;font-weight:800">65.9<span style="font-size:15px;font-weight:400">%</span></div>
+          <div style="font-size:11px;opacity:.65;margin-top:4px">巴拉65.1% / 迷你100.0% / 森马32.45%</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:16px 18px">
+          <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">直播间满意度均值</div>
+          <div style="font-size:30px;font-weight:800">92.0<span style="font-size:15px;font-weight:400">/100</span></div>
+          <div style="font-size:11px;opacity:.65;margin-top:4px">巴拉91.0 / 迷你96.0 / 森马89.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px">
+      <div style="background:#fff;border-radius:14px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid #dc2626">
+        <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:12px">🔴 发现一：巴拉巴拉品牌NPS骤降17.9pt</div>
+        <div style="font-size:13px;color:#374151;line-height:1.9">巴拉巴拉品牌NPS从83.02%降至65.11%，样本量却增加440份，说明下滑趋势真实可信。福利诚意不足投票高达93.8%，是NPS流失的核心诱因。需立即开展品牌口碑诊断专项调研。</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid #d97706">
+        <div style="font-size:13px;font-weight:700;color:#d97706;margin-bottom:12px">🟡 发现二：福利机制是三品牌共同最弱维度</div>
+        <div style="font-size:13px;color:#374151;line-height:1.9">福利机制在三品牌中均为最低分（85.6–87.6分），"诚意不足""规则复杂"的投票度极高。这是跨品牌优先级最高的改进方向，也是4月→5月通用优化方向。</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid #16a34a">
+        <div style="font-size:13px;font-weight:700;color:#16a34a;margin-bottom:12px">🟢 发现三：森马直播间持续改善，巴拉巴拉提供标杆</div>
+        <div style="font-size:13px;color:#374151;line-height:1.9">森马直播间NPS从29.33%提升至32.45%（+3.1pt），品牌NPS同步提升（+1.0pt），说明2月以来的优化举措正在生效。巴拉巴拉直播间NPS与品牌一致（落差0pt），"强专业内容+高信任度运营"模式值得全集团参考。</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title"><span class="dot"></span>三品牌通用优化建议矩阵</div>
+      <table class="data-table">
+        <thead><tr><th style="width:12%">优先级</th><th style="width:20%">优化方向</th><th style="width:22%">👕 森马</th><th style="width:22%">🧸 巴拉巴拉</th><th style="width:22%">🚗 迷你巴拉</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill pill-low">P0 立即</span></td><td style="font-weight:700">福利机制优化</td><td>简化福袋/秒杀规则，</td><td>减少复杂门槛，去除焦虑式话术，推出"一单即享"</td><td>规则极简化，统一定价策略</td></tr>
+          <tr><td><span class="pill pill-low">P0 立即</span></td><td style="font-weight:700">购物链路畅通</td><td>提升商品卡片弹出及时性，配专人场控</td><td>评论区专人跟进，购物车与讲解同步</td><td>购物车弹窗同步，消除流程断点</td></tr>
+          <tr><td><span class="pill pill-mid">P1 本月</span></td><td style="font-weight:700">内容差异化</td><td>增加多元身材模特试穿，设"适合我"穿搭环节</td><td>强化A类面料安全/功能卖点系统话术</td><td>主播系统化讲解安全标准/面料成分</td></tr>
+          <tr><td><span class="pill pill-mid">P1 本月</span></td><td style="font-weight:700">话术质量升级</td><td>减少重复口播，增加穿搭建议和面料讲解</td><td>去除"抢购/最后几件"焦虑话术</td><td>保持温和风格，增加专业性讲解</td></tr>
+          <tr><td><span class="pill pill-mid" style="background:#fef3c7;color:#b45309">P2 下月</span></td><td style="font-weight:700">画面体验提升</td><td>检查灯光/滤镜，减少色差，整理布景</td><td>优化灯光方案，改善镜头角度</td><td>拓展直播间触达，降低"没看过"比例</td></tr>
+          <tr><td><span class="pill pill-mid" style="background:#fef3c7;color:#b45309">P2 下月</span></td><td style="font-weight:700">互动体验优化</td><td>配专人盯评论区尺码/库存，目标回复率≥80%</td><td>增加体型试穿数据图，提升选码精准度</td><td>提升直播间曝光率</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px">
+      <div style="background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:24px">👕</span><div><div style="font-size:15px;font-weight:800;color:#3b5bdb">森马</div><div style="font-size:12px;color:#94a3b8">直播间改善潜力最大</div></div>
+          <span style="margin-left:auto;background:#dcfce7;color:#16a34a;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px">稳步增长型</span>
+        </div>
+        <div style="font-size:13px;color:#374151;line-height:1.9"><strong>优势：</strong>用户基础扎实，88.4%购买率，品牌NPS环比+1.0pt稳步增长<br><strong>优化空间：</strong>直播间NPS有进一步提升空间（32.45%→目标40%+）<br><strong>关键动作：</strong>多元模特 + 福利透明化</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:24px">🧸</span><div><div style="font-size:15px;font-weight:800;color:#f97316">巴拉巴拉</div><div style="font-size:12px;color:#94a3b8">品牌NPS骤降，需紧急诊断</div></div>
+          <span style="margin-left:auto;background:#fef3c7;color:#d97706;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px">风险预警</span>
+        </div>
+        <div style="font-size:13px;color:#374151;line-height:1.9"><strong>优势：</strong>NPS最高、落差0pt、忠实观众65.1%<br><strong>风险：</strong>品牌NPS骤降17.9pt，福利93.8%<br><strong>关键动作：</strong>品牌口碑诊断 + 价格策略优化</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:24px">🚗</span><div><div style="font-size:15px;font-weight:800;color:#0ea5e9">迷你巴拉</div><div style="font-size:12px;color:#94a3b8">样本量不足，需扩大投放</div></div>
+          <span style="margin-left:auto;background:#fef3c7;color:#d97706;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px">待突破</span>
+        </div>
+        <div style="font-size:13px;color:#374151;line-height:1.9"><strong>优势：</strong>品牌NPS强（85.71%）<br><strong>短板：</strong>样本仅7份，28.6%未看过直播间<br><strong>关键动作：</strong>先解决曝光，再优化内容</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function switchTab(tab, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

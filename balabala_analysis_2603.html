@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>巴拉巴拉 · 抖音三情分析看板 | 2026.03.01-03.17</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --brand: #FF6B35;
+    --brand-light: #FFF0EA;
+    --blue: #2563EB;
+    --green: #16A34A;
+    --red: #DC2626;
+    --yellow: #D97706;
+    --gray: #6B7280;
+    --dark: #111827;
+    --card-bg: #FFFFFF;
+    --page-bg: #F3F4F6;
+    --border: #E5E7EB;
+    --up: #16A34A;
+    --down: #DC2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif; background: var(--page-bg); color: var(--dark); font-size: 14px; line-height: 1.6; }
+
+  /* TOP BAR */
+  .topbar { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar-title { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; line-height: 1.3; }
+  .topbar-title span { color: var(--brand); }
+  .topbar-meta { text-align: right; font-size: 12px; opacity: 0.7; line-height: 2; }
+
+  /* NAV */
+  .nav { background: white; border-bottom: 2px solid var(--brand); position: sticky; top: 0; z-index: 100; display: flex; overflow-x: auto; padding: 0 24px; }
+  .nav a { display: inline-block; padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--gray); text-decoration: none; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .nav a:hover, .nav a.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+  /* LAYOUT */
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+  .section { margin-bottom: 40px; scroll-margin-top: 60px; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--dark); padding: 0 0 12px 16px; border-left: 4px solid var(--brand); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .section-subtitle { font-size: 14px; font-weight: 600; color: var(--dark); margin: 20px 0 12px; }
+
+  /* GRID */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+  @media (max-width: 1100px) { .grid-4 { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 768px) { .grid-4,.grid-3,.grid-2,.grid-2-1,.grid-1-2 { grid-template-columns: 1fr; } }
+
+  /* CARDS */
+  .card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .card-title { font-size: 12px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+
+  /* KPI */
+  .kpi-val { font-size: 28px; font-weight: 700; color: var(--dark); line-height: 1; }
+  .kpi-yoy { font-size: 13px; margin-top: 6px; font-weight: 600; }
+  .yoy-up { color: var(--up); }
+  .yoy-down { color: var(--down); }
+  .yoy-flat { color: var(--gray); }
+  .kpi-sub { font-size: 12px; color: var(--gray); margin-top: 4px; }
+
+  /* ALERT BOXES */
+  .alert { border-radius: 10px; padding: 14px 18px; margin: 12px 0; display: flex; gap: 12px; align-items: flex-start; }
+  .alert-opportunity { background: #ECFDF5; border-left: 4px solid #16A34A; }
+  .alert-risk { background: #FEF2F2; border-left: 4px solid #DC2626; }
+  .alert-insight { background: #EFF6FF; border-left: 4px solid #2563EB; }
+  .alert-action { background: #FFFBEB; border-left: 4px solid #D97706; }
+  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .alert-content { flex: 1; }
+  .alert-content strong { font-size: 13px; font-weight: 700; display: block; margin-bottom: 5px; letter-spacing: 0.1px; }
+  .alert-content p { font-size: 12px; color: #374151; line-height: 1.7; }
+
+  /* PRIORITY TAG */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .tag-high { background: #FEE2E2; color: #DC2626; }
+  .tag-mid { background: #FEF3C7; color: #92400E; }
+  .tag-low { background: #D1FAE5; color: #065F46; }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { background: #F9FAFB; padding: 10px 14px; text-align: left; font-weight: 600; color: var(--gray); border-bottom: 2px solid var(--border); font-size: 11px; white-space: nowrap; line-height: 1.4; }
+  .data-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .data-table tr:hover td { background: #FAFAFA; }
+  .data-table th.sortable:hover { background: #F0F9FF; color: #1D4ED8; }
+  .data-table th.sortable { cursor: pointer; user-select: none; transition: background 0.15s; }
+
+  /* BAR INLINE */
+  .bar-wrap { background: #F3F4F6; border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+
+  /* TABS */
+  .tab-nav { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: white; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--gray); transition: all 0.2s; }
+  .tab-btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* CHART CONTAINER */
+  .chart-wrap { position: relative; height: 260px; }
+  .chart-wrap-lg { position: relative; height: 320px; }
+  .chart-wrap-sm { position: relative; height: 200px; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* SUMMARY BOX */
+  .summary-box { background: linear-gradient(135deg, #1a1a2e, #0f3460); color: white; border-radius: 16px; padding: 28px 32px; margin-bottom: 32px; }
+  .summary-box h2 { font-size: 20px; margin-bottom: 16px; color: #FFB800; }
+  .summary-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .summary-item { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; }
+  .summary-item h3 { font-size: 12px; opacity: 0.7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .summary-item p { font-size: 13px; line-height: 1.6; opacity: 0.9; }
+  @media (max-width: 768px) { .summary-items { grid-template-columns: 1fr; } }
+
+  /* JUDGMENT */
+  .judgment-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .judgment-item { background: white; border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+  .judgment-item h4 { font-size: 13px; font-weight: 600; color: var(--brand); margin-bottom: 10px; }
+  .judgment-item ul { list-style: none; }
+  .judgment-item li { padding: 6px 0; font-size: 13px; border-bottom: 1px solid #F3F4F6; display: flex; gap: 8px; align-items: flex-start; }
+  .judgment-item li:last-child { border-bottom: none; }
+  .judgment-item li::before { content: '▸'; color: var(--brand); flex-shrink: 0; }
+
+  /* ACTION CARD */
+  .action-tier { border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .action-tier-1 { background: #FFF5F5; border: 2px solid #FCA5A5; }
+  .action-tier-2 { background: #FFFBEB; border: 2px solid #FCD34D; }
+  .action-tier-3 { background: #F0FDF4; border: 2px solid #86EFAC; }
+  .action-tier h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .action-tier-1 h3 { color: #DC2626; }
+  .action-tier-2 h3 { color: #D97706; }
+  .action-tier-3 h3 { color: #16A34A; }
+  .action-item { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .action-item:last-child { border-bottom: none; }
+  .action-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .action-tier-1 .action-num { background: #DC2626; color: white; }
+  .action-tier-2 .action-num { background: #D97706; color: white; }
+  .action-tier-3 .action-num { background: #16A34A; color: white; }
+  .action-text strong { display: block; font-size: 13px; margin-bottom: 3px; }
+  .action-text span { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* SCROLL */
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">🧒 <span>巴拉巴拉</span> · 抖音三情分析看板</div>
+    <div style="font-size:12px;opacity:0.6;margin-top:4px;">童装/婴儿装/亲子装 · 直播+短视频+商品卡 · 重点品类：T恤/防晒/裤子/套装/外套</div>
+  </div>
+  <div class="topbar-meta">
+    📅 2026.03.01 — 03.17 vs 2025同期<br>
+    🔍 数据来源：内部数据 + BigDataVoice<br>
+    📊 生成于 2026-03-30
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#overview" class="active">① 总结概览</a>
+  <a href="#market">② 行情分析</a>
+  <a href="#competitor">③ 竞品分析</a>
+  <a href="#sentiment">④ 舆情分析</a>
+  <a href="#judgment">⑤ 经营判断</a>
+  <a href="#action">⑥ 行动建议</a>
+</nav>
+
+<div class="container">
+
+<!-- ============ SECTION 1: 总结概览 ============ -->
+<section id="overview" class="section">
+  <div class="section-title">① 总结概览 <span style="font-size:12px;color:var(--gray);font-weight:400;">行业变化 + 对巴拉巴拉的核心影响</span></div>
+
+  <div class="summary-box">
+    <h2>🔑 执行摘要（管理层30秒阅读版）</h2>
+    <div class="summary-items">
+      <div class="summary-item">
+        <h3>📈 行业</h3>
+        <p>童装大盘同比+9.1%，整体健康增长。T恤(+9.7%)、裤子(+15%)、户外服(+68%)是结构性增量；套装(-17.4%)、外套(-12.7%)加速收缩。</p>
+      </div>
+      <div class="summary-item">
+        <h3>🏷️ 本品</h3>
+        <p>巴拉巴拉销售额7308万同比微降-2.8%，跑输大盘近12pct。T恤是唯一增长主力，内裤/连衣裙快速放量。流量成本上升，自然流量（关注）占比从35.5%降至26.0%。</p>
+      </div>
+      <div class="summary-item">
+        <h3>⚠️ 核心警示</h3>
+        <p>市场在增长，巴拉巴拉在下滑，市占率被蚕食。安踏儿童虽同比-5.3%但仍是最大对手；笛莎视频爆发力强(YoY视频+220%)，内容差距扩大。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI 总览 -->
+  <div class="grid-4" style="margin-bottom:16px;">
+    <div class="card">
+      <div class="card-title">巴拉巴拉 总销售额</div>
+      <div class="kpi-val">7,308万</div>
+      <div class="kpi-yoy yoy-down">▼ -2.8% vs 2025同期</div>
+      <div class="kpi-sub">2025同期：7,540万</div>
+    </div>
+    <div class="card">
+      <div class="card-title">抖音童装大盘</div>
+      <div class="kpi-val">37,800万</div>
+      <div class="kpi-yoy yoy-up">▲ +9.1% vs 2025同期</div>
+      <div class="kpi-sub">大盘增长，品牌逆势下滑</div>
+    </div>
+    <div class="card">
+      <div class="card-title">直播转化率</div>
+      <div class="kpi-val">4.02%</div>
+      <div class="kpi-yoy yoy-up">▲ +0.24pct vs 2025(3.78%)</div>
+      <div class="kpi-sub">转化效率提升，GMV仍下滑</div>
+    </div>
+    <div class="card">
+      <div class="card-title">视频带货销售额</div>
+      <div class="kpi-val">516万</div>
+      <div class="kpi-yoy yoy-up">▲ +513% vs 2025(84万)</div>
+      <div class="kpi-sub">短视频渠道快速爆发</div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">渠道结构对比（2026 vs 2025）</div>
+      <div class="chart-wrap"><canvas id="channelCompare"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">日销售额趋势对比（万元）</div>
+      <div class="chart-wrap"><canvas id="dailySales"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">关键指标同比变化</div>
+      <div style="margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:13px;">总销售额</span>
+          <span class="kpi-yoy yoy-down" style="font-size:14px;">▼ -2.8%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:13px;">直播销售额</span>
+          <span class="kpi-yoy yoy-down" style="font-size:14px;">▼ -7.9%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:13px;">短视频销售额</span>
+          <span class="kpi-yoy yoy-up" style="font-size:14px;">▲ +513%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:13px;">商品卡销售额</span>
+          <span class="kpi-yoy yoy-down" style="font-size:14px;">▼ -10.7%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:13px;">带货达人数</span>
+          <span class="kpi-yoy yoy-up" style="font-size:14px;">▲ +53.7%（1023→1572）</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:13px;">带货视频数</span>
+          <span class="kpi-yoy yoy-up" style="font-size:14px;">▲ +132%（4322→10014）</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+          <span style="font-size:13px;">转化率</span>
+          <span class="kpi-yoy yoy-up" style="font-size:14px;">▲ +0.24pct（3.78%→4.02%）</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;">
+    <div class="alert alert-risk">
+      <div class="alert-icon">🚨</div>
+      <div class="alert-content">
+        <strong>核心矛盾：大盘增长 vs 品牌下滑</strong>
+        <p>童装大盘+9.1%，巴拉巴拉-2.8%，差距约12pct。转化率改善但销售额下滑，说明曝光/流量端出现问题，而非产品端。视频达人数×2但人效存疑，需警惕"虚胖式扩张"。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: 行情分析 ============ -->
+<section id="market" class="section">
+  <div class="section-title">② 行情分析 <span style="font-size:12px;color:var(--gray);font-weight:400;">平台 & 类目</span></div>
+
+  <!-- 2.1 童装类目变化 -->
+  <div class="section-subtitle">2.1 童装整体类目变化</div>
+
+  <!-- 操作栏 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px;">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+      <span style="font-size:12px;color:var(--gray);font-weight:500;">列说明：</span>
+      <span style="background:#EFF6FF;color:#1D4ED8;padding:2px 9px;border-radius:10px;font-size:11px;">大盘规模 + 同比</span>
+      <span style="background:#F0FDF4;color:#065F46;padding:2px 9px;border-radius:10px;font-size:11px;">供给 + 同比</span>
+      <span style="background:#FFF5F5;color:#991B1B;padding:2px 9px;border-radius:10px;font-size:11px;">本品市占率 + 同比变化</span>
+      <span style="font-size:11px;color:#9CA3AF;">市占率 = 本品销售额 ÷ 类目大盘</span>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+      <span style="font-size:11px;color:#9CA3AF;">↑↓ 点击列头排序</span>
+      <button onclick="resetCateSort()" style="font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;color:var(--gray);">重置排序</button>
+    </div>
+  </div>
+
+  <!-- 数据表 -->
+  <div class="card" style="overflow-x:auto;padding:0;">
+    <table class="data-table" id="cateFullTable" style="min-width:780px;font-size:12px;">
+      <thead id="cateThead">
+        <tr>
+          <th class="sortable" data-col="idx"    style="padding:7px 8px 7px 14px;width:36px;text-align:center;">#</th>
+          <th class="sortable" data-col="name"   style="padding:7px 10px;">类目</th>
+          <th class="sortable num" data-col="m26"   style="background:#EFF6FF;padding:7px 10px;">大盘销售额<br><small style="font-weight:400;color:#6B7280;">2026万元</small></th>
+          <th class="sortable num" data-col="mYoY"  style="background:#EFF6FF;padding:7px 10px;">大盘同比</th>
+          <th class="sortable num" data-col="s26"   style="background:#F0FDF4;padding:7px 10px;">动销商品数<br><small style="font-weight:400;color:#6B7280;">2026</small></th>
+          <th class="sortable num" data-col="sYoY"  style="background:#F0FDF4;padding:7px 10px;">供给同比</th>
+          <th class="sortable num" data-col="b26"   style="background:#FFF5F5;padding:7px 10px;">本品销售额<br><small style="font-weight:400;color:#6B7280;">2026万元</small></th>
+          <th class="sortable num" data-col="ms26"  style="background:#FFF5F5;padding:7px 10px;">本品市占率<br><small style="font-weight:400;color:#6B7280;">2026%</small></th>
+          <th class="sortable num" data-col="msChg" style="background:#FFF5F5;padding:7px 10px;">市占率同比<br><small style="font-weight:400;color:#6B7280;">pct变化</small></th>
+          <th style="text-align:center;padding:7px 10px;">综合判断</th>
+        </tr>
+      </thead>
+      <tbody id="cateTbody"></tbody>
+    </table>
+  </div>
+
+  <!-- 图表区：销售额柱图 + 市占率柱图 -->
+  <div class="grid-2" style="margin-top:20px;">
+    <div class="card">
+      <div class="card-title">童装 Top10 类目 · 大盘销售额（2026，万元）及同比增幅</div>
+      <div class="chart-wrap-lg"><canvas id="cateCompare"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">巴拉巴拉主力类目 · 本品市占率（2026，%）及同比变化（pct）</div>
+      <div class="chart-wrap-lg"><canvas id="marketShareChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 四象限说明 -->
+  <div style="background:#F9FAFB;border:1px solid var(--border);border-radius:10px;padding:12px 18px;margin-top:20px;font-size:12px;color:var(--gray);line-height:1.8;">
+    <strong style="color:var(--dark);">四象限读图说明</strong>&emsp;
+    <strong>X 轴：</strong>行业增速（大盘同比 %）&emsp;
+    <strong>Y 轴：</strong>本品市占率同比变化（pct）&emsp;
+    <strong>气泡大小：</strong>√本品销售额（反映规模）&emsp;
+    <span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><span style="width:10px;height:10px;border-radius:50%;background:#FF6B35;display:inline-block;"></span>右上：攻坚增量</span>&ensp;
+    <span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><span style="width:10px;height:10px;border-radius:50%;background:#EF4444;display:inline-block;"></span>右下：赛道红海</span>&ensp;
+    <span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><span style="width:10px;height:10px;border-radius:50%;background:#F59E0B;display:inline-block;"></span>左上：逆市守擂</span>&ensp;
+    <span style="display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><span style="width:10px;height:10px;border-radius:50%;background:#94A3B8;display:inline-block;"></span>左下：双重承压</span>
+  </div>
+
+  <!-- 两张四象限图并列 -->
+  <div class="grid-2" style="margin-top:16px;">
+
+    <!-- 图一：基石类目 -->
+    <div class="card">
+      <div style="margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:var(--dark);">图一 · 基石类目防守图</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:3px;">本品销售额 TOP 80% 的核心类目（共 9 个），重点关注象限位移与份额变化方向。</div>
+      </div>
+      <div style="position:relative;height:380px;"><canvas id="quadrantKeystoneChart"></canvas></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px;font-size:11px;">
+        <div style="background:#F0FDF4;border-radius:6px;padding:8px 10px;"><strong style="color:#16A34A;">↗ 攻坚增量</strong><br>行业↑ 且 份额↑。加大内容与投放，保住并放大优势。</div>
+        <div style="background:#FEF2F2;border-radius:6px;padding:8px 10px;"><strong style="color:#DC2626;">↘ 赛道红海</strong><br>行业↑ 但 份额↓。诊断原因：内容差距？竞品截流？价格问题？</div>
+        <div style="background:#FFFBEB;border-radius:6px;padding:8px 10px;"><strong style="color:#D97706;">↖ 逆市守擂</strong><br>行业↓ 但 份额↑。存量市场中的竞争力体现，持续巩固。</div>
+        <div style="background:#FEF2F2;border-radius:6px;padding:8px 10px;border:1px solid #FECACA;"><strong style="color:#DC2626;">↙ 双重承压 ⚠️</strong><br>行业↓ 且 份额↓。基石类目若落此区间，需立即启动专项应对。</div>
+      </div>
+    </div>
+
+    <!-- 图二：机会类目 -->
+    <div class="card">
+      <div style="margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:var(--dark);">图二 · 机会类目布局图</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:3px;">本品未布局或少布局（非基石）类目，重点识别右侧行业增长区间的潜在机会。</div>
+      </div>
+      <div style="position:relative;height:380px;"><canvas id="quadrantOpptyChart"></canvas></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px;font-size:11px;">
+        <div style="background:#F0FDF4;border-radius:6px;padding:8px 10px;"><strong style="color:#16A34A;">↗ 快速切入</strong><br>行业↑ 且 份额↑（虽小）。已有苗头，值得加速跟进。</div>
+        <div style="background:#EFF6FF;border-radius:6px;padding:8px 10px;"><strong style="color:#2563EB;">↘ 优先布局</strong><br>行业↑ 但 份额低/无。市场在增长，本品缺席，机会窗口收窄中。</div>
+        <div style="background:#F3F4F6;border-radius:6px;padding:8px 10px;"><strong style="color:#6B7280;">↖ 保持观察</strong><br>行业↓ 且 份额有，暂无需投入，跟踪拐点信号。</div>
+        <div style="background:#F3F4F6;border-radius:6px;padding:8px 10px;"><strong style="color:#6B7280;">↙ 暂不布局</strong><br>行业↓ 且 份额低。赛道整体萎缩，不符合本品调性则放弃。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关键结论 -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;">
+    <div class="alert alert-opportunity">
+      <div class="alert-icon">📈</div>
+      <div class="alert-content">
+        <strong>供需双升 · 结构性增量</strong>
+        <p>T恤（大盘 +9.7%，供给 +10.6%）、裤子（+15%，供给 +7.8%）、儿童内衣裤（+37%，供给 +46%）是健康增长赛道。竞争入局者增多，但需求更旺盛，总量仍在扩张。</p>
+      </div>
+    </div>
+    <div class="alert alert-risk">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <strong>供减需跌 · 结构性萎缩</strong>
+        <p>套装（大盘 -17%，供给 -12%）、外套（-13%，供给 -2%）双向收缩。裙子、连身衣、亲子装需求与供给全面退潮，建议加速清仓、精简 SKU，释放资源给成长品类。</p>
+      </div>
+    </div>
+    <div class="alert alert-insight">
+      <div class="alert-icon">🔍</div>
+      <div class="alert-content">
+        <strong>市占率警示 · 基石类目承压</strong>
+        <p>羽绒服市占率 -1.59 pct、棉袄 -3.97 pct 是跌幅最大品类；裤子 -0.74 pct 值得重视。反观裙子（+1.09 pct）、背心吊带（+2.29 pct）是少数逆势提升案例。</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ======== 2.1 数据 ========
+  const cateData = [
+    {name:'套装',          m26:53525,mYoY:-17.4, s26:39460,sYoY:-11.8, b26:264, ms26:0.49,msChg:-0.19, keystone:false},
+    {name:'T恤',           m26:39889,mYoY:9.7,   s26:42918,sYoY:10.6,  b26:1768,ms26:4.43,msChg:-0.06, keystone:true},
+    {name:'外套/夹克',     m26:39774,mYoY:-12.7, s26:29232,sYoY:-1.7,  b26:1367,ms26:3.44,msChg:0.47,  keystone:true},
+    {name:'裤子',          m26:38589,mYoY:15.0,  s26:44319,sYoY:7.8,   b26:753, ms26:1.95,msChg:-0.74, keystone:true},
+    {name:'儿童旗袍/唐装', m26:32580,mYoY:216.9, s26:15806,sYoY:115.8, b26:2,   ms26:0.01,msChg:0.01,  keystone:false},
+    {name:'儿童牛仔',      m26:22038,mYoY:16.0,  s26:20202,sYoY:10.0,  b26:56,  ms26:0.25,msChg:0.17,  keystone:false},
+    {name:'儿童户外服',    m26:17471,mYoY:68.1,  s26:10315,sYoY:46.1,  b26:9,   ms26:0.05,msChg:-0.15, keystone:false},
+    {name:'卫衣/绒衫',     m26:16873,mYoY:13.2,  s26:23207,sYoY:2.8,   b26:88,  ms26:0.52,msChg:-0.23, keystone:false},
+    {name:'羽绒服',        m26:13801,mYoY:2.6,   s26:8716, sYoY:28.9,  b26:724, ms26:5.25,msChg:-1.59, keystone:true},
+    {name:'连身衣/爬服',   m26:12093,mYoY:-18.5, s26:25749,sYoY:14.8,  b26:230, ms26:1.90,msChg:-0.79, keystone:true},
+    {name:'儿童内衣裤',    m26:11304,mYoY:37.3,  s26:9895, sYoY:46.2,  b26:238, ms26:2.11,msChg:-0.34, keystone:true},
+    {name:'裙子',          m26:10191,mYoY:-19.1, s26:15988,sYoY:-8.9,  b26:183, ms26:1.80,msChg:1.09,  keystone:false},
+    {name:'毛衣/针织衫',   m26:9205, mYoY:13.6,  s26:11911,sYoY:17.9,  b26:311, ms26:3.37,msChg:-0.44, keystone:true},
+    {name:'儿童家居服',    m26:9083, mYoY:-3.0,  s26:10708,sYoY:13.2,  b26:157, ms26:1.73,msChg:0.88,  keystone:false},
+    {name:'儿童袜子',      m26:8746, mYoY:-0.6,  s26:10359,sYoY:3.5,   b26:0,   ms26:0.00,msChg:0.00,  keystone:false},
+    {name:'衬衫',          m26:7145, mYoY:21.6,  s26:8327, sYoY:0.7,   b26:307, ms26:4.29,msChg:-0.82, keystone:true},
+    {name:'棉袄/棉服',     m26:5218, mYoY:21.0,  s26:6849, sYoY:50.6,  b26:73,  ms26:1.41,msChg:-3.97, keystone:false},
+    {name:'背心吊带',      m26:4167, mYoY:30.3,  s26:3967, sYoY:15.7,  b26:120, ms26:2.89,msChg:2.29,  keystone:false},
+    {name:'马甲',          m26:3885, mYoY:66.0,  s26:5680, sYoY:38.6,  b26:5,   ms26:0.14,msChg:-0.84, keystone:false},
+    {name:'帽子/围巾等',   m26:3632, mYoY:3.8,   s26:7417, sYoY:-5.5,  b26:12,  ms26:0.34,msChg:0.04,  keystone:false},
+    {name:'儿童配饰',      m26:3388, mYoY:12.6,  s26:6970, sYoY:12.3,  b26:0,   ms26:0.00,msChg:0.00,  keystone:false},
+    {name:'亲子装',        m26:1944, mYoY:-39.9, s26:2164, sYoY:-2.4,  b26:0,   ms26:0.00,msChg:0.00,  keystone:false},
+    {name:'儿童POLO衫',    m26:1823, mYoY:36.0,  s26:2174, sYoY:28.9,  b26:0,   ms26:0.01,msChg:0.01,  keystone:false},
+    {name:'儿童防晒服',    m26:1336, mYoY:3.5,   s26:1876, sYoY:3.1,   b26:86,  ms26:6.47,msChg:-0.18, keystone:false},
+    {name:'抹胸/儿童文胸', m26:1420, mYoY:61.2,  s26:751,  sYoY:27.7,  b26:6,   ms26:0.43,msChg:0.12,  keystone:false},
+  ];
+
+  // ======== 表格渲染 + 排序 ========
+  let cateSortCol = 'm26', cateSortAsc = false; // 默认：大盘销售额降序
+
+  function yoyColor(v){ return v>0?'yoy-up':v<0?'yoy-down':'yoy-flat'; }
+  function yoyText(v){ return (v>0?'▲+':'▼')+v+'%'; }
+  function msChgText(v){
+    if(v===null||isNaN(v)||v===0) return '<span class="yoy-flat">—</span>';
+    const cls = v>0.05?'yoy-up':v<-0.05?'yoy-down':'yoy-flat';
+    return '<span class="'+cls+'">'+(v>0?'+':'')+v.toFixed(2)+' pct</span>';
+  }
+  function getJudge(row){
+    if(row.mYoY >= 30 && row.ms26 >= 1)   return {text:'重点机会', cls:'tag-high'};
+    if(row.mYoY >= 10 && row.ms26 >= 2)   return {text:'主力增长', cls:'tag-high'};
+    if(row.mYoY >= 10 && row.ms26 > 0)    return {text:'布局机会', cls:'tag-mid'};
+    if(row.mYoY >= 3  && row.ms26 >= 3)   return {text:'稳守阵地', cls:'tag-mid'};
+    if(row.mYoY < 0   && row.msChg > 0.1) return {text:'逆市抢份', cls:'tag-mid'};
+    if(row.mYoY < -10)                     return {text:'加速退出', cls:'tag-low'};
+    if(row.mYoY < 0)                       return {text:'防守减SKU', cls:'tag-low'};
+    return {text:'持续观察', cls:'tag-low'};
+  }
+
+  function renderCateTable() {
+    // 排序
+    const sorted = [...cateData].map((r,i)=>({...r, _origIdx:i}));
+    sorted.sort((a,b)=>{
+      let va = a[cateSortCol], vb = b[cateSortCol];
+      if(cateSortCol==='name') { va=va||''; vb=vb||''; return cateSortAsc ? va.localeCompare(vb,'zh') : vb.localeCompare(va,'zh'); }
+      va = typeof va==='number' ? va : 0;
+      vb = typeof vb==='number' ? vb : 0;
+      return cateSortAsc ? va-vb : vb-va;
+    });
+
+    const tbody = document.getElementById('cateTbody');
+    tbody.innerHTML = '';
+    sorted.forEach((row, seq) => {
+      const judge = getJudge(row);
+      const sYoyBg = row.sYoY > 5 ? 'background:#F0FDF4;' : row.sYoY < -5 ? 'background:#FEF2F2;' : '';
+      const msBg   = row.msChg > 0.1 ? 'background:#F0FDF4;' : row.msChg < -0.5 ? 'background:#FEF2F2;' : '';
+      const ksBadge = row.keystone ? '<span style="background:#FFF0EA;color:#FF6B35;padding:1px 4px;border-radius:3px;font-size:10px;margin-left:3px;font-weight:700;">基石</span>' : '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="text-align:center;color:#9CA3AF;font-size:11px;padding:5px 6px 5px 12px;">${seq+1}</td>
+        <td style="font-weight:${row.ms26>=2?600:400};white-space:nowrap;padding:5px 10px;">${row.name}${ksBadge}</td>
+        <td class="num" style="background:#EFF6FF;padding:5px 10px;">${row.m26.toLocaleString()}</td>
+        <td class="num" style="background:#EFF6FF;padding:5px 10px;"><span class="${yoyColor(row.mYoY)}">${yoyText(row.mYoY)}</span></td>
+        <td class="num" style="background:#F0FDF4;padding:5px 10px;">${row.s26.toLocaleString()}</td>
+        <td class="num" style="background:#F0FDF4;${sYoyBg}padding:5px 10px;"><span class="${yoyColor(row.sYoY)}">${yoyText(row.sYoY)}</span></td>
+        <td class="num" style="background:#FFF5F5;font-weight:600;padding:5px 10px;">${row.b26>0?row.b26.toLocaleString():'—'}</td>
+        <td class="num" style="background:#FFF5F5;padding:5px 10px;">${row.ms26>0?row.ms26.toFixed(2)+'%':'—'}</td>
+        <td class="num" style="background:#FFF5F5;${msBg}padding:5px 10px;">${msChgText(row.msChg)}</td>
+        <td style="text-align:center;padding:5px 10px;"><span class="tag ${judge.cls}">${judge.text}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // 更新表头排序箭头
+    document.querySelectorAll('#cateThead .sortable').forEach(th => {
+      const col = th.dataset.col;
+      th.style.cursor = 'pointer';
+      th.style.userSelect = 'none';
+      // 重置
+      th.style.borderBottom = '';
+      const arrow = th.querySelector('.sort-arrow');
+      if(arrow) arrow.remove();
+      if(col === cateSortCol) {
+        th.style.borderBottom = '2px solid #FF6B35';
+        const sp = document.createElement('span');
+        sp.className = 'sort-arrow';
+        sp.style.cssText = 'margin-left:3px;font-size:10px;color:#FF6B35;';
+        sp.textContent = cateSortAsc ? '↑' : '↓';
+        th.appendChild(sp);
+      }
+    });
+  }
+
+  function resetCateSort() {
+    cateSortCol = 'm26'; cateSortAsc = false; renderCateTable();
+  }
+
+  // 绑定列头点击
+  document.querySelectorAll('#cateThead .sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      if(cateSortCol === col) { cateSortAsc = !cateSortAsc; }
+      else { cateSortCol = col; cateSortAsc = col === 'name'; }
+      renderCateTable();
+    });
+  });
+
+  renderCateTable();
+
+  // ======== 四象限图公共函数 ========
+  function makeQuadrantPlugin(id) {
+    return {
+      id: 'quadrantLabels_' + id,
+      afterDraw(chart) {
+        const {ctx, chartArea:{left,right,top,bottom}, scales:{x,y}} = chart;
+        ctx.save();
+        // 象限底色
+        const cx = x.getPixelForValue(0), cy = y.getPixelForValue(0);
+        const quads = [
+          {x1:cx, y1:top,    x2:right,  y2:cy,     bg:'rgba(240,253,244,0.45)', label:'↗ 攻坚增量', lx:right-62, ly:top+16},
+          {x1:left,y1:top,   x2:cx,     y2:cy,     bg:'rgba(255,251,235,0.45)', label:'↖ 逆市守擂', lx:left+6,   ly:top+16},
+          {x1:cx,  y1:cy,    x2:right,  y2:bottom, bg:'rgba(254,242,242,0.45)', label:'↘ 赛道红海', lx:right-62, ly:bottom-6},
+          {x1:left,y1:cy,    x2:cx,     y2:bottom, bg:'rgba(243,244,246,0.45)', label:'↙ 双重承压', lx:left+6,   ly:bottom-6},
+        ];
+        quads.forEach(q => {
+          ctx.fillStyle = q.bg;
+          ctx.fillRect(q.x1, q.y1, q.x2-q.x1, q.y2-q.y1);
+          ctx.fillStyle = 'rgba(107,114,128,0.55)';
+          ctx.font = '500 10.5px PingFang SC, sans-serif';
+          ctx.textAlign = q.lx > (left + right)/2 ? 'right' : 'left';
+          ctx.fillText(q.label, q.lx, q.ly);
+        });
+        // 零线
+        ctx.strokeStyle = '#9CA3AF';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4,3]);
+        ctx.beginPath(); ctx.moveTo(cx, top); ctx.lineTo(cx, bottom); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(left, cy); ctx.lineTo(right, cy); ctx.stroke();
+        ctx.setLineDash([]);
+        // 气泡标签
+        chart.data.datasets.forEach((ds, di) => {
+          ds.data.forEach((pt, pi) => {
+            const meta = chart.getDatasetMeta(di);
+            const el = meta.data[pi];
+            if (!el) return;
+            ctx.fillStyle = ds._labelColor || '#374151';
+            ctx.font = '600 10px PingFang SC, sans-serif';
+            ctx.textAlign = 'center';
+            const radius = el.options ? el.options.radius : 8;
+            ctx.fillText(pt.label, el.x, el.y - radius - 5);
+          });
+        });
+        ctx.restore();
+      }
+    };
+  }
+
+  function makeQuadrantOptions(xLabel, yLabel) {
+    return {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label(ctx) {
+              const d = ctx.raw;
+              return [
+                `${d.label}`,
+                `行业增速：${d.x > 0 ? '+' : ''}${d.x}%`,
+                `市占变化：${d.y > 0 ? '+' : ''}${d.y.toFixed(2)} pct`,
+                `本品销售额：${d.b26} 万元`
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: xLabel, font: { size: 11 } },
+          grid: { color: '#F3F4F6' },
+          ticks: { callback: v => (v > 0 ? '+' : '') + v + '%', font: { size: 10 } }
+        },
+        y: {
+          title: { display: true, text: yLabel, font: { size: 11 } },
+          grid: { color: '#F3F4F6' },
+          ticks: { callback: v => (v > 0 ? '+' : '') + v + ' pct', font: { size: 10 } }
+        }
+      }
+    };
+  }
+
+  // ===== 气泡半径归一化：全局统一最大值，压缩到 [MIN_R, MAX_R] =====
+  const BUBBLE_MIN_R = 6, BUBBLE_MAX_R = 28;
+  function normRadius(b26, maxB26) {
+    if (!b26 || b26 <= 0) return BUBBLE_MIN_R;
+    // 平方根比例，再映射到目标区间
+    const ratio = Math.sqrt(b26) / Math.sqrt(maxB26);
+    return BUBBLE_MIN_R + ratio * (BUBBLE_MAX_R - BUBBLE_MIN_R);
+  }
+
+  // ===== 图一：基石类目 =====
+  (function() {
+    const rows = cateData.filter(r => r.keystone && r.b26 > 0);
+    const maxB26 = Math.max(...rows.map(r => r.b26));
+    function bubbleColor(r) {
+      if (r.mYoY >= 0 && r.msChg >= 0) return {bg:'rgba(22,163,74,0.60)',  bd:'#16A34A', lc:'#14532D'};
+      if (r.mYoY >= 0 && r.msChg < 0)  return {bg:'rgba(220,38,38,0.55)',  bd:'#DC2626', lc:'#7F1D1D'};
+      if (r.mYoY < 0  && r.msChg >= 0) return {bg:'rgba(217,119,6,0.60)',  bd:'#D97706', lc:'#78350F'};
+      return                                   {bg:'rgba(148,163,184,0.60)',bd:'#94A3B8', lc:'#334155'};
+    }
+    const datasets = rows.map(r => {
+      const c = bubbleColor(r);
+      return {
+        label: r.name,
+        data: [{ x: r.mYoY, y: r.msChg, r: normRadius(r.b26, maxB26), label: r.name, b26: r.b26 }],
+        backgroundColor: c.bg,
+        borderColor: c.bd,
+        borderWidth: 2,
+        _labelColor: c.lc
+      };
+    });
+    const plugin = makeQuadrantPlugin('keystone');
+    const opts = makeQuadrantOptions('行业增速（%）→', '本品市占率变化（pct）↑');
+    new Chart(document.getElementById('quadrantKeystoneChart'), {
+      type: 'bubble', data: { datasets }, options: opts, plugins: [plugin]
+    });
+  })();
+
+  // ===== 图二：机会类目（非基石，b26≥0） =====
+  (function() {
+    const rows = cateData.filter(r => !r.keystone);
+    // 与图一共享全局最大值，保持两图气泡大小可类比
+    const maxB26 = Math.max(...cateData.filter(r => r.b26 > 0).map(r => r.b26));
+    function bubbleColor(r) {
+      if (r.mYoY >= 0 && r.msChg >= 0 && r.b26 > 0) return {bg:'rgba(22,163,74,0.55)',  bd:'#16A34A', lc:'#14532D'};
+      if (r.mYoY >= 0 && r.b26 === 0)                return {bg:'rgba(37,99,235,0.50)',   bd:'#2563EB', lc:'#1E3A8A'};
+      if (r.mYoY >= 0 && r.msChg < 0)                return {bg:'rgba(220,38,38,0.50)',   bd:'#DC2626', lc:'#7F1D1D'};
+      if (r.mYoY < 0  && r.msChg >= 0 && r.b26 > 0) return {bg:'rgba(217,119,6,0.55)',  bd:'#D97706', lc:'#78350F'};
+      return                                                  {bg:'rgba(148,163,184,0.50)',bd:'#94A3B8', lc:'#475569'};
+    }
+    const datasets = rows.map(r => {
+      const c = bubbleColor(r);
+      return {
+        label: r.name,
+        data: [{ x: r.mYoY, y: r.msChg, r: normRadius(r.b26, maxB26), label: r.name, b26: r.b26 }],
+        backgroundColor: c.bg,
+        borderColor: c.bd,
+        borderWidth: r.b26 === 0 ? 2 : 1.5,
+        borderDash: r.b26 === 0 ? [3,2] : [],
+        _labelColor: c.lc
+      };
+    });
+    const plugin = makeQuadrantPlugin('oppty');
+    const opts = makeQuadrantOptions('行业增速（%）→', '本品市占率变化（pct）↑');
+    // 图二单独加图例说明
+    opts.plugins.legend = { display: false };
+    new Chart(document.getElementById('quadrantOpptyChart'), {
+      type: 'bubble', data: { datasets }, options: opts,
+      plugins: [plugin, {
+        id: 'opptyLegend',
+        afterDraw(chart) {
+          const {ctx, chartArea:{right, top}} = chart;
+          const items = [
+            {color:'rgba(22,163,74,0.7)',  label:'已有份额 + 增长'},
+            {color:'rgba(37,99,235,0.7)',  label:'空白品类 + 增长（优先布局）'},
+            {color:'rgba(220,38,38,0.6)',  label:'有份额但流失 + 增长'},
+            {color:'rgba(148,163,184,0.7)',label:'下行赛道'},
+          ];
+          ctx.save();
+          let lx = right - 190, ly = top + 16;
+          items.forEach(item => {
+            ctx.fillStyle = item.color;
+            ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#374151';
+            ctx.font = '10px PingFang SC, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(item.label, lx + 9, ly + 3.5);
+            ly += 16;
+          });
+          ctx.restore();
+        }
+      }]
+    });
+  })();
+  </script>
+
+  <!-- 2.2 价格带 -->
+  <div class="section-subtitle" style="margin-top:24px;">2.2 核心类目价格带分析（巴拉巴拉 vs 安踏儿童 vs 笛莎）</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">巴拉巴拉 价格带分布（按销售额）</div>
+      <div class="chart-wrap"><canvas id="balaPrice"></canvas></div>
+      <div class="alert alert-insight" style="margin-top:12px;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-content"><strong>价格带结论</strong><p>51-100元是绝对主力（47.7%），100元以内合计59.3%，平价定位清晰。T恤75%集中51-100元，与大盘偏好吻合。</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">安踏儿童 价格带分布（按销售额）</div>
+      <div class="chart-wrap"><canvas id="antaPrice"></canvas></div>
+      <div class="alert alert-insight" style="margin-top:12px;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-content"><strong>价格带结论</strong><p>中高端为主（151-300元合计58%），主要靠鞋类拉高均价。服装类T恤主打143元区间，与巴拉巴拉价格带错位。</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">笛莎 价格带分布（按销售额）</div>
+      <div class="chart-wrap"><canvas id="deeshaPrice"></canvas></div>
+      <div class="alert alert-insight" style="margin-top:12px;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-content"><strong>价格带结论</strong><p>与巴拉巴拉高度重叠（51-100元占49%），是直接价格竞争对手。品类转向内衣文胸是差异化策略。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.3 生命周期 -->
+
+  <!-- 2.3 生命周期 & 机会判断 -->
+  <div class="section-subtitle" style="margin-top:24px;">2.3 品类生命周期判断</div>
+  <div class="card">
+    <div class="chart-wrap-sm"><canvas id="lifecycle"></canvas></div>
+    <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;">
+      <div class="alert alert-opportunity" style="flex:1;min-width:220px;">
+        <div class="alert-icon">🚀</div>
+        <div class="alert-content"><strong>成长期（加速布局）</strong><p>儿童户外服(+68%)、马甲(+66%)、儿童POLO(+36%)、背心吊带(+30%)、内衣裤(+37%)</p></div>
+      </div>
+      <div class="alert alert-insight" style="flex:1;min-width:220px;">
+        <div class="alert-icon">📊</div>
+        <div class="alert-content"><strong>成熟期（稳定经营）</strong><p>T恤(+9.7%)、裤子(+15%)、卫衣/绒衫(+13%)、儿童牛仔(+16%)、衬衫(+21%)</p></div>
+      </div>
+      <div class="alert alert-risk" style="flex:1;min-width:220px;">
+        <div class="alert-icon">📉</div>
+        <div class="alert-content"><strong>衰退期（精简SKU）</strong><p>套装(-17%)、外套(-13%)、裙子(-19%)、连身衣(-18%)、亲子装(-40%)</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.4 当前爆款特征 -->
+  <div class="section-subtitle" style="margin-top:24px;">2.4 当前最畅销爆款 / 黑马款特征</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">巴拉巴拉 2026年 TOP10 爆款（3月1-17日）</div>
+      <table class="data-table">
+        <thead><tr><th>商品名称</th><th>类目</th><th>价格</th><th>销售额</th><th>核心卖点</th></tr></thead>
+        <tbody>
+          <tr><td>儿童夏季T恤纯棉【两件装】</td><td>T恤</td><td>75-76元</td><td class="num">262万</td><td>纯棉/亲子/两件装</td></tr>
+          <tr><td>轻薄排骨羽绒服</td><td>羽绒服</td><td>170-174元</td><td class="num">205万</td><td>轻薄/防泼水</td></tr>
+          <tr><td>儿童夏季T恤纯棉【两件装B】</td><td>T恤</td><td>73-75元</td><td class="num">173万</td><td>纯棉/运动休闲</td></tr>
+          <tr><td>迷你巴拉学院套装</td><td>套装</td><td>165-179元</td><td class="num">134万</td><td>学院风/透气/2026春</td></tr>
+          <tr><td>balaOne 儿童毛衣</td><td>毛衣</td><td>73-79元</td><td class="num">101万</td><td>春秋/balaOne系列</td></tr>
+          <tr><td>balaOne 儿童衬衫</td><td>衬衫</td><td>83-89元</td><td class="num">95万</td><td>中大童/男女童通用</td></tr>
+          <tr><td>工装裤 儿童裤子</td><td>裤子</td><td>86-89元</td><td class="num">84万</td><td>工装/宽松/时尚</td></tr>
+          <tr><td>balaOne 中大童外套</td><td>外套</td><td>73-79元</td><td class="num">81万</td><td>春款/男女通用</td></tr>
+          <tr><td>balaOne 儿童外套</td><td>外套</td><td>178元</td><td class="num">80万</td><td>宝宝/上衣/2026</td></tr>
+          <tr><td>balaOne 儿童长袖T恤</td><td>T恤</td><td>43-49元</td><td class="num">77万</td><td>内衣/春秋/男女童</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-insight" style="margin-top:12px;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-content"><strong>爆款规律总结</strong><p>① 两件装/套件价值感强（75-80元档最畅销）② balaOne子品牌系列化运营形成矩阵 ③ 纯棉+功能（凉感/防泼水）是核心卖点标签 ④ 工装/学院风等细分审美正在崛起</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">黑马款特征（高增长 × 新兴需求）</div>
+      <div style="margin-top:8px;">
+        <div class="alert alert-opportunity">
+          <div class="alert-icon">🔥</div>
+          <div class="alert-content"><strong>防晒服类目：超级黑马（3月放量前兆）</strong><p>大盘儿童防晒服仅+3.5%，但搜索量已开始攀升。3月中下旬是上量临界点，预计4月爆发。当前有爆款锁定先机机会。</p></div>
+        </div>
+        <div class="alert alert-opportunity" style="margin-top:8px;">
+          <div class="alert-icon">🔥</div>
+          <div class="alert-content"><strong>儿童户外服：最快增速类目（+68%）</strong><p>户外风浸透童装，含冲锋衣/功能外套/速干裤。主力价格150-250元，消费者愿意为功能支付溢价。</p></div>
+        </div>
+        <div class="alert alert-opportunity" style="margin-top:8px;">
+          <div class="alert-icon">🔥</div>
+          <div class="alert-content"><strong>背心吊带/内衣类：新兴潜力</strong><p>背心吊带+30%、内衣裤+37%，夏季备货进行时。巴拉巴拉已有内裤+25.6%增速，需要加速布局。</p></div>
+        </div>
+        <div class="alert alert-action" style="margin-top:8px;">
+          <div class="alert-icon">⚡</div>
+          <div class="alert-content"><strong>内容形式：黑马视频特征</strong><p>① 真实穿着场景 > 棚拍 ② "买贵了"式对比种草效果最好 ③ 亲子同框有特殊号召力 ④ 15-30秒完播率更高，直接展示穿着效果转化更强</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.5 流量结构变化 -->
+  <div class="section-subtitle" style="margin-top:24px;">2.5 平台流量 & 渠道结构变化</div>
+
+  <!-- 一：三渠道各自独立对比卡（大盘+本品，2025 vs 2026） -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+
+    <!-- 直播 -->
+    <div class="card" style="padding:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:#FF6B35;">🎙️ 直播渠道</div>
+        <span style="font-size:10px;background:#FFF5F0;color:#FF6B35;padding:2px 8px;border-radius:10px;">大盘+3.2% · 本品-7.9%</span>
+      </div>
+      <div style="height:160px;"><canvas id="chLive"></canvas></div>
+      <div style="margin-top:10px;font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="background:#F9FAFB;border-radius:6px;padding:7px;">
+          <div style="color:#9CA3AF;">大盘 2026</div>
+          <div style="font-weight:700;font-size:14px;color:#374151;">25,866万</div>
+          <div class="yoy-up" style="font-size:10px;">▲ +3.2%</div>
+        </div>
+        <div style="background:#FFF5F0;border-radius:6px;padding:7px;">
+          <div style="color:#FF6B35;">本品 2026</div>
+          <div style="font-weight:700;font-size:14px;color:#FF6B35;">5,185万</div>
+          <div class="yoy-down" style="font-size:10px;">▼ -7.9%</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#DC2626;background:#FEF2F2;border-radius:6px;padding:6px 10px;margin-top:6px;">⚠️ 本品跑输大盘 11.1 pct，主阵地承压</div>
+    </div>
+
+    <!-- 短视频 -->
+    <div class="card" style="padding:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:#D97706;">📱 短视频渠道</div>
+        <span style="font-size:10px;background:#FFFBEB;color:#D97706;padding:2px 8px;border-radius:10px;">大盘+24.7% · 本品+513%</span>
+      </div>
+      <div style="height:160px;"><canvas id="chVideo"></canvas></div>
+      <div style="margin-top:10px;font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="background:#F9FAFB;border-radius:6px;padding:7px;">
+          <div style="color:#9CA3AF;">大盘 2026</div>
+          <div style="font-weight:700;font-size:14px;color:#374151;">3,696万</div>
+          <div class="yoy-up" style="font-size:10px;">▲ +24.7%</div>
+        </div>
+        <div style="background:#FFFBEB;border-radius:6px;padding:7px;">
+          <div style="color:#D97706;">本品 2026</div>
+          <div style="font-weight:700;font-size:14px;color:#D97706;">516万</div>
+          <div class="yoy-up" style="font-size:10px;">▲ +513%</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#16A34A;background:#F0FDF4;border-radius:6px;padding:6px 10px;margin-top:6px;">✅ 爆发增长，占比仍低于大盘 2.7 pct，潜力大</div>
+    </div>
+
+    <!-- 商品卡 -->
+    <div class="card" style="padding:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:#2563EB;">🛒 商品卡渠道</div>
+        <span style="font-size:10px;background:#EFF6FF;color:#2563EB;padding:2px 8px;border-radius:10px;">大盘+18.4% · 本品-10.7%</span>
+      </div>
+      <div style="height:160px;"><canvas id="chCard"></canvas></div>
+      <div style="margin-top:10px;font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="background:#F9FAFB;border-radius:6px;padding:7px;">
+          <div style="color:#9CA3AF;">大盘 2026</div>
+          <div style="font-weight:700;font-size:14px;color:#374151;">8,236万</div>
+          <div class="yoy-up" style="font-size:10px;">▲ +18.4%</div>
+        </div>
+        <div style="background:#EFF6FF;border-radius:6px;padding:7px;">
+          <div style="color:#2563EB;">本品 2026</div>
+          <div style="font-weight:700;font-size:14px;color:#2563EB;">1,630万</div>
+          <div class="yoy-down" style="font-size:10px;">▼ -10.7%</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#DC2626;background:#FEF2F2;border-radius:6px;padding:6px 10px;margin-top:6px;">⚠️ 大盘强劲增长，本品逆势下滑，需补强SEO+主图</div>
+    </div>
+  </div>
+  <!-- 渠道核心数字卡片 -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+    <div style="background:linear-gradient(135deg,#fff5f0,#fff);border:1px solid #FFD5C0;border-radius:12px;padding:16px 18px;">
+      <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.5px;">🎙️ 直播渠道</div>
+      <div style="font-size:22px;font-weight:800;color:#FF6B35;margin:4px 0;">5,185万</div>
+      <div style="font-size:12px;color:#DC2626;font-weight:600;">▼ -7.9% <span style="color:#9CA3AF;font-weight:400;">vs 2025（5,631万）</span></div>
+      <div style="font-size:11px;color:#6B7280;margin-top:4px;">占本品总销售 <strong>70.9%</strong>（2025：74.7%）</div>
+      <div style="font-size:11px;color:#6B7280;">大盘直播占比 <strong>68.4%</strong></div>
+    </div>
+    <div style="background:linear-gradient(135deg,#fffbf0,#fff);border:1px solid #FDE68A;border-radius:12px;padding:16px 18px;">
+      <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.5px;">📱 短视频渠道</div>
+      <div style="font-size:22px;font-weight:800;color:#D97706;margin:4px 0;">516万</div>
+      <div style="font-size:12px;color:#16A34A;font-weight:600;">▲ +513% <span style="color:#9CA3AF;font-weight:400;">vs 2025（84万）</span></div>
+      <div style="font-size:11px;color:#6B7280;margin-top:4px;">占本品总销售 <strong>7.1%</strong>（2025：1.1%）</div>
+      <div style="font-size:11px;color:#6B7280;">大盘短视频占比 <strong>9.8%</strong>，仍有差距</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#f0f6ff,#fff);border:1px solid #BFDBFE;border-radius:12px;padding:16px 18px;">
+      <div style="font-size:11px;color:#9CA3AF;font-weight:600;letter-spacing:.5px;">🛒 商品卡渠道</div>
+      <div style="font-size:22px;font-weight:800;color:#2563EB;margin:4px 0;">1,630万</div>
+      <div style="font-size:12px;color:#DC2626;font-weight:600;">▼ -10.7% <span style="color:#9CA3AF;font-weight:400;">vs 2025（1,825万）</span></div>
+      <div style="font-size:11px;color:#6B7280;margin-top:4px;">占本品总销售 <strong>22.3%</strong>（2025：24.2%）</div>
+      <div style="font-size:11px;color:#6B7280;">大盘商品卡占比 <strong>21.8%</strong>，与大盘持平</div>
+    </div>
+  </div>
+
+  <!-- 二：vs 大盘结构对比 + 下钻流量来源 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+    <div class="card">
+      <div class="card-title">本品 vs 大盘渠道结构（2026，%）</div>
+      <div style="height:220px;"><canvas id="channelVsMarket"></canvas></div>
+      <!-- 差值视觉条 -->
+      <div style="margin-top:12px;font-size:12px;">
+        <div style="font-size:11px;color:#9CA3AF;margin-bottom:6px;font-weight:500;">本品与大盘的差距（pct）</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:56px;font-size:11px;color:#FF6B35;font-weight:600;">🎙️ 直播</span>
+            <div style="flex:1;background:#F3F4F6;border-radius:4px;height:8px;position:relative;">
+              <div style="position:absolute;right:50%;width:4.9%;background:#16A34A;height:8px;border-radius:4px 0 0 4px;"></div>
+              <div style="position:absolute;left:50%;width:1px;background:#9CA3AF;height:12px;top:-2px;"></div>
+            </div>
+            <span class="yoy-up" style="font-size:11px;width:44px;text-align:right;">+2.5 pct</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:56px;font-size:11px;color:#D97706;font-weight:600;">📱 短视频</span>
+            <div style="flex:1;background:#F3F4F6;border-radius:4px;height:8px;position:relative;">
+              <div style="position:absolute;left:50%;width:5.5%;background:#DC2626;height:8px;border-radius:0 4px 4px 0;"></div>
+              <div style="position:absolute;left:50%;width:1px;background:#9CA3AF;height:12px;top:-2px;"></div>
+            </div>
+            <span class="yoy-down" style="font-size:11px;width:44px;text-align:right;">-2.7 pct</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:56px;font-size:11px;color:#2563EB;font-weight:600;">🛒 商品卡</span>
+            <div style="flex:1;background:#F3F4F6;border-radius:4px;height:8px;position:relative;">
+              <div style="position:absolute;right:50%;width:1%;background:#16A34A;height:8px;border-radius:4px 0 0 4px;"></div>
+              <div style="position:absolute;left:50%;width:1px;background:#9CA3AF;height:12px;top:-2px;"></div>
+            </div>
+            <span class="yoy-up" style="font-size:11px;width:44px;text-align:right;">+0.5 pct</span>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#9CA3AF;margin-top:8px;">← 本品低于大盘 &nbsp;｜&nbsp; 本品高于大盘 →</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">直播间流量来源下钻（2025 vs 2026，%）</div>
+      <div style="height:200px;"><canvas id="trafficCompare"></canvas></div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;">
+        <div style="background:#FEF2F2;border-radius:6px;padding:7px 10px;">
+          <strong style="color:#DC2626;">关注流量 -9.5 pct</strong>
+          <p style="color:#374151;margin-top:2px;">粉丝粘性下滑，粉丝运营能力待加强</p>
+        </div>
+        <div style="background:#F0FDF4;border-radius:6px;padding:7px 10px;">
+          <strong style="color:#16A34A;">推荐 feed +5.9 pct</strong>
+          <p style="color:#374151;margin-top:2px;">平台推荐增强，受益于内容质量提升</p>
+        </div>
+        <div style="background:#FFFBEB;border-radius:6px;padding:7px 10px;">
+          <strong style="color:#D97706;">短视频引流 +2.5 pct</strong>
+          <p style="color:#374151;margin-top:2px;">短视频→直播联动效果开始显现</p>
+        </div>
+        <div style="background:#FEF2F2;border-radius:6px;padding:7px 10px;">
+          <strong style="color:#DC2626;">付费流量 +2.3 pct</strong>
+          <p style="color:#374151;margin-top:2px;">自然增长减弱后对投流依赖增加</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 三：趋势研判 + 本品建议 -->
+  <div class="card" style="margin-top:16px;">
+    <div class="card-title" style="font-size:13px;font-weight:700;color:var(--dark);text-transform:none;letter-spacing:0;">📊 趋势研判 · 对巴拉巴拉意味着什么？</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+
+      <div style="border-left:3px solid #DC2626;padding-left:12px;">
+        <div style="font-size:12px;font-weight:700;color:#DC2626;">🔴 直播：主阵地承压，效率下滑</div>
+        <div style="font-size:12px;color:#374151;margin-top:6px;line-height:1.8;">
+          <strong>现象：</strong>销售额 -7.9%，关注流量 -9.5 pct，直播依赖度仍高达 70.9%。<br>
+          <strong>根因：</strong>粉丝增长停滞，自然流量依赖推荐而非老粉回访，人效下降。<br>
+          <strong>建议：</strong>
+          <ul style="padding-left:14px;margin-top:4px;font-size:11px;line-height:1.8;">
+            <li>设置每周「粉丝专属场」（优惠/新品预览），重建关注价值</li>
+            <li>直播场次结构优化：缩减低效场次，聚焦周末黄金场和节点场</li>
+            <li>主播话术升级：从"卖货"转向"穿搭顾问"，提升停留与转化</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="border-left:3px solid #16A34A;padding-left:12px;">
+        <div style="font-size:12px;font-weight:700;color:#16A34A;">🟢 短视频：增速亮眼，结构仍欠缺</div>
+        <div style="font-size:12px;color:#374151;margin-top:6px;line-height:1.8;">
+          <strong>现象：</strong>销售额 +513%（84→516万），但占比 7.1% vs 大盘 9.8%，仍低 2.7 pct。<br>
+          <strong>根因：</strong>破局初期，KOL 数量 +54%（1023→1572）带动快速增长，尚未到结构性成熟阶段。<br>
+          <strong>建议：</strong>
+          <ul style="padding-left:14px;margin-top:4px;font-size:11px;line-height:1.8;">
+            <li>向大盘 9.8% 看齐，仍有 2-3 倍增长空间</li>
+            <li>建立"短视频→直播"漏斗：爆款视频 + 直播专属优惠 + 24h 内承接转化</li>
+            <li>提升达人分层质量：头部背书 + 腰尾真实种草，避免刷量</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="border-left:3px solid #2563EB;padding-left:12px;">
+        <div style="font-size:12px;font-weight:700;color:#2563EB;">🔵 商品卡：与大盘持平，仍有空间</div>
+        <div style="font-size:12px;color:#374151;margin-top:6px;line-height:1.8;">
+          <strong>现象：</strong>销售额 -10.7%，占比 22.3% vs 大盘 21.8%，基本持平但绝对值下滑。<br>
+          <strong>根因：</strong>商品卡严重依赖搜索关键词与主图质量，当前优化程度不足。<br>
+          <strong>建议：</strong>
+          <ul style="padding-left:14px;margin-top:4px;font-size:11px;line-height:1.8;">
+            <li>核心 SKU 逐一做主图 A/B 测试：儿童上身 vs 平铺</li>
+            <li>标题补齐"2026春季+年龄段+功能词"，抓住换季搜索流量</li>
+            <li>T恤/裤子等高流量品设置"关联推荐"套餐，提升连带率</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-insight" style="margin-top:14px;">
+      <div class="alert-icon">💡</div>
+      <div class="alert-content">
+        <strong>核心矛盾：直播天花板已现，短视频是唯一增量引擎，需要从"辅助"提升到"战略渠道"</strong>
+        <p>2025→2026，直播渠道从 74.7% 降至 70.9%，大盘也在同步下调。这是行业级趋势，非本品个案。短视频渠道大盘占比已达 9.8%，而本品仅 7.1%。未来 2 个季度，将短视频占比从 7% 提升至 12-15%，是最具性价比的增长路径——无需额外开播成本，内容产出边际成本低，且短视频流量可反哺直播间关注流量，形成正向飞轮。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.6 最容易起量内容 -->
+  <div class="section-subtitle" style="margin-top:24px;">2.6 当前最容易起量的内容形态</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">🎬 直播：高转化场景</div>
+      <ul style="list-style:none;margin-top:8px;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>亲子同场景直播</strong>：父母+孩子同时试穿，情感化强，停留时长↑</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>开学/换季节点强化</strong>：需求具体，易触发即时购买</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>限时捆绑套餐</strong>：T恤+裤子组合拉高客单价</li>
+        <li style="padding:8px 0;font-size:13px;">📌 <strong>功能演示</strong>：防水/凉感/弹性实测，降低决策成本</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">📱 短视频：爆量内容特征</div>
+      <ul style="list-style:none;margin-top:8px;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>穿搭合集</strong>：5套以上开箱穿搭，适合春季换季节点</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>户外场景</strong>：带孩子旅行/运动，功能性产品天然契合</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>"妈妈选品"视角</strong>：第一人称讲述，信任感强</li>
+        <li style="padding:8px 0;font-size:13px;">📌 <strong>对比测评</strong>："同价位童装我只买巴拉巴拉"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">🛒 商品卡：承接关键</div>
+      <ul style="list-style:none;margin-top:8px;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>主图优化</strong>：儿童上身穿着>平铺/挂拍，转化率差异30%+</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>标题关键词</strong>：年份+季节+功能+年龄段，搜索承接精准</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;">📌 <strong>评价引导</strong>：UGC带场景照片的评价决定复购</li>
+        <li style="padding:8px 0;font-size:13px;">📌 <strong>关联推荐</strong>：T恤→同系列裤子，提升连带率</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2.7 未来趋势 -->
+  <div class="section-subtitle" style="margin-top:24px;">2.7 未来2-4周趋势判断（3/18 - 4/14）</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">📈 机会窗口</div>
+      <div style="margin-top:8px;">
+        <div class="alert alert-opportunity">
+          <div class="alert-icon">☀️</div>
+          <div class="alert-content"><strong>防晒服：窗口即将开启（高优先级）</strong><p>3月下旬至4月是童装防晒服搜索高峰前夕，提前2周备货+内容是关键。主推100-150元防紫外线功能款，视频素材需强调UPF指数和凉感科技。</p></div>
+        </div>
+        <div class="alert alert-opportunity" style="margin-top:8px;">
+          <div class="alert-icon">🌿</div>
+          <div class="alert-content"><strong>春季T恤/裤子：放量核心期</strong><p>4月气温回升，T恤+休闲裤组合是主力品类。3月已是布局期，4月1-20日将是爆发窗口。balaOne两件装模式可复用。</p></div>
+        </div>
+        <div class="alert alert-opportunity" style="margin-top:8px;">
+          <div class="alert-icon">⛺</div>
+          <div class="alert-content"><strong>儿童户外服：清明节点放量</strong><p>清明假期（4月3-5日）家庭户外活动带动儿童户外服强需求，提前1-2周通过达人矩阵预热可获取节点流量红利。</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ 风险预警</div>
+      <div style="margin-top:8px;">
+        <div class="alert alert-risk">
+          <div class="alert-icon">📉</div>
+          <div class="alert-content"><strong>套装/外套去库存压力持续</strong><p>套装-17%、外套-13%，下滑趋势短期不会逆转。3月仍有冬品库存消化压力，建议快速清货+聚焦减少冗余SKU，腾挪资源给春季品类。</p></div>
+        </div>
+        <div class="alert alert-risk" style="margin-top:8px;">
+          <div class="alert-icon">💸</div>
+          <div class="alert-content"><strong>流量成本上升</strong><p>付费流量占比从11.2%升至13.5%，ROI压力增大。在增投之前，建议先优化内容质量，提升自然流量比例，再决定是否加大付费投入。</p></div>
+        </div>
+        <div class="alert alert-risk" style="margin-top:8px;">
+          <div class="alert-icon">🥊</div>
+          <div class="alert-content"><strong>亲子装品类快速萎缩(-40%)</strong><p>消费者对亲子装的购买决策正在转向更"有穿搭价值"的单品组合，巴拉巴拉若持续依赖亲子装IP调性，将面临流量减少风险。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3: 竞品分析 ============ -->
+<section id="competitor" class="section">
+  <div class="section-title">③ 竞品分析 <span style="font-size:12px;color:var(--gray);font-weight:400;">优先使用提供数据（儿童品类：安踏儿童/笛莎/幼岚/爬爬/woobaby）</span></div>
+
+  <!-- 3.1 竞品总览 -->
+  <div class="section-subtitle">3.1 竞品品类结构总览对比</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">核心竞品 销售额 & 渠道结构（2026 vs 2025，3月1-17日）</div>
+    <div class="chart-wrap-lg"><canvas id="competitorOverview"></canvas></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">竞品经营质量对比（2026）</div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>品牌</th>
+            <th class="num">销售额(万)</th>
+            <th>同比YoY</th>
+            <th>直播占比</th>
+            <th>视频占比</th>
+            <th>商品卡</th>
+            <th>转化率</th>
+            <th>带货达人</th>
+            <th>核心战略</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5;">
+            <td><strong>巴拉巴拉（本品）</strong></td>
+            <td class="num"><strong>7,308</strong></td>
+            <td><span class="yoy-down">▼-2.8%</span></td>
+            <td>70.8%</td>
+            <td>7.1%</td>
+            <td>22.2%</td>
+            <td>4.02%</td>
+            <td>1,572</td>
+            <td>达人主导+自播补充</td>
+          </tr>
+          <tr>
+            <td><strong>安踏儿童</strong></td>
+            <td class="num">7,773</td>
+            <td><span class="yoy-down">▼-5.3%</span></td>
+            <td>72.4%</td>
+            <td>4.1%</td>
+            <td>23.5%</td>
+            <td>4.28%</td>
+            <td>2,100</td>
+            <td>大达人矩阵+品牌自播</td>
+          </tr>
+          <tr>
+            <td><strong>笛莎</strong></td>
+            <td class="num">2,193</td>
+            <td><span class="yoy-down">▼-2.4%</span></td>
+            <td>62.7%</td>
+            <td>20.1%</td>
+            <td>17.2%</td>
+            <td>4.9%</td>
+            <td>1,695</td>
+            <td>视频爆款+内衣差异化</td>
+          </tr>
+          <tr>
+            <td><strong>woobaby</strong></td>
+            <td class="num">625</td>
+            <td><span class="yoy-up">▲+124%</span></td>
+            <td>82.4%</td>
+            <td>2.1%</td>
+            <td>15.5%</td>
+            <td>3.69%</td>
+            <td>505</td>
+            <td>直播放量极致</td>
+          </tr>
+          <tr>
+            <td><strong>幼岚</strong></td>
+            <td class="num">457</td>
+            <td><span class="yoy-down">▼-42.4%</span></td>
+            <td>79.8%</td>
+            <td>6.4%</td>
+            <td>13.8%</td>
+            <td>4.12%</td>
+            <td>233</td>
+            <td>直播单品爆款</td>
+          </tr>
+          <tr>
+            <td><strong>爬爬</strong></td>
+            <td class="num">645</td>
+            <td><span class="yoy-down">▼-31.5%</span></td>
+            <td>54.9%</td>
+            <td>19.2%</td>
+            <td>25.9%</td>
+            <td>3.57%</td>
+            <td>1,547</td>
+            <td>视频+商品卡双驱动</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 品类Tab -->
+  <div class="section-subtitle" style="margin-top:24px;">3.2 核心品类竞品下探分析</div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('tshirt')">T恤</button>
+    <button class="tab-btn" onclick="switchTab('pants')">裤子</button>
+    <button class="tab-btn" onclick="switchTab('jacket')">外套</button>
+    <button class="tab-btn" onclick="switchTab('sunprotect')">防晒</button>
+    <button class="tab-btn" onclick="switchTab('suit')">套装</button>
+  </div>
+
+  <!-- T恤 Tab -->
+  <div id="tab-tshirt" class="tab-content active">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">T恤类目 竞品对比</div>
+        <table class="data-table">
+          <thead><tr><th>品牌</th><th>T恤销售额(万)</th><th>同比</th><th>主力价格段</th><th>核心差异</th></tr></thead>
+          <tbody>
+            <tr style="background:#FFF5F5;"><td><strong>巴拉巴拉</strong></td><td class="num">1,798</td><td><span class="yoy-up">▲+8.2%</span></td><td>51-100元</td><td>纯棉/两件装/balaOne</td></tr>
+            <tr><td>安踏儿童</td><td class="num">741</td><td><span class="yoy-up">▲+143.8%</span></td><td>101-150元</td><td>功能布料/运动科技</td></tr>
+            <tr><td>笛莎</td><td class="num">157</td><td><span class="yoy-down">▼-21.6%</span></td><td>51-100元</td><td>女童专属/甜美风</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-insight" style="margin-top:12px;">
+          <div class="alert-icon">💡</div>
+          <div class="alert-content"><strong>T恤竞争判断</strong><p>巴拉巴拉是T恤绝对领先者（2倍于安踏儿童），增速健康。安踏儿童T恤高增速来自"破零"效应，价格段互不干扰。笛莎T恤下滑是其战略转向的结果。对我方意味着：T恤阵地稳固，需要在功能化（凉感/速干）上做升级，与安踏形成科技功能的差异对话。</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">T恤价格带竞争格局</div>
+        <div class="chart-wrap"><canvas id="tshirtPrice"></canvas></div>
+        <div class="alert alert-opportunity" style="margin-top:12px;">
+          <div class="alert-icon">⚡</div>
+          <div class="alert-content"><strong>可执行动作</strong><p>① 延续两件装策略，主打75-80元黄金价格带 ② 开发"凉感纯棉"联合卖点，抢占功能认知 ③ 针对安踏儿童101-150元用户，推出大童运动T强化竞争</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 裤子 Tab -->
+  <div id="tab-pants" class="tab-content">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">裤子类目分析（大盘+15%，机会明确）</div>
+        <table class="data-table">
+          <thead><tr><th>品牌</th><th>裤子销售额(万)</th><th>同比</th><th>主力款型</th><th>价格带</th></tr></thead>
+          <tbody>
+            <tr style="background:#FFF5F5;"><td><strong>巴拉巴拉</strong></td><td class="num">781</td><td><span class="yoy-down">▼-16.5%</span></td><td>休闲裤/工装裤</td><td>86-89元</td></tr>
+            <tr><td>安踏儿童</td><td class="num">596</td><td><span class="yoy-up">▲+29.6%</span></td><td>运动裤</td><td>101-150元</td></tr>
+            <tr><td>笛莎</td><td class="num">210</td><td><span class="yoy-up">▲+43.6%</span></td><td>休闲裤</td><td>51-100元</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-risk" style="margin-top:12px;">
+          <div class="alert-icon">🚨</div>
+          <div class="alert-content"><strong>裤子竞争判断（高风险）</strong><p>大盘+15%，巴拉巴拉却-16.5%，严重跑输市场。安踏儿童运动裤+29.6%、笛莎+43.6%，都在抢占这个增量市场。对我方意味着：裤子是最紧迫的补课品类，需要在工装/户外运动裤上强化，并提升视频内容产出。</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">裤子竞品动作分析</div>
+        <div class="alert alert-insight">
+          <div class="alert-icon">🔍</div>
+          <div class="alert-content"><strong>安踏儿童：运动裤策略解读</strong><p>以"儿童运动裤"为搜索词布局，结合跑步/篮球场景，打功能+品牌认知双重信任。主力价格101-150元，比巴拉巴拉高30-50元，但通过功能讲述建立了合理性。</p></div>
+        </div>
+        <div class="alert alert-action" style="margin-top:8px;">
+          <div class="alert-icon">⚡</div>
+          <div class="alert-content"><strong>可执行动作</strong><p>① 立即
+提升工装裤/户外裤视频内容产量，目标每周5条以上达人视频 ② 开发"工装宽松裤"专题直播专场，聚焦单品爆款逻辑 ③ 商品卡补足搜索词：工装裤/宽松裤/春季男童裤/运动裤男女通用</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 外套 Tab -->
+  <div id="tab-jacket" class="tab-content">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">外套类目分析（大盘-12.7%，策略性防守）</div>
+        <table class="data-table">
+          <thead><tr><th>品牌</th><th>外套销售额(万)</th><th>同比</th><th>主力款</th><th>策略</th></tr></thead>
+          <tbody>
+            <tr style="background:#FFF5F5;"><td><strong>巴拉巴拉</strong></td><td class="num">1,415</td><td><span class="yoy-flat">≈+0.2%</span></td><td>春季外套/balaOne</td><td>精选主推</td></tr>
+            <tr><td>笛莎</td><td class="num">484</td><td><span class="yoy-down">▼-24.1%</span></td><td>轻薄外套</td><td>快速清货</td></tr>
+            <tr><td>安踏儿童</td><td>—</td><td>—</td><td>主攻运动夹克</td><td>功能外套独立定位</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-insight" style="margin-top:12px;">
+          <div class="alert-icon">💡</div>
+          <div class="alert-content"><strong>外套竞争判断</strong><p>大盘收缩但巴拉巴拉外套基本持平，说明在存量市场中份额在提升。balaOne系列是抓住中端市场的有效抓手。对我方意味着：维持现有节奏，重点是把外套与裤子/T恤做搭配组合销售，而非单独放量。</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">外套机会细分</div>
+        <div class="alert alert-opportunity">
+          <div class="alert-icon">🎯</div>
+          <div class="alert-content"><strong>户外风外套是增量机会</strong><p>儿童户外服+68%，其中冲锋衣/防风外套是主要贡献。当前巴拉巴拉外套以普通款为主，缺少功能性户外定位的外套。在巴拉巴拉的设计调性下，可开发"轻户外"联名或功能外套，填补这个增量。</p></div>
+        </div>
+        <div class="alert alert-action" style="margin-top:8px;">
+          <div class="alert-icon">⚡</div>
+          <div class="alert-content"><strong>可执行动作</strong><p>① 提取现有SKU中具有户外特征的外套（防风/轻量），定向做户外场景内容 ② 清明节前1周，制作"亲子户外穿搭"合集内容，外套作为搭配核心商品</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 防晒 Tab -->
+  <div id="tab-sunprotect" class="tab-content">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">防晒类目分析（大盘+3.5%，但即将爆发）</div>
+        <div class="alert alert-opportunity">
+          <div class="alert-icon">☀️</div>
+          <div class="alert-content"><strong>防晒是3月底至4月最大机会品类</strong><p>当前3.5%增速是3月1-17日数据，气温较低。随着3月底4月初气温攀升，防晒服将进入爆发期。主力价格带：儿童防晒服130-200元，保护孩子的功能需求驱动高溢价。</p></div>
+        </div>
+        <div class="alert alert-insight" style="margin-top:8px;">
+          <div class="alert-icon">🔍</div>
+          <div class="alert-content"><strong>防晒竞品分析（主要竞争来自成人品牌延伸）</strong><p>美力城等成人防晒品牌已在抢占儿童防晒市场，主打"凉感+防紫外线"。巴拉巴拉在儿童防晒服上具有天然的品牌背书优势（专业童装），但当前内容声量不足。</p></div>
+        </div>
+        <div class="alert alert-action" style="margin-top:8px;">
+          <div class="alert-icon">⚡</div>
+          <div class="alert-content"><strong>高优先级行动</strong><p>立即准备防晒服内容素材，目标3月25日前上线第一波内容矩阵；主推UPF50+凉感款，价格定位100-150元段；与亲子类母婴达人合作是最快路径。</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">防晒爆款选品建议</div>
+        <div style="margin-top:8px;">
+          <table class="data-table">
+            <thead><tr><th>卖点维度</th><th>推荐方向</th><th>优先级</th></tr></thead>
+            <tbody>
+              <tr><td>防护性</td><td>UPF50+，防紫外线标注</td><td><span class="tag tag-high">高</span></td></tr>
+              <tr><td>舒适性</td><td>冰感/凉感面料，透气不憋闷</td><td><span class="tag tag-high">高</span></td></tr>
+              <tr><td>便携性</td><td>可折叠收纳，户外必备</td><td><span class="tag tag-mid">中</span></td></tr>
+              <tr><td>颜值</td><td>甜马卡龙色/学院条纹</td><td><span class="tag tag-mid">中</span></td></tr>
+              <tr><td>价格</td><td>100-150元主力，勿低于80元</td><td><span class="tag tag-high">高</span></td></tr>
+              <tr><td>亲子款</td><td>亲子同款防晒服，联动话题</td><td><span class="tag tag-mid">中</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 套装 Tab -->
+  <div id="tab-suit" class="tab-content">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">套装类目分析（大盘-17.4%，加速收缩）</div>
+        <table class="data-table">
+          <thead><tr><th>品牌</th><th>套装销售额(万)</th><th>同比</th><th>主力款</th><th>策略</th></tr></thead>
+          <tbody>
+            <tr style="background:#FFF5F5;"><td><strong>巴拉巴拉</strong></td><td class="num">441</td><td><span class="yoy-down">▼-28.4%</span></td><td>运动套装/学院套装</td><td>精简SKU</td></tr>
+            <tr><td>笛莎</td><td class="num">271</td><td><span class="yoy-up">▲+31.2%</span></td><td>休闲套装</td><td>主动增加SKU</td></tr>
+            <tr><td>迷你巴拉巴拉</td><td>—</td><td>—</td><td>学院套装(134万，TOP4)</td><td>子品牌主力类目</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-risk" style="margin-top:12px;">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-content"><strong>套装竞争判断</strong><p>大盘套装整体萎缩，巴拉巴拉套装-28.4%跑输市场。但笛莎套装+31.2%逆势增长，说明"有创新设计的套装"仍有市场。迷你巴拉的学院套装是证明。对我方意味着：主品牌套装需要大幅精简，但迷你巴拉的学院风套装可以成为子品牌差异化突破口。</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">套装策略建议</div>
+        <div class="alert alert-action">
+          <div class="alert-icon">🎯</div>
+          <div class="alert-content"><strong>分品牌套装差异化定位</strong><p>① 巴拉巴拉主品牌：减少传统运动套装，聚焦"工装/户外功能套装" ② 迷你巴拉：坚守学院风/精致套装，65-179元高性价比路线 ③ balaOne：推出"极简基础款套装"，主打颜色矩阵搭配逻辑</p></div>
+        </div>
+        <div class="alert alert-insight" style="margin-top:8px;">
+          <div class="alert-icon">💡</div>
+          <div class="alert-content"><strong>笛莎套装逆增的启示</strong><p>笛莎套装增长来自"内搭+外套"组合搭配逻辑的视频内容推动，而非单纯传统套装。巴拉巴拉应学习这种"套装=解决方案"的内容表达方式。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.3 竞品策略深度 -->
+  <div class="section-subtitle" style="margin-top:24px;">3.3 核心竞品策略深度拆解</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🏅 安踏儿童 — 真实战略意图</div>
+      <div style="margin-top:8px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="background:#EFF6FF;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#2563EB;font-weight:600;margin-bottom:4px;">直播策略</div>
+            <div style="font-size:12px;line-height:1.5;">自播+2100+达人矩阵并行；品牌自播强调"品牌故事+科技"；达人侧以"真实妈妈"为主</div>
+          </div>
+          <div style="background:#F0FDF4;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#16A34A;font-weight:600;margin-bottom:4px;">短视频策略</div>
+            <div style="font-size:12px;line-height:1.5;">运动场景为主，视频增速+160%。TOP视频：孩子穿新鞋跑跑跳跳的真实体验</div>
+          </div>
+          <div style="background:#FFF5F5;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#DC2626;font-weight:600;margin-bottom:4px;">真实意图</div>
+            <div style="font-size:12px;line-height:1.5;">用鞋品流量带服装，服装反哺品牌认知，最终目标是成为"儿童运动生活方式"品牌</div>
+          </div>
+          <div style="background:#FFFBEB;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#D97706;font-weight:600;margin-bottom:4px;">危险动作</div>
+            <div style="font-size:12px;line-height:1.5;">T恤+143%高增速说明正在抢占巴拉巴拉的基础款市场，但定价更高，是降维竞争</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:#ECFDF5;color:#065F46;padding:4px 10px;border-radius:20px;font-size:12px;">✅ 可抄：真实场景视频内容</span>
+          <span style="background:#ECFDF5;color:#065F46;padding:4px 10px;border-radius:20px;font-size:12px;">✅ 可抄：小体量达人矩阵快速铺量</span>
+          <span style="background:#FEF2F2;color:#991B1B;padding:4px 10px;border-radius:20px;font-size:12px;">❌ 不跟：跨品类(鞋+服)组合</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">👗 笛莎 — 真实战略意图</div>
+      <div style="margin-top:8px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="background:#EFF6FF;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#2563EB;font-weight:600;margin-bottom:4px;">直播策略</div>
+            <div style="font-size:12px;line-height:1.5;">直播转化率最高（4.9%），单场专题直播（内衣/发育专题），话题化获取精准用户</div>
+          </div>
+          <div style="background:#F0FDF4;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#16A34A;font-weight:600;margin-bottom:4px;">短视频策略</div>
+            <div style="font-size:12px;line-height:1.5;">视频占比20.1%，全竞品最高。TOP视频聚焦"女孩发育期内衣选品"，打情感+实用双触点</div>
+          </div>
+          <div style="background:#FFF5F5;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#DC2626;font-weight:600;margin-bottom:4px;">真实意图</div>
+            <div style="font-size:12px;line-height:1.5;">用内衣品类建立女童"发育陪伴"专业形象，从童装延伸到女童全品类，摆脱价格战</div>
+          </div>
+          <div style="background:#FFFBEB;padding:12px;border-radius:8px;">
+            <div style="font-size:11px;color:#D97706;font-weight:600;margin-bottom:4px;">机会警示</div>
+            <div style="font-size:12px;line-height:1.5;">笛莎卫衣+118%，正在蚕食巴拉巴拉的基础款市场，在价格相似的情况下内容质量更强</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:#ECFDF5;color:#065F46;padding:4px 10px;border-radius:20px;font-size:12px;">✅ 可抄：话题化内容创造（发育/季节/场景）</span>
+          <span style="background:#ECFDF5;color:#065F46;padding:4px 10px;border-radius:20px;font-size:12px;">✅ 可抄：视频占比拉高策略</span>
+          <span style="background:#FEF2F2;color:#991B1B;padding:4px 10px;border-radius:20px;font-size:12px;">❌ 不跟：内衣/文胸专项（非巴拉巴拉主调）</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 竞争差异总结 -->
+  <div class="card" style="margin-top:16px;">
+    <div class="card-title">🎯 竞品 VS 本品竞争差异总结</div>
+    <div class="grid-3" style="margin-top:12px;">
+      <div class="alert alert-risk">
+        <div class="alert-icon">📍</div>
+        <div class="alert-content"><strong>最大差距：视频内容力</strong><p>笛莎视频销售额占比20.1%，巴拉巴拉仅7.1%。内容差距直接体现在增量获取能力上。</p></div>
+      </div>
+      <div class="alert alert-risk">
+        <div class="alert-icon">📍</div>
+        <div class="alert-content"><strong>次大差距：达人矩阵质量</strong><p>安踏儿童2100个达人，巴拉巴拉1572个。数量差不大，但安踏儿童的视频销售额仅略高，说明巴拉巴拉视频人效更低。</p></div>
+      </div>
+      <div class="alert alert-opportunity">
+        <div class="alert-icon">💪</div>
+        <div class="alert-content"><strong>我方优势：品牌护城河</strong><p>转化率4.02%高于爬爬(3.57%)和woobaby(3.69%)，低于笛莎(4.9%)但品牌知名度远高于笛莎，具备放量基础。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: 舆情分析 ============ -->
+<section id="sentiment" class="section">
+  <div class="section-title">④ 舆情分析 <span style="font-size:12px;color:var(--gray);font-weight:400;">消费者行为洞察（基于公开评论 & 内容互动数据综合分析）</span></div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">🔥 消费者核心关注话题 TOP3</div>
+      <div style="margin-top:8px;">
+        <div style="padding:14px;background:#FFF5F5;border-radius:8px;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:600;color:#DC2626;margin-bottom:4px;">#1 面料体感：凉感/纯棉是最高频决策词</div>
+          <div style="font-size:12px;color:#374151;line-height:1.5;">30°+高温场景中，家长最关注孩子穿着舒适度。"纯棉""凉感""透气"出现在90%+的正向评价中。巴拉巴拉纯棉T恤爆款正是因此成立。</div>
+          <div style="margin-top:8px;"><span class="tag tag-high">对巴拉巴拉影响：高</span> <span style="font-size:12px;color:#374151;margin-left:8px;">需要动作：是 — 在所有春夏新品中强化"纯棉/凉感"标注</span></div>
+        </div>
+        <div style="padding:14px;background:#EFF6FF;border-radius:8px;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:600;color:#2563EB;margin-bottom:4px;">#2 耐穿性/性价比：多少钱洗了不变形</div>
+          <div style="font-size:12px;color:#374151;line-height:1.5;">童装消费者高度关注产品耐用性，"多洗了有没有缩水""起球不起球"是复购/留差评的关键。75-80元价格段的消费者耐久性期望更高。</div>
+          <div style="margin-top:8px;"><span class="tag tag-high">影响：高</span> <span style="font-size:12px;color:#374151;margin-left:8px;">需要动作：是 — 商详页增加耐久性测试展示</span></div>
+        </div>
+        <div style="padding:14px;background:#F0FDF4;border-radius:8px;">
+          <div style="font-size:13px;font-weight:600;color:#16A34A;margin-bottom:4px;">#3 尺码精准度：孩子的尺码买什么号</div>
+          <div style="font-size:12px;color:#374151;line-height:1.5;">童装退换货最大痛点。"标准码偏小/偏大""宝宝25kg该买哪个号"是最高频评论问题。精准的尺码指导直接影响转化率和退货率。</div>
+          <div style="margin-top:8px;"><span class="tag tag-high">影响：高</span> <span style="font-size:12px;color:#374151;margin-left:8px;">需要动作：是 — 直播间增加尺码答疑模块</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✅ 成交驱动因素 & ❌ 转化阻碍</div>
+      <div style="margin-top:8px;">
+        <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:8px;">▲ 成交驱动（为什么买）</div>
+        <table class="data-table">
+          <thead><tr><th>驱动因素</th><th>权重</th></tr></thead>
+          <tbody>
+            <tr><td>👕 品牌背书（巴拉巴拉专业童装信任）</td><td><span class="tag tag-high">高</span></td></tr>
+            <tr><td>💰 性价比（75-80元感知价值高）</td><td><span class="tag tag-high">高</span></td></tr>
+            <tr><td>🎁 两件装/套装形式感强（感觉划算）</td><td><span class="tag tag-high">高</span></td></tr>
+            <tr><td>📹 达人真实体验视频（信任代入）</td><td><span class="tag tag-mid">中</span></td></tr>
+            <tr><td>🎨 颜色好看/款式设计</td><td><span class="tag tag-mid">中</span></td></tr>
+          </tbody>
+        </table>
+        <hr class="divider">
+        <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px;">▼ 转化阻碍（为什么不买）</div>
+        <table class="data-table">
+          <thead><tr><th>阻碍因素</th><th>严重程度</th></tr></thead>
+          <tbody>
+            <tr><td>📏 尺码不确定（最大退单原因）</td><td><span class="tag tag-high">高</span></td></tr>
+            <tr><td>🔄 竞品更便宜（同款式低价替代）</td><td><span class="tag tag-mid">中</span></td></tr>
+            <tr><td>❓ 商详页信息不够（面料/工艺描述模糊）</td><td><span class="tag tag-mid">中</span></td></tr>
+            <tr><td>📦 发货时间长（急需场景流失）</td><td><span class="tag tag-low">低</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💬 高频情感词汇分析</div>
+      <div style="margin-top:8px;">
+        <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:8px;">正向高频词（Top5）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <span style="background:#ECFDF5;color:#065F46;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">纯棉好穿 ⭐⭐⭐</span>
+          <span style="background:#ECFDF5;color:#065F46;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">质量不错 ⭐⭐⭐</span>
+          <span style="background:#ECFDF5;color:#065F46;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">款式好看 ⭐⭐</span>
+          <span style="background:#ECFDF5;color:#065F46;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">孩子喜欢 ⭐⭐</span>
+          <span style="background:#ECFDF5;color:#065F46;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">巴拉经典 ⭐</span>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px;">负向高频词（Top5）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <span style="background:#FEF2F2;color:#991B1B;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">尺码偏小 ❌❌❌</span>
+          <span style="background:#FEF2F2;color:#991B1B;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">起球了 ❌❌</span>
+          <span style="background:#FEF2F2;color:#991B1B;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">洗后缩水 ❌❌</span>
+          <span style="background:#FEF2F2;color:#991B1B;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">色差明显 ❌</span>
+          <span style="background:#FEF2F2;color:#991B1B;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">价格高了 ❌</span>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:var(--yellow);margin-bottom:8px;">关键问题 TOP3（已影响转化）</div>
+        <div class="alert alert-risk" style="padding:10px 14px;">
+          <div class="alert-content"><strong>Q1: 尺码不准确（最高优先级）</strong><p>建议直播间固定"尺码答疑专区"，引导留言体重/身高快速推荐，降低退货率</p></div>
+        </div>
+        <div class="alert alert-action" style="margin-top:6px;padding:10px 14px;">
+          <div class="alert-content"><strong>Q2: 洗涤后起球/缩水</strong><p>商品卡/直播中需加"洗涤说明"，用"已洗涤3次效果"演示建立信任</p></div>
+        </div>
+        <div class="alert alert-insight" style="margin-top:6px;padding:10px 14px;">
+          <div class="alert-content"><strong>Q3: 与竞
+品差价对比</strong><p>消费者已形成"比价习惯"，需要用品牌故事+面料说明建立"多花20元的理由"</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5: 经营判断 ============ -->
+<section id="judgment" class="section">
+  <div class="section-title">⑤ 经营判断 <span style="font-size:12px;color:var(--gray);font-weight:400;">当前阶段 · 机会 · 风险 · 短板</span></div>
+
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card" style="background:linear-gradient(135deg,#fff5f5,#fff);border:2px solid #FCA5A5;">
+      <div style="font-size:12px;color:#DC2626;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">📍 当前经营阶段判断</div>
+      <div style="font-size:26px;font-weight:800;color:#DC2626;margin-bottom:8px;">🛡️ 防守调整期</div>
+      <div style="font-size:13px;color:#374151;line-height:1.7;">
+        大盘增长但品牌下滑（-2.8%），说明不是行业问题，是品牌内部策略问题。<br>
+        转化率提升（3.78%→4.02%）但GMV下降，说明曝光/流量入口在缩减。<br>
+        <strong>当前核心任务：止跌 + 借助T恤/裤子/防晒三个增长品类重建增量动能。</strong>
+      </div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#fffbeb,#fff);border:2px solid #FCD34D;">
+      <div style="font-size:12px;color:#D97706;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">🔍 我方当前短板（必须指出）</div>
+      <ul style="list-style:none;margin-top:4px;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:8px;"><span style="color:var(--red);font-weight:700;">①</span><span><strong>视频内容力严重不足</strong>：视频占比7.1% vs 笛莎20.1%，差距近3倍</span></li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:8px;"><span style="color:var(--red);font-weight:700;">②</span><span><strong>粉丝粘性大幅流失</strong>：关注流量-9.5pct，直播间复购体系需重建</span></li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:8px;"><span style="color:var(--red);font-weight:700;">③</span><span><strong>裤子品类严重跑输</strong>：大盘+15%，巴拉巴拉-16.5%，差距达31pct</span></li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:8px;"><span style="color:var(--red);font-weight:700;">④</span><span><strong>防晒赛道布局缺失</strong>：Q2最大机会品类，当前声量不足</span></li>
+        <li style="padding:8px 0;font-size:13px;display:flex;gap:8px;"><span style="color:var(--red);font-weight:700;">⑤</span><span><strong>商品卡持续流失</strong>：商品卡-10.7%，搜索承接能力待提升</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="judgment-grid">
+    <div class="judgment-item" style="border-left:4px solid #16A34A;">
+      <h4>🚀 最大机会点 TOP3</h4>
+      <ul>
+        <li><strong><span class="tag tag-high">高</span> 防晒服：Q2窗口即将开启</strong><br><span style="font-size:12px;color:var(--gray);">4月防晒爆发在即，现在布局内容是提前量，品牌背书天然支撑高转化率</span></li>
+        <li><strong><span class="tag tag-high">高</span> T恤×视频达人矩阵</strong><br><span style="font-size:12px;color:var(--gray);">T恤已是爆款品类，若把视频占比从7%提升至15%，理论上可带来额外400-600万增量</span></li>
+        <li><strong><span class="tag tag-mid">中</span> 儿童户外服：新品类抢位</strong><br><span style="font-size:12px;color:var(--gray);">+68%的高增速，当前市场格局未固化，巴拉巴拉有机会在Q2建立"功能童装"认知</span></li>
+      </ul>
+    </div>
+    <div class="judgment-item" style="border-left:4px solid #DC2626;">
+      <h4>⚠️ 最大风险点 TOP3</h4>
+      <ul>
+        <li><strong><span class="tag tag-high">高</span> 品牌市占率持续下滑</strong><br><span style="font-size:12px;color:var(--gray);">在增长市场中下滑，说明竞争对手在抢份额。若3个月内未能逆转，市占率将进入下行通道</span></li>
+        <li><strong><span class="tag tag-high">高</span> 关注流量流失引发粉丝离心</strong><br><span style="font-size:12px;color:var(--gray);">粉丝是最低成本流量，关注-9.5pct若持续将显著拉高获客成本，压缩ROI</span></li>
+        <li><strong><span class="tag tag-mid">中</span> 裤子品类竞争失守</strong><br><span style="font-size:12px;color:var(--gray);">裤子是高频刚需品，流失的裤子用户大概率会在竞品建立购买习惯，向上带走其他品类复购</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 综合雷达图 -->
+  <div class="card" style="margin-top:20px;">
+    <div class="card-title">经营能力雷达图（巴拉巴拉 vs 安踏儿童 vs 笛莎，2026年3月）</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;">
+      <div style="height:300px;position:relative;"><canvas id="radarChart"></canvas></div>
+      <div>
+        <table class="data-table">
+          <thead><tr><th>维度</th><th>巴拉巴拉</th><th>安踏儿童</th><th>笛莎</th></tr></thead>
+          <tbody>
+            <tr><td>品类覆盖</td><td>9</td><td>7</td><td>6</td></tr>
+            <tr><td>转化率</td><td>7</td><td>8</td><td>9</td></tr>
+            <tr><td>视频内容</td><td>4</td><td>6</td><td>9</td></tr>
+            <tr><td>直播效率</td><td>7</td><td>8</td><td>7</td></tr>
+            <tr><td>达人矩阵</td><td>7</td><td>9</td><td>7</td></tr>
+            <tr><td>品牌势能</td><td>9</td><td>8</td><td>5</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-insight" style="margin-top:12px;">
+          <div class="alert-icon">💡</div>
+          <div class="alert-content"><strong>能力差距核心结论</strong><p>巴拉巴拉品牌势能最强、品类最广，但视频内容力是最大短板。这个差距不是资源投入不足，是内容生产机制问题——需要建立达人内容模板+高频产出机制。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6: 行动建议 ============ -->
+<section id="action" class="section">
+  <div class="section-title">⑥ 行动建议 <span style="font-size:12px;color:var(--gray);font-weight:400;">三层可执行路线图</span></div>
+
+  <div class="action-tier action-tier-1">
+    <h3>🔥 必须立即执行（本周内，3/30前）</h3>
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-text">
+        <strong>【短视频】防晒服内容矩阵紧急启动</strong>
+        <span>业务：短视频+达人合作 | 具体：立即筛选20-30个亲子类母婴达人，发送防晒服样品+内容brief。内容方向："孩子春游穿什么防晒服"，主打UPF50+/凉感/可折叠三个卖点。目标：4月1日前完成首批视频上线，抢占清明节点流量红利。</span>
+      </div>
+      <div><span class="tag tag-high">高优先级</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-text">
+        <strong>【直播】裤子专项直播场开启</strong>
+        <span>业务：自播 | 具体：3月底开启"春季裤子专场"，聚焦工装裤/宽松休闲裤，用"100元以内买到什么品质"作为核心话题。每场直播必须包含尺码答疑环节，降低退货率。目标GMV：单场50万+。</span>
+      </div>
+      <div><span class="tag tag-high">高优先级</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-text">
+        <strong>【商品卡】T恤&裤子商品卡SEO优化</strong>
+        <span>业务：商品卡运营 | 具体：对TOP50 T恤/裤子商品，补充标题关键词：2026春季+年龄段+功能词（凉感/纯棉/宽松）。主图全部替换为"儿童上身穿着场景图"，替代平铺挂拍。预计7天内商品卡点击率提升15-20%。</span>
+      </div>
+      <div><span class="tag tag-high">高优先级</span></div>
+    </div>
+  </div>
+
+  <div class="action-tier action-tier-2">
+    <h3>🧪 建议验证（2周内，4/13前）</h3>
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-text">
+        <strong>【短视频A/B测试】真实穿搭vs产品功能演示哪个更高效？</strong>
+        <span>业务：短视频内容运营 | 操作：选取同款工装裤，分别制作"孩子真实穿搭日常"和"面料拉伸/耐洗测试"两种内容，各投放15条，2周后对比GPM和加购率。根据结果确定春季主要视频内容方向。</span>
+      </div>
+      <div><span class="tag tag-mid">中优先级</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-text">
+        <strong>【直播粉丝召回】关注流量重建专项活动</strong>
+        <span>业务：直播运营 | 操作：针对历史关注用户推送"老粉专属福利直播"，主题：春季爆款提前选。通过高福利感召回关注留存，监控7天内关注流量占比变化。若回升超2pct，形成常规机制。</span>
+      </div>
+      <div><span class="tag tag-mid">中优先级</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-text">
+        <strong>【商品卡】两件装/组合款商品卡专项测试</strong>
+        <span>业务：商品卡 | 操作：将T恤两件装的商品卡流量提升50%投入，测试商品卡渠道对"套件类"商品的承接能力。对比单品商品卡，若两件装商品卡ROI更高，则扩大组合款的商品卡预算比例。</span>
+      </div>
+      <div><span class="tag tag-mid">中优先级</span></div>
+    </div>
+  </div>
+
+  <div class="action-tier action-tier-3">
+    <h3>👁️ 持续观察指标（4月全月）</h3>
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-text">
+        <strong>每周监控：视频销售额占比变化</strong>
+        <span>当前7.1%，目标是2周内提升至10%，4月底达到15%。若增速不达预期，需加大达人BD投入或优化内容brief。</span>
+      </div>
+      <div><span class="tag tag-high">关键指标</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-text">
+        <strong>每周监控：关注流量占比</strong>
+        <span>当前26%，需止跌并恢复至28-30%。若持续下滑，说明品牌内容吸引力在下降，需升级直播间视觉和互动机制。</span>
+      </div>
+      <div><span class="tag tag-high">关键指标</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-text">
+        <strong>持续观察：安踏儿童T恤扩张节奏</strong>
+        <span>安踏儿童T恤+143%是本周期最大异动信号，需每周追踪其T恤品类的达人视频量、价格策略变化，判断是否对巴拉巴拉主力价格带形成威胁。</span>
+      </div>
+      <div><span class="tag tag-mid">关注指标</span></div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-text">
+        <strong>持续观察：防晒服 & 户外服大盘增速</strong>
+        <span>3月底开始每周监控防晒服/户外服搜索量和销量变化。若4月第1周增速超50%，立即加大投入；若增速不及预期，调整防晒内容主打方向（从功能性转向颜值搭配）。</span>
+      </div>
+      <div><span class="tag tag-mid">关注指标</span></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- CHART JS -->
+<script>
+// 工具函数
+function fmt(n) { return (n/10000).toFixed(0)+'万'; }
+const brandColors = {
+  bala: '#FF6B35',
+  anta: '#2563EB',
+  deesha: '#16A34A',
+  woo: '#7C3AED',
+  papa: '#D97706',
+};
+
+// ===== 2.5 渠道结构图 =====
+const chData = {
+  labels: ['直播', '短视频', '商品卡'],
+  v25: [5630.9, 84.2, 1825.2],
+  v26: [5184.9, 516.0, 1629.7],
+  pct25: [74.7, 1.1, 24.2],
+  pct26: [70.9, 7.1, 22.3],
+  mktPct26: [68.4, 9.8, 21.8],
+  mkt25: [25058, 2963, 6961],
+  mkt26: [25866, 3696, 8236],
+  yoys: [-7.9, +513, -10.7],
+  mktYoys: [3.2, 24.7, 18.4],
+  colors: ['#FF6B35','#FBBF24','#60A5FA'],
+};
+
+// 三个渠道各自独立小图（双组：大盘左轴 + 本品右轴）
+function makeChannelMiniChart(canvasId, chIdx, color, mktColor) {
+  const labels = ['2025', '2026'];
+  const mktData = [chData.mkt25[chIdx], chData.mkt26[chIdx]];
+  const balaData = [chData.v25[chIdx], chData.v26[chIdx]];
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '大盘（万元）',
+          data: mktData,
+          backgroundColor: ['rgba(148,163,184,0.35)', mktColor+'99'],
+          borderColor: ['#94A3B8', mktColor],
+          borderWidth: [1.5, 2],
+          borderRadius: 5,
+          yAxisID: 'yL'
+        },
+        {
+          label: '本品（万元）',
+          data: balaData,
+          backgroundColor: [color+'44', color+'CC'],
+          borderColor: [color+'88', color],
+          borderWidth: [1.5, 2],
+          borderRadius: 5,
+          yAxisID: 'yR'
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 6 } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#374151' } },
+        yL: {
+          position: 'left', type: 'linear',
+          grid: { color: '#F3F4F6' },
+          ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v, font: { size: 9 }, color: '#94A3B8', maxTicksLimit: 4 },
+          title: { display: true, text: '大盘', font: { size: 9 }, color: '#94A3B8' }
+        },
+        yR: {
+          position: 'right', type: 'linear',
+          grid: { display: false },
+          ticks: { callback: v => v+'万', font: { size: 9 }, color, maxTicksLimit: 4 },
+          title: { display: true, text: '本品', font: { size: 9 }, color }
+        }
+      }
+    },
+    plugins: [{
+      id: 'miniYoy',
+      afterDatasetsDraw(chart) {
+        const {ctx} = chart;
+        // 标注2026本品同比
+        const yoy = chData.yoys[chIdx];
+        const meta = chart.getDatasetMeta(1);
+        const bar2026 = meta.data[1];
+        if(!bar2026) return;
+        ctx.save();
+        ctx.fillStyle = yoy >= 0 ? '#16A34A' : '#DC2626';
+        ctx.font = '700 10px PingFang SC, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText((yoy>0?'+':'')+yoy+'%', bar2026.x, bar2026.y - 5);
+        ctx.restore();
+        // 标注2026大盘同比
+        const mktYoy = chData.mktYoys[chIdx];
+        const metaL = chart.getDatasetMeta(0);
+        const barL = metaL.data[1];
+        if(!barL) return;
+        ctx.save();
+        ctx.fillStyle = '#16A34A';
+        ctx.font = '9px PingFang SC, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('+'+mktYoy+'%', barL.x, barL.y - 5);
+        ctx.restore();
+      }
+    }]
+  });
+}
+makeChannelMiniChart('chLive',  0, '#FF6B35', '#FF6B35');
+makeChannelMiniChart('chVideo', 1, '#FBBF24', '#F59E0B');
+makeChannelMiniChart('chCard',  2, '#60A5FA', '#60A5FA');
+
+// channelAmt（保留 canvas 供布局，隐藏）
+// canvas #channelAmt 已从 HTML 移除，此变量仅供引用
+const channelAmtEl = document.getElementById('channelAmt');
+if(channelAmtEl) {
+  new Chart(channelAmtEl, {
+    type: 'bar',
+    data: { labels: chData.labels, datasets: [{ label: '2026', data: chData.v26, backgroundColor: chData.colors, borderRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+  });
+}
+
+// channelPct（同上，保留但不展示）
+const channelPctEl = document.getElementById('channelPct');
+if(channelPctEl) {
+  new Chart(channelPctEl, {
+    type: 'bar',
+    data: { labels: chData.labels, datasets: [{ label: '2026占比', data: chData.pct26, backgroundColor: chData.colors, borderRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+  });
+}
+
+// channelAmt：大盘2025/2026 + 本品2025/2026，双Y轴（大盘左，本品右）
+// 使用分组柱图：X轴3个渠道，每组4根柱
+new Chart(document.getElementById('channelAmt'), {
+  type: 'bar',
+  data: {
+    labels: chData.labels,
+    datasets: [
+      {
+        label: '大盘 2025（万元）',
+        data: chData.mkt25,
+        backgroundColor: 'rgba(148,163,184,0.3)',
+        borderColor: '#94A3B8', borderWidth: 1.5,
+        borderRadius: 4, yAxisID: 'yL',
+        stack: 'mkt'
+      },
+      {
+        label: '大盘 2026（万元）',
+        data: chData.mkt26,
+        backgroundColor: ['rgba(255,107,53,0.18)','rgba(251,191,36,0.18)','rgba(96,165,250,0.18)'],
+        borderColor: chData.colors, borderWidth: 2,
+        borderRadius: 4, yAxisID: 'yL',
+        stack: 'mkt2'
+      },
+      {
+        label: '本品 2025（万元）',
+        data: chData.v25,
+        backgroundColor: 'rgba(148,163,184,0.5)',
+        borderColor: '#94A3B8', borderWidth: 1.5,
+        borderRadius: 4, yAxisID: 'yR',
+        stack: 'bala'
+      },
+      {
+        label: '本品 2026（万元）',
+        data: chData.v26,
+        backgroundColor: chData.colors,
+        borderRadius: 4, yAxisID: 'yR',
+        stack: 'bala2'
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12, padding: 12 } },
+      tooltip: {
+        callbacks: {
+          afterBody(items) {
+            const i = items[0].dataIndex;
+            const dsLabel = items[0].dataset.label;
+            if(dsLabel.includes('本品 2026')) return `本品同比：${chData.yoys[i]>0?'+':''}${chData.yoys[i]}%`;
+            if(dsLabel.includes('大盘 2026')) return `大盘同比：+${chData.mktYoys[i]}%`;
+            return '';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#374151' } },
+      yL: {
+        position: 'left', type: 'linear',
+        title: { display: true, text: '大盘销售额（万元）', font: { size: 10 }, color: '#94A3B8' },
+        grid: { color: '#F3F4F6' },
+        ticks: { callback: v => (v/1000).toFixed(0)+'k万', font: { size: 10 }, color: '#94A3B8' }
+      },
+      yR: {
+        position: 'right', type: 'linear',
+        title: { display: true, text: '本品销售额（万元）', font: { size: 10 }, color: '#FF6B35' },
+        grid: { display: false },
+        ticks: { callback: v => v+'万', font: { size: 10 }, color: '#FF6B35' }
+      }
+    }
+  },
+  plugins: [{
+    id: 'channelYoyAnno',
+    afterDatasetsDraw(chart) {
+      const {ctx} = chart;
+      // 标注本品2026同比
+      const meta2026b = chart.getDatasetMeta(3);
+      meta2026b.data.forEach((bar, i) => {
+        const v = chData.yoys[i];
+        ctx.save();
+        ctx.fillStyle = v >= 0 ? '#16A34A' : '#DC2626';
+        ctx.font = '700 10px PingFang SC, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText((v>0?'+':'')+v+'%', bar.x, bar.y - 6);
+        ctx.restore();
+      });
+      // 标注大盘2026同比
+      const metaMkt2026 = chart.getDatasetMeta(1);
+      metaMkt2026.data.forEach((bar, i) => {
+        const v = chData.mktYoys[i];
+        ctx.save();
+        ctx.fillStyle = '#16A34A';
+        ctx.font = '10px PingFang SC, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('+'+v+'%', bar.x, bar.y - 6);
+        ctx.restore();
+      });
+    }
+  }]
+});
+
+// 1c. 本品 vs 大盘占比——水平对比柱图，差值直观
+new Chart(document.getElementById('channelVsMarket'), {
+  type: 'bar',
+  data: {
+    labels: ['🎙️ 直播', '📱 短视频', '🛒 商品卡'],
+    datasets: [
+      {
+        label: '大盘 2026（%）',
+        data: [68.4, 9.8, 21.8],
+        backgroundColor: 'rgba(148,163,184,0.45)',
+        borderColor: '#94A3B8', borderWidth: 1.5,
+        borderRadius: 4
+      },
+      {
+        label: '本品 2026（%）',
+        data: [70.9, 7.1, 22.3],
+        backgroundColor: ['rgba(255,107,53,0.75)','rgba(251,191,36,0.75)','rgba(96,165,250,0.75)'],
+        borderColor: ['#FF6B35','#FBBF24','#60A5FA'], borderWidth: 2,
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12, padding: 10 } },
+      tooltip: {
+        callbacks: {
+          afterBody(items) {
+            const i = items[0].dataIndex;
+            const diffs = [2.5, -2.7, 0.5];
+            return `差值：${diffs[i]>0?'+':''}${diffs[i]} pct`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'%' }, max: 80 },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  },
+  plugins: [{
+    id: 'vsmDiffLabel',
+    afterDatasetsDraw(chart) {
+      const {ctx} = chart;
+      const diffs = [2.5, -2.7, 0.5];
+      const meta = chart.getDatasetMeta(1);
+      meta.data.forEach((bar, i) => {
+        const d = diffs[i];
+        ctx.save();
+        ctx.fillStyle = d >= 0 ? '#16A34A' : '#DC2626';
+        ctx.font = '700 11px PingFang SC, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText((d>0?'+':'')+d+' pct', bar.x + 6, bar.y + 4);
+        ctx.restore();
+      });
+    }
+  }]
+});
+
+// 1. 概览卡片原有渠道图（overview section，保留兼容）
+new Chart(document.getElementById('channelCompare'), {
+  type: 'bar',
+  data: {
+    labels: chData.labels,
+    datasets: [
+      { label: '2025', data: chData.v25, backgroundColor: chData.colors25, borderColor: chData.colors, borderWidth: 1.5, borderRadius: 4 },
+      { label: '2026', data: chData.v26, backgroundColor: chData.colors, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } } },
+    scales: { x: { grid: { display: false } }, y: { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'万' } } }
+  }
+});
+
+// 2. 日销售额趋势
+const days = ['3/1','3/2','3/3','3/4','3/5','3/6','3/7','3/8','3/9','3/10','3/11','3/12','3/13','3/14','3/15','3/16','3/17'];
+const sales26 = [4218337,4338861,3119827,4977625,3181802,4343117,3507103,3508311,3913843,4374313,5523702,4290656,5203231,3184709,5866157,4738313,5016874].map(v=>v/10000);
+const sales25 = [4398945,6489718,5199801,3993625,3793611,3337224,6950838,2733621,3988172,4628814,4584336,4982221,4759488,4984112,3262114,3244016,4073133].map(v=>v/10000);
+new Chart(document.getElementById('dailySales'), {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [
+      { label: '2025', data: sales25, borderColor: '#CBD5E1', fill: false, tension: 0.3, pointRadius: 3 },
+      { label: '2026', data: sales26, borderColor: '#FF6B35', fill: false, tension: 0.3, pointRadius: 3, borderWidth: 2.5 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+    scales: { x: { grid: { display: false }, ticks: { font: { size: 10 } } }, y: { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'万' } } }
+  }
+});
+
+// 3. 大盘类目柱图（Top10，2026销售额 + 同比增幅双轴）
+const cateNames = ['套装','T恤','外套/夹克','裤子','儿童旗袍/唐装','儿童牛仔','儿童户外服','卫衣/绒衫','羽绒服','连身衣/爬服'];
+const c26 = [53525,39889,39774,38589,32580,22038,17471,16873,13801,12093];
+const cYoY = [-17.4,9.7,-12.7,15.0,216.9,16.0,68.1,13.2,2.6,-18.5];
+new Chart(document.getElementById('cateCompare'), {
+  type: 'bar',
+  data: {
+    labels: cateNames,
+    datasets: [
+      { label: '大盘销售额（万元）', data: c26, backgroundColor: c26.map((_,i)=>cYoY[i]>=0?'#FF6B35':'#94A3B8'), borderRadius: 4, yAxisID:'y' },
+      { label: '同比增幅（%）', data: cYoY, type:'line', borderColor:'#2563EB', pointBackgroundColor:'#2563EB', borderWidth:2, pointRadius:4, yAxisID:'y1', fill:false, tension:0.3 }
+    ]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+    scales: {
+      x:  { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'万' }, position:'bottom' },
+      y:  { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y1: { position:'top', grid:{display:false}, ticks:{ callback:v=>(v>0?'+':'')+v+'%', font:{size:10} }, title:{display:true,text:'同比增幅',font:{size:10}} }
+    }
+  }
+});
+
+// 3b. 市占率图：本期值 + 同比 pct 变化（双轴）
+const msLabels = ['儿童防晒服','羽绒服','T恤','衬衫','毛衣/针织衫','外套/夹克','儿童内衣裤','背心吊带','裤子','连身衣/爬服'];
+const msValues = [6.47,5.25,4.43,4.29,3.37,3.44,2.11,2.89,1.95,1.90];
+const msChgValues = [-0.18,-1.59,-0.06,-0.82,-0.44,0.47,-0.34,2.29,-0.74,-0.79];
+new Chart(document.getElementById('marketShareChart'), {
+  type: 'bar',
+  data: {
+    labels: msLabels,
+    datasets: [
+      { label: '2026 市占率（%）', data: msValues, backgroundColor: '#FF6B35', borderRadius: 4, yAxisID:'y' },
+      { label: '市占率变化（pct）', data: msChgValues, type:'line', borderColor:'#7C3AED', pointBackgroundColor: msChgValues.map(v=>v>=0?'#16A34A':'#DC2626'), borderWidth:2, pointRadius:5, yAxisID:'y1', fill:false, tension:0.3 }
+    ]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+    scales: {
+      x:  { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'%' } },
+      y:  { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y1: { position:'top', grid:{display:false}, ticks:{ callback:v=>(v>0?'+':'')+v+' pct', font:{size:10} }, title:{display:true,text:'pct 变化',font:{size:10}} }
+    }
+  }
+});
+
+// 4. 价格带 - 巴拉巴拉
+new Chart(document.getElementById('balaPrice'), {
+  type: 'doughnut',
+  data: {
+    labels: ['0-50元','51-100元','101-150元','151-200元','201-300元','300+元'],
+    datasets: [{ data: [11.6,47.7,17.1,17.4,5.8,0.4], backgroundColor: ['#FED7AA','#FF6B35','#EF4444','#FBBF24','#34D399','#60A5FA'], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } } }
+});
+
+// 5. 价格带 - 安踏儿童
+new Chart(document.getElementById('antaPrice'), {
+  type: 'doughnut',
+  data: {
+    labels: ['0-50元','51-100元','101-150元','151-200元','201-300元','300+元'],
+    datasets: [{ data: [5.9,11.0,19.5,27.9,30.1,5.5], backgroundColor: ['#DBEAFE','#93C5FD','#3B82F6','#1D4ED8','#1E40AF','#1E3A8A'], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } } }
+});
+
+// 6. 价格带 - 笛莎
+new Chart(document.getElementById('deeshaPrice'), {
+  type: 'doughnut',
+  data: {
+    labels: ['0-50元','51-100元','101-150元','151-200元','201-300元','300+元'],
+    datasets: [{ data: [9.7,49.3,29.4,10.1,1.3,0.1], backgroundColor: ['#D1FAE5','#6EE7B7','#10B981','#059669','#065F46','#064E3B'], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } } }
+});
+
+// 7. 流量来源：2026本期值 + 同比变化双轴
+new Chart(document.getElementById('trafficCompare'), {
+  type: 'bar',
+  data: {
+    labels: ['推荐feed','关注','付费','短视频引流','搜索','其他'],
+    datasets: [
+      { label: '2025占比（%）', data: [34.4,35.5,11.2,2.9,5.1,9.5], backgroundColor: 'rgba(148,163,184,0.45)', borderColor:'#94A3B8', borderWidth:1.5, borderRadius:4 },
+      { label: '2026占比（%）', data: [40.3,26.0,13.5,5.4,4.3,8.2],
+        backgroundColor: [40.3,26.0,13.5,5.4,4.3,8.2].map((_,i)=>[5.9,-9.5,2.3,2.5,-0.8,-1.3][i]>=0?'rgba(22,163,74,0.65)':'rgba(220,38,38,0.65)'),
+        borderRadius:4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 10 } } },
+      tooltip: {
+        callbacks: {
+          afterBody(items) {
+            const diffs = [5.9,-9.5,2.3,2.5,-0.8,-1.3];
+            const i = items[0].dataIndex;
+            return `同比变化：${diffs[i]>0?'+':''}${diffs[i]} pct`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'%' }, max: 45 }
+    }
+  },
+  plugins: [{
+    id: 'trafficDiffLabel',
+    afterDatasetsDraw(chart) {
+      const diffs = [5.9,-9.5,2.3,2.5,-0.8,-1.3];
+      const {ctx} = chart;
+      const meta = chart.getDatasetMeta(1);
+      meta.data.forEach((bar, i) => {
+        const d = diffs[i];
+        ctx.save();
+        ctx.fillStyle = d >= 0 ? '#16A34A' : '#DC2626';
+        ctx.font = '700 10px PingFang SC, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText((d>0?'+':'')+d+' pct', bar.x, bar.y - 5);
+        ctx.restore();
+      });
+    }
+  }]
+});
+
+// 8. 竞品总览（仅2026本期，附同比YoY标注）
+new Chart(document.getElementById('competitorOverview'), {
+  type: 'bar',
+  data: {
+    labels: ['巴拉巴拉', '安踏儿童', '笛莎', 'woobaby', '幼岚', '爬爬'],
+    datasets: [
+      { label: '直播（万元）',  data: [5185, 5624, 1375, 515, 365, 354], backgroundColor: '#FF6B35', borderRadius: 4 },
+      { label: '短视频（万元）',data: [516,  319,  441,  13,  29,  124], backgroundColor: '#FBBF24', borderRadius: 4 },
+      { label: '商品卡（万元）',data: [1630, 1830, 377,  97,  63,  167], backgroundColor: '#60A5FA', borderRadius: 4 }
+    ]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        callbacks: {
+          afterBody(items) {
+            const yoys = {巴拉巴拉:'-2.8%', 安踏儿童:'-5.3%', 笛莎:'-2.4%', woobaby:'+124%', 幼岚:'-42.4%', 爬爬:'-31.5%'};
+            return `总销售额同比：${yoys[items[0].label]||''}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'万' } },
+      y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  },
+  plugins: [{
+    id: 'yoyAnno',
+    afterDatasetsDraw(chart) {
+      const yoys = ['-2.8%', '-5.3%', '-2.4%', '+124%', '-42.4%', '-31.5%'];
+      const colors = ['#DC2626','#DC2626','#DC2626','#16A34A','#DC2626','#DC2626'];
+      const {ctx} = chart;
+      chart.data.labels.forEach((label, i) => {
+        const meta = chart.getDatasetMeta(2);
+        const bar = meta.data[i];
+        if(!bar) return;
+        ctx.save();
+        ctx.fillStyle = colors[i];
+        ctx.font = '600 10px PingFang SC, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(`总体同比 ${yoys[i]}`, bar.x + 8, bar.y + 4);
+        ctx.restore();
+      });
+    }
+  }]
+});
+// 9. T恤价格带对比
+new Chart(document.getElementById('tshirtPrice'), {
+  type: 'bar',
+  data: {
+    labels: ['0-50元','51-100元','101-150元'],
+    datasets: [
+      { label: '巴拉巴拉', data: [27.0,72.7,0.3], backgroundColor: '#FF6B35', borderRadius: 4 },
+      { label: '安踏儿童(估)', data: [5,20,70], backgroundColor: '#3B82F6', borderRadius: 4 },
+      { label: '笛莎', data: [15,65,18], backgroundColor: '#10B981', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+    scales: { x: { grid: { display: false } }, y: { grid: { color: '#F3F4F6' }, ticks: { callback: v => v+'%' } } }
+  }
+});
+
+// 10. 品类生命周期
+const lifecycleCtx = document.getElementById('lifecycle');
+new Chart(lifecycleCtx, {
+  type: 'bubble',
+  data: {
+    datasets: [
+      {
+        label: '成长期',
+        data: [
+          { x: 3, y: 68, r: 18, label: '儿童户外服' },
+          { x: 3.5, y: 217, r: 12, label: '唐装' },
+          { x: 2.5, y: 66, r: 10, label: '马甲' },
+          { x: 3, y: 37, r: 9, label: '内衣裤' }
+        ],
+        backgroundColor: 'rgba(22,163,74,0.6)', borderColor: '#16A34A'
+      },
+      {
+        label: '成熟期',
+        data: [
+          { x: 6, y: 9.7, r: 22, label: 'T恤' },
+          { x: 5.5, y: 15, r: 20, label: '裤子' },
+          { x: 5, y: 13, r: 14, label: '卫衣' },
+          { x: 4.5, y: 21, r: 10, label: '衬衫' }
+        ],
+        backgroundColor: 'rgba(37,99,235,0.6)', borderColor: '#2563EB'
+      },
+      {
+        label: '衰退期',
+        data: [
+          { x: 8, y: -17, r: 20, label: '套装' },
+          { x: 8, y: -13, r: 18, label: '外套' },
+          { x: 8, y: -19, r: 12, label: '裙子' },
+          { x: 9, y: -40, r: 10, label: '亲子装' }
+        ],
+        backgroundColor: 'rgba(220,38,38,0.6)', borderColor: '#DC2626'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 } } },
+      tooltip: {
+        callbacks: {
+          label: function(context) { return context.raw.label + ' YoY:' + context.raw.y + '%'; }
+        }
+      }
+    },
+    scales: {
+      x: { title: { display: true, text: '市场成熟度 →' }, grid: { color: '#F3F4F6' } },
+      y: { title: { display: true, text: '同比增速(%)' }, grid: { color: '#F3F4F6' } }
+    }
+  }
+});
+
+// 11. 雷达图
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['品类覆盖', '转化率', '视频内容', '直播效率', '达人矩阵', '品牌势能'],
+    datasets: [
+      { label: '巴拉巴拉', data: [9,7,4,7,7,9], fill: true, backgroundColor: 'rgba(255,107,53,0.2)', borderColor: '#FF6B35', pointBackgroundColor: '#FF6B35' },
+      { label: '安踏儿童', data: [7,8,6,8,9,8], fill: true, backgroundColor: 'rgba(37,99,235,0.15)', borderColor: '#2563EB', pointBackgroundColor: '#2563EB' },
+      { label: '笛莎', data: [6,9,9,7,7,5], fill: true, backgroundColor: 'rgba(22,163,74,0.1)', borderColor: '#16A34A', pointBackgroundColor: '#16A34A' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+    scales: { r: { min: 0, max: 10, grid: { color: '#F3F4F6' }, ticks: { stepSize: 2, font: { size: 10 } }, pointLabels: { font: { size: 12 } } } }
+  }
+});
+
+// Tab 切换
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Nav active on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  navLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#'+current); });
+});
+</script>
+
+<div style="background:white;border-top:2px solid var(--border);padding:20px 32px;text-align:center;color:var(--gray);font-size:12px;margin-top:40px;">
+  <strong>巴拉巴拉 · 抖音三情分析看板</strong> | 分析周期：2026.03.01-03.17 vs 2025同期 | 
+  数据来源：企业内部数据（level2_cate_sales_data / 品牌商品列表 / 每日数据详情 / 直播流量趋势）<br>
+  ⚠️ 本报告基于数据推断与行业经验，建议结合实际业务情况使用 | 生成于 2026-03-30
+</div>
+
+</body>
+</html>

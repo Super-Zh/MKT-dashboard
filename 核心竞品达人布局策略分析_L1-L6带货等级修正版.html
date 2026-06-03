@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>核心竞品达人布局策略分析｜L1-L6带货等级修正版</title>
+    <style>
+        :root {
+            --bg: #f6f8fb;
+            --card: #fff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --blue: #2563eb;
+            --green: #16a34a;
+            --red: #dc2626;
+            --orange: #f97316;
+            --soft-green: #ecfdf5;
+            --soft-red: #fef2f2;
+            --soft-orange: #fff7ed
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.55
+        }
+
+        .page {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 28px
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0f172a, #1e40af);
+            color: #fff;
+            border-radius: 24px;
+            padding: 30px 34px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, .18)
+        }
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: 30px
+        }
+
+        .hero p {
+            margin: 0;
+            color: #dbeafe;
+            font-size: 15px
+        }
+
+        .note {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .12);
+            font-size: 13px;
+            color: #e0f2fe
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 18px 0
+        }
+
+        .kpi {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 8px 22px rgba(17, 24, 39, .05)
+        }
+
+        .kpi .label {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .kpi .value {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 8px 0 2px
+        }
+
+        .kpi .sub {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .section {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 24px;
+            margin: 18px 0;
+            box-shadow: 0 8px 22px rgba(17, 24, 39, .05)
+        }
+
+        .section h2 {
+            margin: 0 0 6px;
+            font-size: 22px
+        }
+
+        .section .desc {
+            margin: 0 0 18px;
+            color: var(--muted)
+        }
+
+        .table-wrap {
+            overflow: auto;
+            border: 1px solid var(--line);
+            border-radius: 14px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            font-size: 13px;
+            min-width: 980px
+        }
+
+        th {
+            background: #f8fafc;
+            color: #334155;
+            text-align: left;
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--line);
+            white-space: nowrap
+        }
+
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle
+        }
+
+        tr:hover td {
+            background: #fafafa
+        }
+
+        .pos {
+            color: var(--green);
+            font-weight: 800
+        }
+
+        .neg {
+            color: var(--red);
+            font-weight: 800
+        }
+
+        .neu {
+            color: #64748b;
+            font-weight: 700
+        }
+
+        .bar {
+            position: relative;
+            height: 22px;
+            background: #f1f5f9;
+            border-radius: 999px;
+            min-width: 125px;
+            overflow: hidden
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            border-radius: 999px;
+            opacity: .85
+        }
+
+        .bar i.green {
+            background: #86efac
+        }
+
+        .bar i.orange {
+            background: #fdba74
+        }
+
+        .bar i.blue {
+            background: #93c5fd
+        }
+
+        .bar i.red {
+            background: #fca5a5
+        }
+
+        .bar b {
+            position: absolute;
+            left: 10px;
+            top: 2px;
+            font-size: 12px;
+            color: #111827
+        }
+
+        .insights {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 16px
+        }
+
+        .insight {
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--line)
+        }
+
+        .insight.green {
+            background: var(--soft-green)
+        }
+
+        .insight.orange {
+            background: var(--soft-orange)
+        }
+
+        .insight.red {
+            background: var(--soft-red)
+        }
+
+        .insight h3 {
+            margin: 0 0 8px;
+            font-size: 16px
+        }
+
+        .insight p {
+            margin: 0;
+            color: #374151;
+            font-size: 14px
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px
+        }
+
+        .level-card {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 14px;
+            background: #fff
+        }
+
+        .level-card h4 {
+            margin: 0 0 10px;
+            font-size: 15px
+        }
+
+        .stack {
+            display: flex;
+            height: 24px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #f1f5f9
+        }
+
+        .seg.red {
+            background: #f87171
+        }
+
+        .seg.orange {
+            background: #fb923c
+        }
+
+        .seg.blue {
+            background: #60a5fa
+        }
+
+        .seg.green {
+            background: #4ade80
+        }
+
+        .level-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #475569
+        }
+
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px
+        }
+
+        .dot.red {
+            background: #f87171
+        }
+
+        .dot.orange {
+            background: #fb923c
+        }
+
+        .dot.blue {
+            background: #60a5fa
+        }
+
+        .dot.green {
+            background: #4ade80
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 700;
+            font-size: 12px
+        }
+
+        .toc {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 18px 0
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #1e3a8a;
+            background: #fff;
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center
+        }
+
+        .summary-list {
+            margin: 0;
+            padding-left: 18px
+        }
+
+        .summary-list li {
+            margin: 8px 0
+        }
+
+        @media(max-width:900px) {
+
+            .grid,
+            .insights,
+            .level-grid,
+            .toc {
+                grid-template-columns: 1fr
+            }
+
+            .page {
+                padding: 16px
+            }
+
+            .hero h1 {
+                font-size: 24px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <section class="hero">
+            <h1>核心竞品达人布局策略分析｜L1-L6带货等级修正版</h1>
+            <p>分析对象：FILAKIDS、Puma/彪马、dave&bella/戴维贝拉、papa、安踏儿童、左西、巴拉巴拉、笛莎。对比时间：2025 vs 2026。</p>
+            <div class="note">数据口径：取《追加》表；已剔除波司登、特步、保姆鹅；“达人层级_新=品牌自营”归为自营/分销。第三部分按 AuthorLevel
+                字段重算，仅保留达人层级_新非空且不等于品牌自营的数据；L6为最高带货等级。</div>
+        </section>
+        <div class="grid">
+            <div class="kpi">
+                <div class="label">2026 样本GMV</div>
+                <div class="value">163,353万</div>
+                <div class="sub">同比 <span class="pos">+39.7%</span></div>
+            </div>
+            <div class="kpi">
+                <div class="label">2026 外部达人GMV</div>
+                <div class="value">34,815万</div>
+                <div class="sub">占比 21.3% / 同比 <span class="pos">+84.0%</span></div>
+            </div>
+            <div class="kpi">
+                <div class="label">2026 自营/分销GMV</div>
+                <div class="value">128,538万</div>
+                <div class="sub">占比 78.7% / 同比 <span class="pos">+31.2%</span></div>
+            </div>
+            <div class="kpi">
+                <div class="label">短视频销售占比</div>
+                <div class="value">10.3%</div>
+                <div class="sub">较2025 <span class="pos">+7.4pp</span></div>
+            </div>
+        </div>
+        <nav class="toc"><a href="#s1">一、品牌布局</a><a href="#s2">二、内容形式</a><a href="#s3">三、L1-L6矩阵</a><a
+                href="#s4">四、商品×价格×内容</a><a href="#s5">五、总结</a></nav>
+        <section class="section" id="s1">
+            <h2>一、各品牌达人策略布局</h2>
+            <p class="desc">先看各品牌在“自营/分销 vs 外部达人”上的结构，判断哪些品牌控盘，哪些品牌依赖达人。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>2026 GMV</th>
+                            <th>GMV同比</th>
+                            <th>自营/分销GMV占比</th>
+                            <th>外部达人GMV占比</th>
+                            <th>外部占比变化</th>
+                            <th>外部GMV同比</th>
+                            <th>策略判断</th>
+                            <th>数据解释</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>巴拉巴拉</td>
+                            <td>47,417万</td>
+                            <td><span class='pos'>+27.0%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:77.5%"></i><b>77.5%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:22.5%"></i><b>22.5%</b></div>
+                            </td>
+                            <td><span class='pos'>+7.9pp</span></td>
+                            <td><span class='pos'>+95.9%</span></td>
+                            <td><span class='tag'>自营/分销控盘</span></td>
+                            <td>控盘强，外部达人更多承担补充曝光</td>
+                        </tr>
+                        <tr>
+                            <td>安踏儿童</td>
+                            <td>41,133万</td>
+                            <td><span class='pos'>+35.6%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:86.5%"></i><b>86.5%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:13.5%"></i><b>13.5%</b></div>
+                            </td>
+                            <td><span class='pos'>+2.8pp</span></td>
+                            <td><span class='pos'>+71.8%</span></td>
+                            <td><span class='tag'>自营/分销控盘</span></td>
+                            <td>控盘强，外部达人更多承担补充曝光</td>
+                        </tr>
+                        <tr>
+                            <td>Puma/彪马</td>
+                            <td>22,447万</td>
+                            <td><span class='pos'>+46.4%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:63.5%"></i><b>63.5%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:36.5%"></i><b>36.5%</b></div>
+                            </td>
+                            <td><span class='pos'>+4.6pp</span></td>
+                            <td><span class='pos'>+67.5%</span></td>
+                            <td><span class='tag'>双轮结构</span></td>
+                            <td>自营/分销与外部达人共同驱动，结构相对均衡</td>
+                        </tr>
+                        <tr>
+                            <td>FILAKIDS</td>
+                            <td>14,830万</td>
+                            <td><span class='pos'>+34.1%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:88.1%"></i><b>88.1%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:11.9%"></i><b>11.9%</b></div>
+                            </td>
+                            <td><span class='neg'>-4.1pp</span></td>
+                            <td><span class='neg'>-0.1%</span></td>
+                            <td><span class='tag'>自营/分销控盘</span></td>
+                            <td>控盘强，外部达人更多承担补充曝光</td>
+                        </tr>
+                        <tr>
+                            <td>左西</td>
+                            <td>13,859万</td>
+                            <td><span class='pos'>+225.4%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:76.8%"></i><b>76.8%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:23.2%"></i><b>23.2%</b></div>
+                            </td>
+                            <td><span class='pos'>+1.0pp</span></td>
+                            <td><span class='pos'>+240.4%</span></td>
+                            <td><span class='tag'>自营/分销控盘</span></td>
+                            <td>控盘强，外部达人更多承担补充曝光</td>
+                        </tr>
+                        <tr>
+                            <td>笛莎</td>
+                            <td>13,677万</td>
+                            <td><span class='pos'>+30.9%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:77.2%"></i><b>77.2%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:22.8%"></i><b>22.8%</b></div>
+                            </td>
+                            <td><span class='pos'>+10.6pp</span></td>
+                            <td><span class='pos'>+144.4%</span></td>
+                            <td><span class='tag'>自营/分销控盘</span></td>
+                            <td>控盘强，外部达人更多承担补充曝光</td>
+                        </tr>
+                        <tr>
+                            <td>dave&bella/戴维贝拉</td>
+                            <td>7,026万</td>
+                            <td><span class='pos'>+51.3%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:80.3%"></i><b>80.3%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:19.7%"></i><b>19.7%</b></div>
+                            </td>
+                            <td><span class='neg'>-5.4pp</span></td>
+                            <td><span class='pos'>+19.0%</span></td>
+                            <td><span class='tag'>自营/分销控盘</span></td>
+                            <td>控盘强，外部达人更多承担补充曝光</td>
+                        </tr>
+                        <tr>
+                            <td>papa</td>
+                            <td>2,964万</td>
+                            <td><span class='neg'>-15.6%</span></td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:68.5%"></i><b>68.5%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:31.5%"></i><b>31.5%</b></div>
+                            </td>
+                            <td><span class='pos'>+25.4pp</span></td>
+                            <td><span class='pos'>+336.9%</span></td>
+                            <td><span class='tag'>双轮结构</span></td>
+                            <td>自营/分销与外部达人共同驱动，结构相对均衡</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="insights">
+                <div class="insight orange">
+                    <h3>Puma/彪马：外部达人驱动最明显</h3>
+                    <p>2026年Puma/彪马外部达人GMV占比为 36.5%，为本组最高。</p>
+                </div>
+                <div class="insight green">
+                    <h3>FILAKIDS：自营/分销控盘最强</h3>
+                    <p>FILAKIDS 2026自营/分销占比为 88.1%。</p>
+                </div>
+                <div class="insight red">
+                    <h3>巴拉策略提示</h3>
+                    <p>巴拉巴拉外部达人占比为 22.5%，外部占比较高，不能简单减少达人，而要优化达人结构、内容效率和店播承接。</p>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="s2">
+            <h2>二、内容形式结构</h2>
+            <p class="desc">看直播 vs 短视频销售占比，判断品牌是否具备内容驱动能力，而不是只依赖直播即时转化。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>2026直播销售占比</th>
+                            <th>2026短视频销售占比</th>
+                            <th>短视频占比变化</th>
+                            <th>直播场次</th>
+                            <th>短视频数</th>
+                            <th>内容策略判断</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>dave&bella/戴维贝拉</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:67.9%"></i><b>67.9%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:32.1%"></i><b>32.1%</b></div>
+                            </td>
+                            <td><span class='pos'>+12.9pp</span></td>
+                            <td>3,598</td>
+                            <td>12,125</td>
+                            <td>短视频内容驱动增强</td>
+                        </tr>
+                        <tr>
+                            <td>笛莎</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:77.6%"></i><b>77.6%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:22.4%"></i><b>22.4%</b></div>
+                            </td>
+                            <td><span class='pos'>+18.0pp</span></td>
+                            <td>6,955</td>
+                            <td>19,865</td>
+                            <td>短视频内容驱动增强</td>
+                        </tr>
+                        <tr>
+                            <td>papa</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:79.8%"></i><b>79.8%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:20.2%"></i><b>20.2%</b></div>
+                            </td>
+                            <td><span class='pos'>+17.7pp</span></td>
+                            <td>18,626</td>
+                            <td>7,944</td>
+                            <td>短视频内容驱动增强</td>
+                        </tr>
+                        <tr>
+                            <td>左西</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:85.9%"></i><b>85.9%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:14.1%"></i><b>14.1%</b></div>
+                            </td>
+                            <td><span class='pos'>+13.6pp</span></td>
+                            <td>5,027</td>
+                            <td>5,441</td>
+                            <td>短视频内容驱动增强</td>
+                        </tr>
+                        <tr>
+                            <td>Puma/彪马</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:88.6%"></i><b>88.6%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:11.4%"></i><b>11.4%</b></div>
+                            </td>
+                            <td><span class='pos'>+8.6pp</span></td>
+                            <td>18,688</td>
+                            <td>10,087</td>
+                            <td>直播为主、短视频补充</td>
+                        </tr>
+                        <tr>
+                            <td>巴拉巴拉</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:93.1%"></i><b>93.1%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:6.9%"></i><b>6.9%</b></div>
+                            </td>
+                            <td><span class='pos'>+4.6pp</span></td>
+                            <td>28,706</td>
+                            <td>37,811</td>
+                            <td>直播主导，短视频补充</td>
+                        </tr>
+                        <tr>
+                            <td>安踏儿童</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:94.0%"></i><b>94.0%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:6.0%"></i><b>6.0%</b></div>
+                            </td>
+                            <td><span class='pos'>+4.5pp</span></td>
+                            <td>18,942</td>
+                            <td>32,951</td>
+                            <td>直播主导，短视频补充</td>
+                        </tr>
+                        <tr>
+                            <td>FILAKIDS</td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:95.3%"></i><b>95.3%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:4.7%"></i><b>4.7%</b></div>
+                            </td>
+                            <td><span class='pos'>+2.6pp</span></td>
+                            <td>6,672</td>
+                            <td>9,898</td>
+                            <td>直播主导，短视频补充</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="insights">
+                <div class="insight green">
+                    <h3>dave&bella/戴维贝拉：短视频占比最高</h3>
+                    <p>dave&bella/戴维贝拉 2026短视频销售占比为 32.1%。</p>
+                </div>
+                <div class="insight orange">
+                    <h3>笛莎：短视频提升最快</h3>
+                    <p>笛莎 短视频占比较2025提升 +18.0pp。</p>
+                </div>
+                <div class="insight red">
+                    <h3>巴拉仍偏直播型</h3>
+                    <p>巴拉巴拉2026短视频销售占比为 6.9%，虽有提升，但整体仍以直播转化为主。</p>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="s3">
+            <h2>三、外部达人矩阵（重点｜AuthorLevel L1-L6直播GMV口径）</h2>
+            <p class="desc">本模块仅看外部达人直播GMV，并按 AuthorLevel 拆为 L1-L6（L6最高）；高等级=L5+L6，中低等级=L1-L4。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>26Q1达人直播GMV</th>
+                            <th>直播GMV同比</th>
+                            <!-- <th>2026外部达人GMV</th>
+                            <th>外部GMV同比</th> -->
+                            <th>外部达人数量</th>
+                            <th>达人数量同比</th>
+                            <th>L5-L6达人GMV占比</th>
+                            <th>L1-L4达人GMV占比</th>
+                            <th>TOP10达人集中度变化</th>
+                            <th>L1-L6矩阵判断</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>巴拉巴拉</td>
+                            <td>8,017万</td>
+                            <td><span class='pos'>+67.8%</span></td>
+                            <!-- <td>10,613万</td>
+                            <td><span class='pos'>+98.7%</span></td> -->
+                            <td>736个</td>
+                            <td><span class='neg'>-4.4%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:91.2%"></i><b>91.2%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:8.8%"></i><b>8.8%</b></div>
+                            </td>
+                            <td><span class='neg'>+2.7pp</span></td>
+                            <td><span class='tag'>头部高度集中</span></td>
+                        </tr>
+                        <tr>
+                            <td>Puma/彪马</td>
+                            <td>5,734万</td>
+                            <td><span class='pos'>+30.8%</span></td>
+                            <!-- <td>8,141万</td>
+                            <td><span class='pos'>+74.8%</span></td> -->
+                            <td>794个</td>
+                            <td><span class='pos'>+25.2%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:20.8%"></i><b>20.8%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:79.2%"></i><b>79.2%</b></div>
+                            </td>
+                            <td><span class='pos'>-2.7pp</span></td>
+                            <td><span class='tag'>中腰部矩阵化</span></td>
+                        </tr>
+                        <tr>
+                            <td>安踏儿童</td>
+                            <td>4,851万</td>
+                            <td><span class='pos'>+67.7%</span></td>
+                            <!-- <td>5,508万</td>
+                            <td><span class='pos'>+72.4%</span></td> -->
+                            <td>805个</td>
+                            <td><span class='neg'>-0.1%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:83.8%"></i><b>83.8%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:16.2%"></i><b>16.2%</b></div>
+                            </td>
+                            <td><span class='pos'>-2.0pp</span></td>
+                            <td><span class='tag'>头部集中</span></td>
+                        </tr>
+                        <tr>
+                            <td>左西</td>
+                            <td>3,096万</td>
+                            <td><span class='pos'>+235.2%</span></td>
+                            <!-- <td>3,211万</td>
+                            <td><span class='pos'>+239.7%</span></td> -->
+                            <td>703个</td>
+                            <td><span class='neg'>-17.8%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:21.0%"></i><b>21.0%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:79.0%"></i><b>79.0%</b></div>
+                            </td>
+                            <td><span class='pos'>-19.9pp</span></td>
+                            <td><span class='tag'>中腰部矩阵化</span></td>
+                        </tr>
+                        <tr>
+                            <td>FILAKIDS</td>
+                            <td>1,750万</td>
+                            <!-- <td><span class='pos'>+1.0%</span></td>
+                            <td>1,759万</td> -->
+                            <td><span class='pos'>+0.6%</span></td>
+                            <td>445个</td>
+                            <td><span class='pos'>+253.2%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:97.9%"></i><b>97.9%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:2.1%"></i><b>2.1%</b></div>
+                            </td>
+                            <td><span class='neg'>+4.0pp</span></td>
+                            <td><span class='tag'>头部高度集中</span></td>
+                        </tr>
+                        <tr>
+                            <td>笛莎</td>
+                            <td>1,040万</td>
+                            <td><span class='pos'>+33.0%</span></td>
+                            <!-- <td>3,104万</td>
+                            <td><span class='pos'>+167.0%</span></td> -->
+                            <td>907个</td>
+                            <td><span class='pos'>+8.6%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:74.1%"></i><b>74.1%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:25.9%"></i><b>25.9%</b></div>
+                            </td>
+                            <td><span class='neg'>+18.7pp</span></td>
+                            <td><span class='tag'>头部集中</span></td>
+                        </tr>
+                        <tr>
+                            <td>papa</td>
+                            <td>576万</td>
+                            <td><span class='pos'>+419.4%</span></td>
+                            <!-- <td>922万</td>
+                            <td><span class='pos'>+361.4%</span></td> -->
+                            <td>879个</td>
+                            <td><span class='pos'>+9.5%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:80.6%"></i><b>80.6%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:19.4%"></i><b>19.4%</b></div>
+                            </td>
+                            <td><span class='neg'>+14.9pp</span></td>
+                            <td><span class='tag'>头部集中</span></td>
+                        </tr>
+                        <tr>
+                            <td>dave&bella/戴维贝拉</td>
+                            <td>183万</td>
+                            <td><span class='neg'>-64.0%</span></td>
+                            <!-- <td>1,382万</td>
+                            <td><span class='pos'>+21.8%</span></td> -->
+                            <td>807个</td>
+                            <td><span class='neg'>-7.0%</span></td>
+                            <td>
+                                <div class="bar"><i class="red" style="width:49.0%"></i><b>49.0%</b></div>
+                            </td>
+                            <td>
+                                <div class="bar"><i class="green" style="width:51.0%"></i><b>51.0%</b></div>
+                            </td>
+                            <td><span class='pos'>-9.5pp</span></td>
+                            <td><span class='tag'>平衡型</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 style="margin:22px 0 12px">外部达人GMV增长归因：L1-L6人数变化 × 直播GMV变化</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>外部达人直播GMV增量</th>
+                            <th>主要归因</th>
+                            <th>增长类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>巴拉巴拉</td>
+                            <td><span class='pos'>3,239万</span></td>
+                            <td>主要增量来自【L6】直播GMV增加 3,084万，人数变化 +8人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>Puma/彪马</td>
+                            <td><span class='pos'>1,350万</span></td>
+                            <td>主要增量来自【L3】直播GMV增加 996万，人数变化 +41人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>安踏儿童</td>
+                            <td><span class='pos'>1,959万</span></td>
+                            <td>主要增量来自【L6】直播GMV增加 1,991万，人数变化 +11人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>左西</td>
+                            <td><span class='pos'>2,172万</span></td>
+                            <td>主要增量来自【L3】直播GMV增加 918万，人数变化 +30人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>FILAKIDS</td>
+                            <td><span class='pos'>17万</span></td>
+                            <td>主要增量来自【L6】直播GMV增加 227万，人数变化 +2人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>笛莎</td>
+                            <td><span class='pos'>258万</span></td>
+                            <td>主要增量来自【L6】直播GMV增加 642万，人数变化 +1人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>papa</td>
+                            <td><span class='pos'>465万</span></td>
+                            <td>主要增量来自【L5】直播GMV增加 244万，人数变化 -7人</td>
+                            <td>增长型</td>
+                        </tr>
+                        <tr>
+                            <td>dave&bella/戴维贝拉</td>
+                            <td><span class='neg'>-325万</span></td>
+                            <td>主要拖累来自【L4】直播GMV减少 227万，人数变化 -5人</td>
+                            <td>下滑型</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 style="margin:22px 0 12px">2026外部达人带货等级结构：L1-L6（直播GMV占比）</h3>
+            <div class="level-grid">
+                <div class='level-card'>
+                    <h4>巴拉巴拉</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:0.14%' title='L1 直播GMV占比 0.1%'></div>
+                        <div class='seg green' style='width:7.56%' title='L2 直播GMV占比 7.6%'></div>
+                        <div class='seg blue' style='width:0.57%' title='L3 直播GMV占比 0.6%'></div>
+                        <div class='seg blue' style='width:0.51%' title='L4 直播GMV占比 0.5%'></div>
+                        <div class='seg orange' style='width:5.41%' title='L5 直播GMV占比 5.4%'></div>
+                        <div class='seg red' style='width:85.82%' title='L6 直播GMV占比 85.8%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 0.1% / 11万 / 293人</span><span><i
+                                class='dot green'></i>L2 7.6% / 606万 / 246人</span><span><i class='dot blue'></i>L3 0.6%
+                            / 46万 / 107人</span><span><i class='dot blue'></i>L4 0.5% / 41万 / 51人</span><span><i
+                                class='dot orange'></i>L5 5.4% / 434万 / 21人</span><span><i class='dot red'></i>L6 85.8%
+                            / 6,880万 / 18人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>安踏儿童</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:2.29%' title='L1 直播GMV占比 2.3%'></div>
+                        <div class='seg green' style='width:8.27%' title='L2 直播GMV占比 8.3%'></div>
+                        <div class='seg blue' style='width:4.35%' title='L3 直播GMV占比 4.4%'></div>
+                        <div class='seg blue' style='width:1.28%' title='L4 直播GMV占比 1.3%'></div>
+                        <div class='seg orange' style='width:1.86%' title='L5 直播GMV占比 1.9%'></div>
+                        <div class='seg red' style='width:81.96%' title='L6 直播GMV占比 82.0%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 2.3% / 111万 / 439人</span><span><i
+                                class='dot green'></i>L2 8.3% / 401万 / 234人</span><span><i class='dot blue'></i>L3 4.4%
+                            / 211万 / 66人</span><span><i class='dot blue'></i>L4 1.3% / 62万 / 39人</span><span><i
+                                class='dot orange'></i>L5 1.9% / 90万 / 7人</span><span><i class='dot red'></i>L6 82.0% /
+                            3,976万 / 20人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>Puma/彪马</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:1.77%' title='L1 直播GMV占比 1.8%'></div>
+                        <div class='seg green' style='width:35.60%' title='L2 直播GMV占比 35.6%'></div>
+                        <div class='seg blue' style='width:32.85%' title='L3 直播GMV占比 32.8%'></div>
+                        <div class='seg blue' style='width:8.98%' title='L4 直播GMV占比 9.0%'></div>
+                        <div class='seg orange' style='width:1.79%' title='L5 直播GMV占比 1.8%'></div>
+                        <div class='seg red' style='width:19.02%' title='L6 直播GMV占比 19.0%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 1.8% / 101万 / 309人</span><span><i
+                                class='dot green'></i>L2 35.6% / 2,041万 / 271人</span><span><i class='dot blue'></i>L3
+                            32.8% / 1,883万 / 117人</span><span><i class='dot blue'></i>L4 9.0% / 515万 /
+                            64人</span><span><i class='dot orange'></i>L5 1.8% / 103万 / 19人</span><span><i
+                                class='dot red'></i>L6 19.0% / 1,091万 / 15人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>FILAKIDS</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:0.13%' title='L1 直播GMV占比 0.1%'></div>
+                        <div class='seg green' style='width:0.11%' title='L2 直播GMV占比 0.1%'></div>
+                        <div class='seg blue' style='width:1.84%' title='L3 直播GMV占比 1.8%'></div>
+                        <div class='seg blue' style='width:0.04%' title='L4 直播GMV占比 0.0%'></div>
+                        <div class='seg orange' style='width:49.62%' title='L5 直播GMV占比 49.6%'></div>
+                        <div class='seg red' style='width:48.26%' title='L6 直播GMV占比 48.3%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 0.1% / 2万 / 296人</span><span><i
+                                class='dot green'></i>L2 0.1% / 2万 / 120人</span><span><i class='dot blue'></i>L3 1.8% /
+                            32万 / 14人</span><span><i class='dot blue'></i>L4 0.0% / 1万 / 7人</span><span><i
+                                class='dot orange'></i>L5 49.6% / 868万 / 1人</span><span><i class='dot red'></i>L6 48.3%
+                            / 845万 / 7人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>左西</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:0.12%' title='L1 直播GMV占比 0.1%'></div>
+                        <div class='seg green' style='width:17.14%' title='L2 直播GMV占比 17.1%'></div>
+                        <div class='seg blue' style='width:34.82%' title='L3 直播GMV占比 34.8%'></div>
+                        <div class='seg blue' style='width:26.96%' title='L4 直播GMV占比 27.0%'></div>
+                        <div class='seg orange' style='width:3.51%' title='L5 直播GMV占比 3.5%'></div>
+                        <div class='seg red' style='width:17.45%' title='L6 直播GMV占比 17.5%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 0.1% / 4万 / 415人</span><span><i
+                                class='dot green'></i>L2 17.1% / 531万 / 153人</span><span><i class='dot blue'></i>L3
+                            34.8% / 1,078万 / 55人</span><span><i class='dot blue'></i>L4 27.0% / 835万 /
+                            50人</span><span><i class='dot orange'></i>L5 3.5% / 109万 / 14人</span><span><i
+                                class='dot red'></i>L6 17.5% / 540万 / 18人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>笛莎</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:3.36%' title='L1 直播GMV占比 3.4%'></div>
+                        <div class='seg green' style='width:1.44%' title='L2 直播GMV占比 1.4%'></div>
+                        <div class='seg blue' style='width:8.67%' title='L3 直播GMV占比 8.7%'></div>
+                        <div class='seg blue' style='width:12.43%' title='L4 直播GMV占比 12.4%'></div>
+                        <div class='seg orange' style='width:0.97%' title='L5 直播GMV占比 1.0%'></div>
+                        <div class='seg red' style='width:73.13%' title='L6 直播GMV占比 73.1%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 3.4% / 35万 / 467人</span><span><i
+                                class='dot green'></i>L2 1.4% / 15万 / 247人</span><span><i class='dot blue'></i>L3 8.7% /
+                            90万 / 125人</span><span><i class='dot blue'></i>L4 12.4% / 129万 / 50人</span><span><i
+                                class='dot orange'></i>L5 1.0% / 10万 / 15人</span><span><i class='dot red'></i>L6 73.1% /
+                            761万 / 4人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>dave&bella/戴维贝拉</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:1.38%' title='L1 直播GMV占比 1.4%'></div>
+                        <div class='seg green' style='width:1.40%' title='L2 直播GMV占比 1.4%'></div>
+                        <div class='seg blue' style='width:3.08%' title='L3 直播GMV占比 3.1%'></div>
+                        <div class='seg blue' style='width:45.10%' title='L4 直播GMV占比 45.1%'></div>
+                        <div class='seg orange' style='width:38.54%' title='L5 直播GMV占比 38.5%'></div>
+                        <div class='seg red' style='width:10.50%' title='L6 直播GMV占比 10.5%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 1.4% / 3万 / 468人</span><span><i
+                                class='dot green'></i>L2 1.4% / 3万 / 175人</span><span><i class='dot blue'></i>L3 3.1% /
+                            6万 / 101人</span><span><i class='dot blue'></i>L4 45.1% / 82万 / 43人</span><span><i
+                                class='dot orange'></i>L5 38.5% / 70万 / 14人</span><span><i class='dot red'></i>L6 10.5%
+                            / 19万 / 7人</span></div>
+                </div>
+                <div class='level-card'>
+                    <h4>papa</h4>
+                    <div class='stack'>
+                        <div class='seg green' style='width:3.00%' title='L1 直播GMV占比 3.0%'></div>
+                        <div class='seg green' style='width:7.56%' title='L2 直播GMV占比 7.6%'></div>
+                        <div class='seg blue' style='width:6.51%' title='L3 直播GMV占比 6.5%'></div>
+                        <div class='seg blue' style='width:2.32%' title='L4 直播GMV占比 2.3%'></div>
+                        <div class='seg orange' style='width:45.79%' title='L5 直播GMV占比 45.8%'></div>
+                        <div class='seg red' style='width:34.82%' title='L6 直播GMV占比 34.8%'></div>
+                    </div>
+                    <div class='level-legend'><span><i class='dot green'></i>L1 3.0% / 17万 / 379人</span><span><i
+                                class='dot green'></i>L2 7.6% / 44万 / 352人</span><span><i class='dot blue'></i>L3 6.5% /
+                            37万 / 98人</span><span><i class='dot blue'></i>L4 2.3% / 13万 / 37人</span><span><i
+                                class='dot orange'></i>L5 45.8% / 264万 / 10人</span><span><i class='dot red'></i>L6 34.8%
+                            / 200万 / 4人</span></div>
+                </div>
+            </div>
+            <h3 style="margin:22px 0 12px">2026外部达人TOP3贡献（直播GMV口径）</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>品牌外部直播表现</th>
+                            <th>TOP3外部达人</th>
+                            <th>TOP3直播GMV</th>
+                            <th>TOP3占外部直播GMV</th>
+                            <th>TOP3集中度变化</th>
+                            <th>集中度结论</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>巴拉巴拉</td>
+                            <td><span class='pos'>增长（直播GMV同比 +67.8%）</span></td>
+                            <td>与辉同行 / 彩虹夫妇 / 东方甄选</td>
+                            <td>5,453万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:68.0%"></i><b>68.0%</b></div>
+                            </td>
+                            <td><span class='pos'>-6.0pp</span></td>
+                            <td>增长依赖TOP达人，爆发强但抗波动弱</td>
+                        </tr>
+                        <tr>
+                            <td>安踏儿童</td>
+                            <td><span class='pos'>增长（直播GMV同比 +67.7%）</span></td>
+                            <td>与辉同行 / 新东方直播间 / 主持人王芳</td>
+                            <td>2,451万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:50.5%"></i><b>50.5%</b></div>
+                            </td>
+                            <td><span class='neg'>+1.8pp</span></td>
+                            <td>增长依赖TOP达人，爆发强但抗波动弱</td>
+                        </tr>
+                        <tr>
+                            <td>Puma/彪马</td>
+                            <td><span class='pos'>增长（直播GMV同比 +30.8%）</span></td>
+                            <td>PUMA 彪马运动直播间 / CROCS卡骆驰直播间 / TOPSPORTS滔搏PUMA彪马</td>
+                            <td>1,744万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:30.4%"></i><b>30.4%</b></div>
+                            </td>
+                            <td><span class='pos'>-3.2pp</span></td>
+                            <td>增长更分散，矩阵韧性较好</td>
+                        </tr>
+                        <tr>
+                            <td>FILAKIDS</td>
+                            <td><span class='pos'>增长（直播GMV同比 +1.0%）</span></td>
+                            <td>李好 / 带娃的小璐❤️28号onmygame / 叶一茜</td>
+                            <td>1,668万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:95.3%"></i><b>95.3%</b></div>
+                            </td>
+                            <td><span class='neg'>+26.7pp</span></td>
+                            <td>增长依赖TOP达人，爆发强但抗波动弱</td>
+                        </tr>
+                        <tr>
+                            <td>左西</td>
+                            <td><span class='pos'>增长（直播GMV同比 +235.2%）</span></td>
+                            <td>左西儿童形象店 / 左西男中童店 / 左西童装店</td>
+                            <td>1,294万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:41.8%"></i><b>41.8%</b></div>
+                            </td>
+                            <td><span class='pos'>-54.6pp</span></td>
+                            <td>增长更分散，矩阵韧性较好</td>
+                        </tr>
+                        <tr>
+                            <td>笛莎</td>
+                            <td><span class='pos'>增长（直播GMV同比 +33.0%）</span></td>
+                            <td>与辉同行 / 兰知春序 / 精典泰迪童装品牌店</td>
+                            <td>844万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:81.2%"></i><b>81.2%</b></div>
+                            </td>
+                            <td><span class='neg'>+22.9pp</span></td>
+                            <td>增长依赖TOP达人，爆发强但抗波动弱</td>
+                        </tr>
+                        <tr>
+                            <td>dave&bella/戴维贝拉</td>
+                            <td><span class='neg'>下降（直播GMV同比 -64.0%）</span></td>
+                            <td>孙铱母婴生活 / 精典泰迪童装品牌店 / 万达品牌童装折扣店</td>
+                            <td>133万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:72.7%"></i><b>72.7%</b></div>
+                            </td>
+                            <td><span class='pos'>-9.9pp</span></td>
+                            <td>高度集中但仍下滑，高等级达人失效风险高</td>
+                        </tr>
+                        <tr>
+                            <td>papa</td>
+                            <td><span class='pos'>增长（直播GMV同比 +419.4%）</span></td>
+                            <td>带娃的小璐❤️28号onmygame / 小璐母婴团 / 小璐的小号</td>
+                            <td>443万</td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:77.0%"></i><b>77.0%</b></div>
+                            </td>
+                            <td><span class='neg'>+20.9pp</span></td>
+                            <td>增长依赖TOP达人，爆发强但抗波动弱</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="insights">
+                <div class="insight green">
+                    <h3>中腰部矩阵化更好的品牌</h3>
+                    <p>Puma/彪马、左西 的外部达人直播GMV更分散，说明其不是单靠高等级达人冲量。</p>
+                </div>
+                <div class="insight orange">
+                    <h3>头部集中型风险</h3>
+                    <p>L5-L6占比越高，短期爆发越强，但对头部排期、佣金、坑位费与爆品适配更敏感。</p>
+                </div>
+                <div class="insight red">
+                    <h3>直播型外部达人投放趋势</h3>
+                    <p>外部达人直播不再只是找L5-L6大号，而是要形成“L5-L6爆发 + L1-L4规模化测试/铺量”的双层结构。</p>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="s4">
+            <h2>四、商品 × 价格 × 内容的达人策略</h2>
+            <p class="desc">补充商品宽度、价格带变化、内容与商品匹配度。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品牌</th>
+                            <th>2026件单价</th>
+                            <th>件单价同比</th>
+                            <th>平均带货商品数/账号</th>
+                            <th>商品宽度同比</th>
+                            <th>短视频商品占比</th>
+                            <th>商品×内容匹配判断</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FILAKIDS</td>
+                            <td>¥478</td>
+                            <td><span class='pos'>+3.0%</span></td>
+                            <td>10.7</td>
+                            <td><span class='neg'>-81.0%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:34.0%"></i><b>34.0%</b></div>
+                            </td>
+                            <td>直播为主、内容有补充</td>
+                        </tr>
+                        <tr>
+                            <td>Puma/彪马</td>
+                            <td>¥232</td>
+                            <td><span class='neg'>-7.8%</span></td>
+                            <td>24.8</td>
+                            <td><span class='pos'>+8.8%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:29.4%"></i><b>29.4%</b></div>
+                            </td>
+                            <td>直播为主、内容有补充</td>
+                        </tr>
+                        <tr>
+                            <td>安踏儿童</td>
+                            <td>¥193</td>
+                            <td><span class='pos'>+8.0%</span></td>
+                            <td>62.4</td>
+                            <td><span class='pos'>+70.1%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:22.1%"></i><b>22.1%</b></div>
+                            </td>
+                            <td>直播货盘主导，短视频可继续补强</td>
+                        </tr>
+                        <tr>
+                            <td>dave&bella/戴维贝拉</td>
+                            <td>¥130</td>
+                            <td><span class='pos'>+20.8%</span></td>
+                            <td>6.6</td>
+                            <td><span class='neg'>-34.7%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:67.1%"></i><b>67.1%</b></div>
+                            </td>
+                            <td>短视频带货链路较强</td>
+                        </tr>
+                        <tr>
+                            <td>笛莎</td>
+                            <td>¥122</td>
+                            <td><span class='pos'>+1.6%</span></td>
+                            <td>12.7</td>
+                            <td><span class='pos'>+12.3%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:69.0%"></i><b>69.0%</b></div>
+                            </td>
+                            <td>短视频带货链路较强</td>
+                        </tr>
+                        <tr>
+                            <td>巴拉巴拉</td>
+                            <td>¥121</td>
+                            <td><span class='pos'>+15.9%</span></td>
+                            <td>69.6</td>
+                            <td><span class='pos'>+24.6%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:23.7%"></i><b>23.7%</b></div>
+                            </td>
+                            <td>直播货盘主导，短视频可继续补强</td>
+                        </tr>
+                        <tr>
+                            <td>papa</td>
+                            <td>¥107</td>
+                            <td><span class='pos'>+20.1%</span></td>
+                            <td>8.6</td>
+                            <td><span class='pos'>+20.9%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:31.8%"></i><b>31.8%</b></div>
+                            </td>
+                            <td>直播为主、内容有补充</td>
+                        </tr>
+                        <tr>
+                            <td>左西</td>
+                            <td>¥89</td>
+                            <td><span class='pos'>+27.1%</span></td>
+                            <td>9.6</td>
+                            <td><span class='pos'>+69.3%</span></td>
+                            <td>
+                                <div class="bar"><i class="orange" style="width:24.3%"></i><b>24.3%</b></div>
+                            </td>
+                            <td>直播货盘主导，短视频可继续补强</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="insights">
+                <div class="insight green">
+                    <h3>商品策略升级</h3>
+                    <p>平均带货商品数提升的品牌，更适合承接达人矩阵。</p>
+                </div>
+                <div class="insight orange">
+                    <h3>价格带不是越低越好</h3>
+                    <p>高件单价品牌仍能增长，说明强品牌和强内容账号可以承接更高价格带。</p>
+                </div>
+                <div class="insight red">
+                    <h3>内容与商品要匹配</h3>
+                    <p>短视频商品占比高不等于GMV承接强，需要把短视频高互动SKU与直播/店播承接SKU打通。</p>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="s5">
+            <h2>五、总结：L1-L6直播型外部达人趋势与品牌借鉴</h2>
+            <div class="insights">
+                <div class="insight green">
+                    <h3>1）趋势：从“高等级依赖”转向“等级矩阵效率”</h3>
+                    <p>仅靠L5-L6大号拉爆发的模式波动大，更值得关注L1-L4是否能形成稳定直播GMV贡献，以及TOP集中度是否下降。</p>
+                </div>
+                <div class="insight orange">
+                    <h3>2）借鉴：L5-L6做爆发，L1-L4做铺量</h3>
+                    <p>L5-L6适合大促、强背书和爆品冲量；L1-L4适合日销、测品、低成本复投和规模化覆盖。</p>
+                </div>
+                <div class="insight red">
+                    <h3>3）对巴拉：不是少投达人，而是重构等级矩阵</h3>
+                    <p>巴拉巴拉外部达人直播GMV同比为 +67.8%，L1-L4直播GMV占比为 8.8%。后续重点是把直播型达人从单点投放升级为L1-L6分层经营。</p>
+                </div>
+            </div>
+            <h3 style="margin-top:22px">建议补进汇报的动作</h3>
+            <ul class="summary-list">
+                <li><b>L1-L6等级复盘：</b>按L1-L6拆直播GMV、人数、TOP集中度，不再只看总GMV。</li>
+                <li><b>L5-L6达人：</b>按“大促爆发+品牌背书”管理，重点看坑位费、ROI和货盘适配。</li>
+                <li><b>L1-L4达人：</b>按“规模化铺量+复投成功率”管理，重点看直播GMV增量、复投率和商品池匹配。</li>
+                <li><b>品牌借鉴：</b>建立“L1-L4测试—有效达人复投—L5-L6大场爆发”的外部达人运营漏斗。</li>
+            </ul>
+        </section>
+    </div>
+</body>
+
+</html>
